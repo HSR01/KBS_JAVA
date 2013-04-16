@@ -162,3 +162,17 @@ pip-log.txt
 # Mac crap
 .DS_Store
 /java_backend/nbproject/private/
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Netbeans files
+./java_backend/nbproject/project.properties
