@@ -22,6 +22,7 @@ public class Koerier {
     }
     
     public static Koerier getKoerierById(int id){
+        //query to get the koeriers by id 
         Koerier k = new Koerier();
         k.setBedrijfsnaam("Bassies Diensten");
         k.setBedrijfstelefoonnummer("25846148415");
