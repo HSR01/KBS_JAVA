@@ -4,9 +4,6 @@ package java_backend;
  * @author Jelle Smeets
  */
 import java.util.Date;
-package java_backend;
-
-
 public class Persoon {
   private String Voornaam;
   private String Tussenvoegsel;

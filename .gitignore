@@ -175,4 +175,4 @@ ehthumbs.db
 Thumbs.db
 
 # Netbeans files
-./java_backend/nbproject/project.properties
+java_backend/nbproject/project.properties
