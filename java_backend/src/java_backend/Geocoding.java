@@ -2,5 +2,8 @@ package java_backend;
 
 
 public class Geocoding{
-//google maps shit frustratie
+
+    public Geocoding(){
+        
+    }
 }
