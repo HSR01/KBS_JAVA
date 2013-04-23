@@ -28,6 +28,7 @@ public class DbConnect {
     String pasw = "Daniel26061990";
     //Query holder
     String query = "";
+ 
     
     public DbConnect(){
         //Probeer mysql driver te laden
@@ -43,24 +44,67 @@ public class DbConnect {
 
     }
     public void getData(){
-        //Probeer de volgende query uit te voeren
+    //Query voor uitlezen!!!!----->
         try{
-            query = "select * from test";
+            
+            //Select query
+            query = "SELECT * FROM test";
+            
+            //Select collum
+            String collum = "YOLO";
+            
+            //Query uitvoeren
             rs = st.executeQuery(query); 
             
             //Loop door de query data heen
             while(rs.next()){
-                String content = rs.getString("YOLO");
+                String content = rs.getString(collum);
                 System.out.println(content);
             }
         //Afvangen fouten voor getdata    
         }catch(Exception ea){
-            System.out.println("Query ERROR: " + ea);
+            System.out.println("Query lees ERROR: " + ea);
+        }     
+        
+    }
+    
+         
+    public void insertData(String content){
+    //Query voor inserten!!!!----->       
+          try{
+                     
+            //Insert query
+            query = "INSERT INTO test VALUES('" + content + "')";              
+                        
+            //Query uitvoeren
+            st.executeUpdate(query);
+            
+        }catch(Exception ea){
+            System.out.println("Query schrijf ERROR: " + ea);
+            
         }
         
     }
     
-
+    public void updateData(String field, String content){
+    //Query voor updaten!!!!----->
+        try{
+            
+            //Select collum
+            String collum = "YOLO";
+            
+            //Update query
+            query = "UPDATE test SET " + collum + "='" + content + "' WHERE " + collum + "'" + field + "'";              
+                        
+            //Query uitvoeren
+            st.executeUpdate(query);
+            
+        }catch(Exception ea){
+            System.out.println("Query update ERROR: " + ea);
+            
+        }
+        
+    }
     
 }
     
