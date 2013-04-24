@@ -9,23 +9,32 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
  *
  * @author Jelle
  */
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ActionListener {
 
     private JTextField tfVoornaam, tfTussenvoegsel, tfAchternaam, tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam, tfEmailadres, tfWachtwoord, tfIBANnummer, tfMobielnummer, tfGeboortedatum;
     private JLabel lVoornaam, lTussenvoegsel, lAchternaam, lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam, lEmailadres, lWachtwoord, lIBANnummer, lMobielnummer, lGeboortedatum, logo;
     private JButton btNieuw, btOpslaan, btNorth;
-    private JPanel jIndex, jNorth, jWest, jEast, jSouth, jIndexPanel;
+    private JPanel jInputfields, jNorth, jWest, jEast, jSouth, jFieldPanel;
+    private JTable table;
+    private String tableinhoud[] = {"ID", "Naam"};
+    private Object[][] data = {
+    {"1", "Daniel"},
+    {"2", "Smith"},
+};
 
     public GUI() {
         super();
@@ -33,18 +42,18 @@ public class GUI extends JFrame {
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setSize(800, 800);
+        this.setSize(800, 600);
+        
+        JTable table = new JTable(data, tableinhoud);
 
-        this.jIndex = new JPanel();
+        this.jInputfields = new JPanel();
         this.jNorth = new JPanel();
         this.jWest = new JPanel();
         this.jEast = new JPanel();
         this.jSouth = new JPanel();
-        this.jIndexPanel = new JPanel();
+        this.jFieldPanel = new JPanel();
 
-        jIndexPanel.setLayout(new GridLayout(13, 2));
-
-
+        jFieldPanel.setLayout(new GridLayout(13, 2));
 
         this.tfVoornaam = new JTextField(20);
         this.tfTussenvoegsel = new JTextField(20);
@@ -60,7 +69,6 @@ public class GUI extends JFrame {
         this.tfIBANnummer = new JTextField(20);
         this.tfMobielnummer = new JTextField(20);
 
-
         this.lVoornaam = new JLabel("Voornaam:");
         this.lTussenvoegsel = new JLabel("Tussenvoegsel:");
         this.lAchternaam = new JLabel("Achternaam:");
@@ -74,73 +82,71 @@ public class GUI extends JFrame {
         this.lWachtwoord = new JLabel("Wachtwoord:");
         this.lIBANnummer = new JLabel("IBAN-nummer:");
         this.lMobielnummer = new JLabel("Mobielnummer:");
-
-
+        
         this.logo = new JLabel();
-        logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Laurens\\Google Drive\\KBS HSR\\tztklein.png"));
-
+        logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Daniel\\Google Drive\\KBS HSR\\tztklein.png"));
 
         this.btNieuw = new JButton("Nieuw");
         this.btOpslaan = new JButton("Opslaan");
-        this.btNorth = new JButton("Poep");
+        
+        btOpslaan.addActionListener(this);
+        btNieuw.addActionListener(this);
+        
+        this.jFieldPanel.add(lVoornaam);
+        this.jFieldPanel.add(tfVoornaam);
+        this.jFieldPanel.add(lTussenvoegsel);
+        this.jFieldPanel.add(tfTussenvoegsel);
+        this.jFieldPanel.add(lAchternaam);
+        this.jFieldPanel.add(tfAchternaam);
+        this.jFieldPanel.add(lGeboortedatum);
+        this.jFieldPanel.add(tfGeboortedatum);
+        this.jFieldPanel.add(lPostcode);
+        this.jFieldPanel.add(tfPostcode);
+        this.jFieldPanel.add(lStraatnaam);
+        this.jFieldPanel.add(tfStraatnaam);
+        this.jFieldPanel.add(lHuisnummer);
+        this.jFieldPanel.add(tfHuisnummer);
+        this.jFieldPanel.add(lToevoeging);
+        this.jFieldPanel.add(tfToevoeging);
+        this.jFieldPanel.add(lPlaatsnaam);
+        this.jFieldPanel.add(tfPlaatsnaam);
+        this.jFieldPanel.add(lEmailadres);
+        this.jFieldPanel.add(tfEmailadres);
+        this.jFieldPanel.add(lWachtwoord);
+        this.jFieldPanel.add(tfWachtwoord);
+        this.jFieldPanel.add(lIBANnummer);
+        this.jFieldPanel.add(tfIBANnummer);
+        this.jFieldPanel.add(lMobielnummer);
+        this.jFieldPanel.add(tfMobielnummer);
+        this.jWest.add(table);
 
-        this.jIndexPanel.add(lVoornaam);
-        this.jIndexPanel.add(tfVoornaam);
-        this.jIndexPanel.add(lTussenvoegsel);
-        this.jIndexPanel.add(tfTussenvoegsel);
-        this.jIndexPanel.add(lAchternaam);
-        this.jIndexPanel.add(tfAchternaam);
-        this.jIndexPanel.add(lGeboortedatum);
-        this.jIndexPanel.add(tfGeboortedatum);
-        this.jIndexPanel.add(lPostcode);
-        this.jIndexPanel.add(tfPostcode);
-        this.jIndexPanel.add(lStraatnaam);
-        this.jIndexPanel.add(tfStraatnaam);
-        this.jIndexPanel.add(lHuisnummer);
-        this.jIndexPanel.add(tfHuisnummer);
-        this.jIndexPanel.add(lToevoeging);
-        this.jIndexPanel.add(tfToevoeging);
-        this.jIndexPanel.add(lPlaatsnaam);
-        this.jIndexPanel.add(tfPlaatsnaam);
-        this.jIndexPanel.add(lEmailadres);
-        this.jIndexPanel.add(tfEmailadres);
-        this.jIndexPanel.add(lWachtwoord);
-        this.jIndexPanel.add(tfWachtwoord);
-        this.jIndexPanel.add(lIBANnummer);
-        this.jIndexPanel.add(tfIBANnummer);
-        this.jIndexPanel.add(lMobielnummer);
-        this.jIndexPanel.add(tfMobielnummer);
-
-
-
-
-
-
-
-
-        this.jIndex.add(jIndexPanel);
+        this.jInputfields.add(jFieldPanel);
 
         this.jSouth.add(btNieuw);
         this.jSouth.add(btOpslaan);
 
         this.jNorth.add(logo);
-
-
-        jWest.setPreferredSize(new Dimension(100, 200));
-        jEast.setPreferredSize(new Dimension(100, 200));
-        jSouth.setPreferredSize(new Dimension(200, 200));
-
-        jIndex.setBorder(BorderFactory.createLineBorder(Color.black));
+        
 
         this.add(jNorth, BorderLayout.NORTH);
-        this.add(jIndex, BorderLayout.CENTER);
-        this.add(jWest, BorderLayout.WEST);
-        this.add(jEast, BorderLayout.EAST);
+        this.add(table, BorderLayout.WEST);
+        this.add(jInputfields, BorderLayout.EAST);
+
         this.add(jSouth, BorderLayout.SOUTH);
 
-
-
-
         this.setVisible(true);
+        
+
+        
     }
+        public void actionPerformed(ActionEvent ae) {
+	if (ae.getSource() == btOpslaan) {
+             DbConnect a = new DbConnect();
+             a.insertData(tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), tfWachtwoord.getText(), tfGeboortedatum.getText(), tfMobielnummer.getText(), tfIBANnummer.getText());
+             
+             
+             
+	}            
+            
+        }
 }

@@ -69,7 +69,7 @@ public class DbConnect {
     }
     
          
-    public void insertData(String content){
+    public void insertData(String content, String aa){
     //Query voor inserten!!!!----->       
           try{
                      
@@ -85,6 +85,40 @@ public class DbConnect {
         }
         
     }
+    public void insertData(){
+        //Query voor inserten!!!!----->       
+              try{
+
+                //Insert query
+                query = "INSERT INTO test VALUES('')";              
+
+                //Query uitvoeren
+                st.executeUpdate(query);
+
+            }catch(Exception ea){
+                System.out.println("Query schrijf ERROR: " + ea);
+
+            }
+
+     } 
+    public void insertData(String vnaam, String tussenv, String anaam, String email, String wachtw, String gebdatum, String mobiel,  String iban){
+        //Query voor inserten!!!!----->       
+              try{
+
+                //Insert query
+                query = "INSERT INTO Persoon (Voornaam, Tussenvoegsel, Achternaam, Emailadres, Wachtwoord, Geboortedatum, Mobielnummer,  IBAN)"
+                      + " VALUES('" + vnaam + "','" + tussenv + "','" + anaam + "','" + email + "','" + wachtw + "','" + gebdatum + "','" + mobiel + "','" + iban + "')";              
+
+                //Query uitvoeren
+                st.executeUpdate(query);
+
+            }catch(Exception ea){
+                System.out.println("Query schrijf ERROR: " + ea);
+
+            }
+
+     }     
+    
     
     public void updateData(String field, String content){
     //Query voor updaten!!!!----->
