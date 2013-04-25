@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -132,7 +133,7 @@ public class GUI extends JFrame implements ActionListener {
         
 
         this.add(jNorth, BorderLayout.NORTH);
-        this.add(table, BorderLayout.WEST);
+        this.add(new JScrollPane(table), BorderLayout.WEST);
         this.add(jInputfields, BorderLayout.EAST);
 
         this.add(jSouth, BorderLayout.SOUTH);
@@ -146,7 +147,7 @@ public class GUI extends JFrame implements ActionListener {
 	if (ae.getSource() == btOpslaan) {
              DbConnect a = new DbConnect();
              a.insertData("Persoon",tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), tfWachtwoord.getText(), tfGeboortedatum.getText(), tfMobielnummer.getText(), tfIBANnummer.getText(), "aaaaa");
-             
+ 
              
              
 	}            
