@@ -72,6 +72,31 @@ public class DbConnect {
         }     
         
     }
+    public Object[][] getUsers(){
+        try{
+            //get aantal personen.
+            rs = st.executeQuery("Select Count(*) from Persoon");
+            int aantal = 0;
+            while(rs.next()){
+                aantal = rs.getInt("Count(*)");
+            }
+            //haal alles op.
+            Object[][] returnval = new Object[aantal][2];
+            query = "SELECT * from Persoon";
+            rs = st.executeQuery(query);
+            int i = 0;
+            while(rs.next()){
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                i++;
+            }
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
     
          
     public void insertData(String content, String aa){

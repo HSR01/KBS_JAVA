@@ -31,10 +31,7 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel jInputfields, jNorth, jWest, jEast, jSouth, jFieldPanel;
     private JTable table;
     private String tableinhoud[] = {"ID", "Naam"};
-    private Object[][] data = {
-    {"1", "Daniel"},
-    {"2", "Smith"},
-};
+    
 
     public GUI() {
         super();
@@ -44,8 +41,14 @@ public class GUI extends JFrame implements ActionListener {
         this.setResizable(false);
         this.setSize(800, 600);
         
-        JTable table = new JTable(data, tableinhoud);
-
+        DbConnect dbc = new DbConnect();
+        try{
+            dbc.getUsers();
+            table = new JTable(dbc.getUsers(), tableinhoud);
+        }
+        catch(Exception e){
+           System.out.println(e.getMessage());
+        }
         this.jInputfields = new JPanel();
         this.jNorth = new JPanel();
         this.jWest = new JPanel();
