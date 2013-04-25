@@ -1,5 +1,5 @@
 package java_backend;
-<<<<<<< HEAD
+
 
 import java.sql.*;
 import javax.security.auth.login.FailedLoginException;
@@ -9,9 +9,9 @@ import javax.security.auth.login.FailedLoginException;
  * Belangrijk zorg bij het uitvoeren van deze classe de plugin toegevoegd is aan het project!!!!
  * 
  */
-=======
+
 import java.sql.*;
->>>>>>> JSON parser
+
 /**
  *
  * @author Daniel
