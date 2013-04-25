@@ -14,8 +14,8 @@ import javax.swing.*;
  * @author Daniel
  */
 public class GUI extends JFrame implements ActionListener {
-    private JLabel  logo;
-    private JButton btNieuw, btOpslaan, btNorth;
+    private JLabel  card1logo;
+    private JButton btNieuw, btNext, btNorth;
      private CardLayout cl = new CardLayout();
     private JPanel cardHolder = new JPanel(cl);
     //private JPanel jInputfields, jNorth, jWest, jEast, jSouth, jFieldPanel;
@@ -46,8 +46,10 @@ public class GUI extends JFrame implements ActionListener {
         JPanel Card1 = new JPanel();
         Card1.setLayout(new FlowLayout());
         //Card1.add();
-        this.btOpslaan = new JButton("Opslaan");    
-        Card1.add(this.btOpslaan);
+        this.card1logo = new JLabel("Inloggen");
+        this.btNext = new JButton("Volgende");
+        Card1.add(this.card1logo);
+        Card1.add(this.btNext);
         
         //instellingen tweede pagina.
         JPanel Card2 = new JPanel();
@@ -57,37 +59,15 @@ public class GUI extends JFrame implements ActionListener {
         cardHolder.add(Card1);
         cardHolder.add(Card2);
         this.add(cardHolder);
-        /*this.jInputfields = new JPanel();
-        this.jNorth = new JPanel();
-        this.jWest = new JPanel();
-        this.jEast = new JPanel();
-        this.jSouth = new JPanel();
-        this.jFieldPanel = new JPanel();
-        jFieldPanel.setLayout(new GridLayout(13, 2));
 
-        this.logo = new JLabel();
-        logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Daniel\\Google Drive\\KBS HSR\\tztklein.png"));
-        this.btNieuw = new JButton("Nieuw");
-           */
         
-        btOpslaan.addActionListener(this);
-        /*
-        btNieuw.addActionListener(this);    
-        this.jWest.add(table);
-        this.jInputfields.add(jFieldPanel);
-        this.jSouth.add(btNieuw);
-        this.jSouth.add(btOpslaan);
-        this.jNorth.add(logo);
-        this.add(jNorth, BorderLayout.NORTH);
-        this.add(new JScrollPane(table), BorderLayout.WEST);
-        this.add(jInputfields, BorderLayout.EAST);
-        this.add(jSouth, BorderLayout.SOUTH);
-*/
+        btNext.addActionListener(this);
+
         this.setVisible(true);
     }
         public void actionPerformed(ActionEvent ae) {
             //button opslaan action performed
-            if (ae.getSource() == btOpslaan) {
+            if (ae.getSource() == btNext) {
               this.cl.next(this.cardHolder);
                 
             }                
