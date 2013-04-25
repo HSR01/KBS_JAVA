@@ -54,7 +54,7 @@ public class GUI extends JFrame implements ActionListener {
         //instellingen tweede pagina.
         JPanel Card2 = new JPanel();
         
-        Card2.add(table);
+        Card2.add(new JScrollPane(table));
         //Voeg kaarten toe aan de cardlayout.
         cardHolder.add(Card1);
         cardHolder.add(Card2);
