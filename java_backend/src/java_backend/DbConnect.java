@@ -136,9 +136,9 @@ public class DbConnect {
         
         String waardes = "";
         
-        if(tabelnaam == "Persoon"){
+        if(tabelnaam.equals("Persoon")){
             this.tabel = this.persoontabel;                      
-        }else if(tabelnaam == "Locatie"){
+        }else if(tabelnaam.equals("Locatie")){
             this.tabel = this.locatie;
         }  
         
