@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Jelle
+ * @author Daniel
  */
 public class GUI extends JFrame implements ActionListener {
 
@@ -142,7 +142,7 @@ public class GUI extends JFrame implements ActionListener {
         public void actionPerformed(ActionEvent ae) {
 	if (ae.getSource() == btOpslaan) {
              DbConnect a = new DbConnect();
-             a.insertData(tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), tfWachtwoord.getText(), tfGeboortedatum.getText(), tfMobielnummer.getText(), tfIBANnummer.getText());
+             a.insertData("Persoon",tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), tfWachtwoord.getText(), tfGeboortedatum.getText(), tfMobielnummer.getText(), tfIBANnummer.getText(), "aaaaa");
              
              
              

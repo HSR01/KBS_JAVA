@@ -20,6 +20,11 @@ public class DbConnect {
     private Statement st;
     private ResultSet rs;
     
+    private String persoontabel = "Voornaam, Tussenvoegsel, Achternaam, Emailadres, Wachtwoord, Geboortedatum, Mobielnummer, Profielfoto, IBAN";
+    private String locatie = "Postcode, Telefoonnummer, Huisnummer, Plaatsnaam, Straatnaam, Toevoeging, TZTPoint";
+    
+    private String tabel;
+    
     //Server url
     String url = "jdbc:mysql://server48.firstfind.nl/vanderbe-2";
     //Server login naam
@@ -101,13 +106,31 @@ public class DbConnect {
             }
 
      } 
-    public void insertData(String vnaam, String tussenv, String anaam, String email, String wachtw, String gebdatum, String mobiel,  String iban){
-        //Query voor inserten!!!!----->       
-              try{
+    public void insertData(String tabelnaam, String ... value){
+        //Query voor inserten!!!!----->   
+        
+        String waardes = "";
+        
+        if(tabelnaam == "Persoon"){
+            this.tabel = this.persoontabel;                      
+        }else if(tabelnaam == "Locatie"){
+            this.tabel = this.locatie;
+        }  
+        
+        for (int i = 0; i < value.length; i++){
+            waardes += i <= value.length-2  ? 
+                    value [i] + "','" : 
+                    value [i];
+        }
+            System.out.println(tabelnaam);
+            System.out.println(tabel);
+            System.out.println(waardes);
 
+            try{
+                  
                 //Insert query
-                query = "INSERT INTO Persoon (Voornaam, Tussenvoegsel, Achternaam, Emailadres, Wachtwoord, Geboortedatum, Mobielnummer,  IBAN)"
-                      + " VALUES('" + vnaam + "','" + tussenv + "','" + anaam + "','" + email + "','" + wachtw + "','" + gebdatum + "','" + mobiel + "','" + iban + "')";              
+                query = "INSERT INTO  " + tabelnaam + " ( " + tabel + ")"
+                      + " VALUES('" + waardes + "')";              
 
                 //Query uitvoeren
                 st.executeUpdate(query);
@@ -116,6 +139,8 @@ public class DbConnect {
                 System.out.println("Query schrijf ERROR: " + ea);
 
             }
+            System.out.println(query);
+
 
      }     
     
