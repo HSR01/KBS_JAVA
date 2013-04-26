@@ -23,7 +23,7 @@ import javax.swing.JTextField;
  *
  * @author Laurens
  */
-public class Login extends JDialog implements ActionListener {
+public class Login extends JPanel implements ActionListener {
 
      protected JTextField tfEmailadres, tfWachtwoord;
      private JLabel lEmailadres, lWachtwoord, leeg;
@@ -35,10 +35,10 @@ public class Login extends JDialog implements ActionListener {
     public Login() {
 
         super();
-        this.setTitle("Login TZT Post");
+       //this.setTitle("Login TZT Post");
         this.setLayout(new BorderLayout());
-        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        this.setResizable(false);
+        //this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+       // this.setResizable(false);
         this.setSize(500, 150);
         
         this.jInputfields = new JPanel();
@@ -89,11 +89,10 @@ public class Login extends JDialog implements ActionListener {
          DbConnect a = new DbConnect();
             try {
                 a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), false);
+                
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-         
-         
+            }       
         }
     }
 }
