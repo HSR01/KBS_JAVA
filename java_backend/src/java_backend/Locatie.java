@@ -15,6 +15,7 @@ public class Locatie {
     private int Huisnummer;
     private String Toevoeging;
     private String Telefoonnummer;
+    private Coordinaten Coordinaten;
     
     public Locatie(){
         this.Postcode = "";
@@ -31,6 +32,15 @@ public class Locatie {
         this.Huisnummer = h;
         this.Toevoeging = to;
         this.Telefoonnummer = tl;        
+    }
+    public Locatie(String po, String pl, String sr, int h, String to, String tl, Coordinaten coordinaten){
+        this.Postcode = po;
+        this.Plaatsnaam = pl;
+        this.Straatnaam = sr;
+        this.Huisnummer = h;
+        this.Toevoeging = to;
+        this.Telefoonnummer = tl;    
+        this.Coordinaten = coordinaten;
     }
     
     /**
@@ -115,5 +125,26 @@ public class Locatie {
      */
     public void setTelefoonnummer(String Telefoonnummer) {
         this.Telefoonnummer = Telefoonnummer;
+    }
+
+    /**
+     * @return the Coordinaten
+     */
+    public Coordinaten getCoordinaten() {
+        return Coordinaten;
+    }
+
+    /**
+     * @param Coordinaten the Coordinaten to set
+     */
+    public void setCoordinaten(Coordinaten Coordinaten) {
+        this.Coordinaten = Coordinaten;
+    }
+    
+    /**
+     * @return Boolean if the Coordinaten are set
+     */
+    public Boolean hasCoordinaten() {
+        return (this.Coordinaten != null ? true : false);
     }
 }
