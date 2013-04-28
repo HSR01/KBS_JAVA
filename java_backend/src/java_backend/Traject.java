@@ -6,10 +6,10 @@ package java_backend;
  *
  * @author LeonHuzen
  */
-public class Route {
+public class Traject {
     public int Meters;
     
-    public Route (int meters) {
+    public Traject (int meters) {
         this.Meters = meters;
     }
     

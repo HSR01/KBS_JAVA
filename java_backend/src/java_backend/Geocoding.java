@@ -233,10 +233,10 @@ public class Geocoding{
      * Haal route op van locatie naar locatie
      * @param from 
      * @param to 
-     * @return Route
+     * @return Traject
      * @throws MultipleAdressesFoundException 
      */
-    public Route GetRouteFrom(Locatie from, Locatie to) throws MultipleAdressesFoundException {
+    public Traject GetRouteFrom(Locatie from, Locatie to) throws MultipleAdressesFoundException {
         Coordinaten fromCoordinaten, toCoordinaten;
         String km = "-1";
         if (from.hasCoordinaten()) {
@@ -255,16 +255,16 @@ public class Geocoding{
             Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return new Route(Integer.parseInt(km));
+        return new Traject(Integer.parseInt(km));
     }
     /**
      * Haal route op van coordinaten naar coordinaten
      * @param from 
      * @param to 
-     * @return Route
+     * @return Traject
      * @throws MultipleAdressesFoundException 
      */
-    public Route GetRouteFrom(Coordinaten fromCoordinaten, Coordinaten toCoordinaten) throws MultipleAdressesFoundException {
+    public Traject GetRouteFrom(Coordinaten fromCoordinaten, Coordinaten toCoordinaten) throws MultipleAdressesFoundException {
         String km = "-1";
         try {
             km = QueryAndGetKey(new URL("http://routes.cloudmade.com/3b072221200c491981975ab50d5134b3/api/0.3/" + fromCoordinaten.toString() + "," + toCoordinaten.toString() + "/car.js?lang=nl"), "total_distance");
@@ -272,6 +272,6 @@ public class Geocoding{
             Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return new Route(Integer.parseInt(km));
+        return new Traject(Integer.parseInt(km));
     }
 }
