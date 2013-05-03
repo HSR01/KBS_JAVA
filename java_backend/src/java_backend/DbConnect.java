@@ -107,6 +107,33 @@ public class DbConnect {
         return null;
     }
 
+    public Object[][] getSpecificUser(){
+        // Moet nog afgemaakt worden
+        // Haalt een specifieke gebruiker op uit de database gebaseerd op ID
+        try{
+            //get aantal personen.
+            rs = st.executeQuery("Select Count(*) from Persoon");
+            int aantal = 0;
+            while(rs.next()){
+                aantal = rs.getInt("Count(*)");
+            }
+            //haal alles op.
+            Object[][] returnval = new Object[aantal][2];
+            query = "SELECT * from Persoon WHERE PersoonID = ";
+            rs = st.executeQuery(query);
+            int i = 0;
+            while(rs.next()){
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                i++;
+            }
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }    
 
     public void getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException {
         //Query voor uitlezen login gegevens!!!!----->

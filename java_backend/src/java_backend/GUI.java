@@ -19,15 +19,12 @@ import javax.swing.*;
 public class GUI extends JFrame implements ActionListener {
     private JLabel  card1logo, lWachtwoord, lEmailadres;
     private JButton btNieuw, btLogin, btNorth;
-     private CardLayout cl = new CardLayout();
+    private CardLayout cl = new CardLayout();
     private JPanel cardHolder = new JPanel(cl);
     private JPanel login, logincenter;
     private JTextField tfEmailadres;
     private JPasswordField pfWachtwoord;
     //private JPanel jInputfields, jNorth, jWest, jEast, jSouth, jFieldPanel;
-   
-    private JTable table;
-    private String tableinhoud[] = {"ID", "Naam"};
     
     public GUI() {
         //Standaard instellingen hoofdscherm
@@ -37,16 +34,6 @@ public class GUI extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(800, 600);        
-        
-        //try catch statement voor userdata in JTable te plaatsen.
-        try{
-            DbConnect dbc = new DbConnect();
-            dbc.getUsers();
-            table = new JTable(dbc.getUsers(), tableinhoud);
-        }
-        catch(Exception e){
-           System.out.println(e.getMessage());
-        }
         
         //Instellingen eerste pagina.
         JPanel Card1 = new JPanel();
@@ -91,10 +78,7 @@ public class GUI extends JFrame implements ActionListener {
         Card1.add(this.login, BorderLayout.CENTER);
         
         //instellingen tweede pagina.
-        JPanel Card2 = new JPanel();
-        
-        Card2.add(new JScrollPane(table));
-        //Voeg kaarten toe aan de cardlayout.
+        JPanel Card2 = new AccountsBeherenTabel();
         cardHolder.add(Card1);
         cardHolder.add(Card2);
         this.add(cardHolder);
@@ -102,7 +86,7 @@ public class GUI extends JFrame implements ActionListener {
         //actionlisternes zetten
         btLogin.addActionListener(this);
         //btNext.addActionListener(this);
-
+        
         this.setVisible(true);
     }
         public void actionPerformed(ActionEvent ae) {
