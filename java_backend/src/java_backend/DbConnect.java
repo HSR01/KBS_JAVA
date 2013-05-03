@@ -90,13 +90,22 @@ public class DbConnect {
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
-            Object[][] returnval = new Object[aantal][2];
+            Object[][] returnval = new Object[aantal][11];
             query = "SELECT * from Persoon";
             rs = st.executeQuery(query);
             int i = 0;
             while(rs.next()){
                 returnval[i][0] = rs.getString("PersoonID");
                 returnval[i][1] = rs.getString("Voornaam");
+                returnval[i][2] = rs.getString("Tussenvoegsel");
+                returnval[i][3] = rs.getString("Achternaam");
+                returnval[i][4] = rs.getString("Emailadres");
+                returnval[i][5] = rs.getString("Wachtwoord");
+                returnval[i][6] = rs.getString("Geboortedatum");
+                returnval[i][7] = rs.getString("Mobielnummer");
+                returnval[i][8] = rs.getString("Profielfoto");
+                returnval[i][9] = rs.getString("IBAN");
+                returnval[i][10] = rs.getString("Rechten");
                 i++;
             }
             return returnval;
