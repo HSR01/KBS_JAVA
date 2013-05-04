@@ -144,7 +144,7 @@ public class DbConnect {
         return null;
     }    
 
-    public void getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException {
+    public boolean getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException {
         //Query voor uitlezen login gegevens!!!!----->
 
         PreparedStatement stmt = null;
@@ -201,6 +201,7 @@ public class DbConnect {
          // log this error
       }
    }
+        return false;
 } 
         
 
