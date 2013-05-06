@@ -182,12 +182,15 @@ public class DbConnect {
                 String content1 = rs.getString(email);
 
                 if (content1.equals(emailadres) && content.equals(wachtwoord)) {
-                    succes = true;
+                    
                     System.out.println("Success! Je bent ingelogd!");
-
+                    return succes = true;
 
                 }
-
+                else {
+                    System.out.println("Faal! Je bent niet ingelogd!");
+                    return succes = false;
+                }
             }
             
            // if (succes != true) {

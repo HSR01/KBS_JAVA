@@ -99,12 +99,12 @@ public class GUI extends JFrame implements ActionListener {
                 if(tfEmailadres.getText().equals("") || pfWachtwoord.getText().equals("")){
                     JOptionPane.showMessageDialog(rootPane, "Niet alle verplichte velden zijn ingevuld.", "Waarschuwing", 2);
                 }else{
-                    if(a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), false)){
+                    if(a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), true)){
                         //succesvol ingelogd
                     
                         //alleen bij succesvolle inlog mag iemand door naar de volgende card.
                         this.cl.next(this.cardHolder);
-                    }else{
+                    } else if (a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), false)){
                         //show error dialog, inloggen is niet gelukt.
                         JOptionPane.showMessageDialog(rootPane, "Het inloggen is niet gelukt!", "Waarschuwing", 2);
                         //zet het formulier weer op leeg om opnieuw in te kunnen loggen.
