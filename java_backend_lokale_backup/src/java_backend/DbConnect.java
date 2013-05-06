@@ -1,0 +1,320 @@
+package java_backend;
+
+
+
+import java.sql.*;
+import javax.security.auth.login.FailedLoginException;
+
+
+/*
+ * Belangrijk zorg bij het uitvoeren van deze classe de plugin toegevoegd is aan het project!!!!
+ * 
+ */
+
+import java.sql.*;
+
+
+import java.sql.*;
+
+/**
+ * @author Daniel
+ */
+public class DbConnect {
+
+    //Initializeer connection, statement en result.
+    private Connection con;
+    private Statement st;
+    private ResultSet rs;
+
+    private String persoontabel = "Voornaam, Tussenvoegsel, Achternaam, Emailadres, Wachtwoord, Geboortedatum, Mobielnummer, Profielfoto, IBAN";
+    private String locatie = "Postcode, Telefoonnummer, Huisnummer, Plaatsnaam, Straatnaam, Toevoeging, TZTPoint";
+    
+    private String tabel;
+    
+
+    //Server url
+    String url = "jdbc:mysql://server48.firstfind.nl/vanderbe-2";
+    //Server login naam
+    String user = "vanderbe";
+    //Server wachtwoord
+    String pasw = "Daniel26061990";
+    //Query holder
+    String query = "";
+
+    public DbConnect() {
+        //Probeer mysql driver te laden
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection(url, user, pasw);
+            st = con.createStatement();
+
+            //Afvangen fouten voor database connectie    
+        } catch (Exception ex) {
+            System.out.println("Connectie ERROR: " + ex);
+        }
+
+
+    }
+
+    public void getData() {
+        //Query voor uitlezen!!!!----->
+        try {
+
+            //Select query
+            query = "SELECT * FROM test";
+
+            //Select collum
+            String collum = "YOLO";
+
+            //Query uitvoeren
+            rs = st.executeQuery(query);
+
+            //Loop door de query data heen
+            while (rs.next()) {
+                String content = rs.getString(collum);
+                System.out.println(content);
+            }
+            //Afvangen fouten voor getdata    
+        } catch (Exception ea) {
+            System.out.println("Query lees ERROR: " + ea);
+        }
+
+    }
+
+    public Object[][] getUsers(){
+        try{
+            //get aantal personen.
+            rs = st.executeQuery("Select Count(*) from Persoon");
+            int aantal = 0;
+            while(rs.next()){
+                aantal = rs.getInt("Count(*)");
+            }
+            //haal alles op.
+            Object[][] returnval = new Object[aantal][11];
+            query = "SELECT * from Persoon";
+            rs = st.executeQuery(query);
+            int i = 0;
+            while(rs.next()){
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                returnval[i][2] = rs.getString("Tussenvoegsel");
+                returnval[i][3] = rs.getString("Achternaam");
+                returnval[i][4] = rs.getString("Emailadres");
+                returnval[i][5] = rs.getString("Wachtwoord");
+                returnval[i][6] = rs.getString("Geboortedatum");
+                returnval[i][7] = rs.getString("Mobielnummer");
+                returnval[i][8] = rs.getString("Profielfoto");
+                returnval[i][9] = rs.getString("IBAN");
+                returnval[i][10] = rs.getString("Rechten");
+                i++;
+            }
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
+
+    public Object[][] getSpecificUser(){
+        // Moet nog afgemaakt worden
+        // Haalt een specifieke gebruiker op uit de database gebaseerd op ID
+        try{
+            //get aantal personen.
+            rs = st.executeQuery("Select Count(*) from Persoon");
+            int aantal = 0;
+            while(rs.next()){
+                aantal = rs.getInt("Count(*)");
+            }
+            //haal alles op.
+            Object[][] returnval = new Object[aantal][2];
+            query = "SELECT * from Persoon WHERE PersoonID = ";
+            rs = st.executeQuery(query);
+            int i = 0;
+            while(rs.next()){
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                i++;
+            }
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }    
+
+    public void getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException {
+        //Query voor uitlezen login gegevens!!!!----->
+
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement("SELECT * FROM Persoon WHERE Emailadres = ? AND Wachtwoord = ?");
+           //Select query
+              
+           
+           stmt.setString(1, emailadres);
+           stmt.setString(2, wachtwoord);
+            //Select collum
+            String password = "Wachtwoord";
+            String email = "Emailadres";
+
+            //Query uitvoeren
+            rs = stmt.executeQuery();
+
+            //Loop door de query data heen
+            while (rs.next()) {
+
+                String content = rs.getString(password);
+                String content1 = rs.getString(email);
+
+                if (content1.equals(emailadres) && content.equals(wachtwoord)) {
+                    succes = true;
+                    System.out.println("Success! Je bent ingelogd!");
+
+
+                }
+
+            }
+            
+           // if (succes != true) {
+          //      System.out.println("Je bent niet ingelogd.");
+           // }
+           // //Afvangen fouten voor getdata    
+       // }// catch (Exception ea) {
+         //   System.out.println("Query lees ERROR: " + ea);
+       // }
+
+        }
+       finally {
+      try {
+         if (stmt != null) { stmt.close(); }
+      }
+      catch (Exception e) {
+         // log this error
+      }
+      try {
+         if (con != null) { con.close(); }
+      }
+      catch (Exception e) {
+         // log this error
+      }
+   }
+} 
+        
+
+    
+
+    public void insertData(String content, String aa) {
+        //Query voor inserten!!!!----->       
+        try {
+
+            //Insert query
+            query = "INSERT INTO test VALUES('" + content + "')";
+
+            //Query uitvoeren
+            st.executeUpdate(query);
+
+        } catch (Exception ea) {
+            System.out.println("Query schrijf ERROR: " + ea);
+
+        }
+
+    }
+
+    public void insertData() {
+        //Query voor inserten!!!!----->       
+        try {
+
+            //Insert query
+            query = "INSERT INTO test VALUES('')";
+
+            //Query uitvoeren
+            st.executeUpdate(query);
+
+        } catch (Exception ea) {
+            System.out.println("Query schrijf ERROR: " + ea);
+
+        }
+
+    }
+
+
+      
+    public void insertData(String tabelnaam, String ... value){
+        //Query voor inserten!!!!----->   
+        
+        String waardes = "";
+        
+        if(tabelnaam.equals("Persoon")){
+            this.tabel = this.persoontabel;                      
+        }else if(tabelnaam.equals("Locatie")){
+            this.tabel = this.locatie;
+        }  
+        
+        for (int i = 0; i < value.length; i++){
+            waardes += i <= value.length-2  ? 
+                    value [i] + "','" : 
+                    value [i];
+        }
+            System.out.println(tabelnaam);
+            System.out.println(tabel);
+            System.out.println(waardes);
+
+            try{
+                  
+                //Insert query
+                query = "INSERT INTO  " + tabelnaam + " ( " + tabel + ")"
+                      + " VALUES('" + waardes + "')";              
+            }catch(Exception e){
+                System.out.println(e);
+            }
+    }
+            
+    public void insertData(String vnaam, String tussenv, String anaam, String email, String wachtw, String gebdatum, String mobiel, String iban) {
+        //Query voor inserten!!!!----->       
+        try {
+
+            //Insert query
+            query = "INSERT INTO Persoon (Voornaam, Tussenvoegsel, Achternaam, Emailadres, Wachtwoord, Geboortedatum, Mobielnummer,  IBAN)"
+                    + " VALUES('" + vnaam + "','" + tussenv + "','" + anaam + "','" + email + "','" + wachtw + "','" + gebdatum + "','" + mobiel + "','" + iban + "')";
+
+
+            //Query uitvoeren
+            st.executeUpdate(query);
+
+        } catch (Exception ea) {
+            System.out.println("Query schrijf ERROR: " + ea);
+
+
+            }
+            System.out.println(query);
+
+
+        }
+
+    
+
+
+    public void updateData(String field, String content) {
+        //Query voor updaten!!!!----->
+        try {
+
+
+            //Select collum
+            String collum = "YOLO";
+
+            //Update query
+            query = "UPDATE test SET " + collum + "='" + content + "' WHERE " + collum + "'" + field + "'";
+
+            //Query uitvoeren
+            st.executeUpdate(query);
+
+        } catch (Exception ea) {
+            System.out.println("Query update ERROR: " + ea);
+
+        }
+
+    }
+}
