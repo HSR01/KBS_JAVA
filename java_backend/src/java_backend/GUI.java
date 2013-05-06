@@ -41,11 +41,10 @@ public class GUI extends JFrame implements ActionListener {
         //Card1.add();
         this.card1logo = new JLabel();
         
-        //nog even kijken naar logo bovenaan de pagina.
+        //nog even kijken naar logo bovenaan de pagina met laden afbeelding van internet.
         //this.card1logo.setIcon(new javax.swing.ImageIcon("http://www.tztpost.nl/tztklein.png"));
         ////this.card1logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jelle\\Pictures\\zoidberg.png"));
 
-        //this.btNext = new JButton("Volgende");
         
         //loginscherm voor card1
         this.login = new JPanel();
@@ -77,31 +76,47 @@ public class GUI extends JFrame implements ActionListener {
         //voeg panel toe aan loginscherm.
         Card1.add(this.login, BorderLayout.CENTER);
         
-        //instellingen tweede pagina.
+        //instellingen tweede pagina/card.
         JPanel Card2 = new AccountsBeherenTabel();
         cardHolder.add(Card1);
         cardHolder.add(Card2);
         this.add(cardHolder);
 
-        //actionlisternes zetten
+        //Actionlistener toevoegen voor btLogin.
         btLogin.addActionListener(this);
-        //btNext.addActionListener(this);
+
         
         this.setVisible(true);
     }
         public void actionPerformed(ActionEvent ae) {
-            //button opslaan action performed
+            //Acties voor login button
             System.out.println(ae.getSource());
             if (ae.getSource() == btLogin) {
+                //instancieer databaseconnectie
                 DbConnect a = new DbConnect();
             try {
-                a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), false);
-                
+                //controleer de gegevens.
+                if(tfEmailadres.getText().equals("") || pfWachtwoord.getText().equals("")){
+                    JOptionPane.showMessageDialog(rootPane, "Niet alle verplichte velden zijn ingevuld.", "Waarschuwing", 2);
+                }else{
+                    if(a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), false)){
+                        //succesvol ingelogd
+                    
+                        //alleen bij succesvolle inlog mag iemand door naar de volgende card.
+                        this.cl.next(this.cardHolder);
+                    }else{
+                        //show error dialog, inloggen is niet gelukt.
+                        JOptionPane.showMessageDialog(rootPane, "Het inloggen is niet gelukt!", "Waarschuwing", 2);
+                        //zet het formulier weer op leeg om opnieuw in te kunnen loggen.
+                        tfEmailadres.setText("");
+                        pfWachtwoord.setText("");    
+                        //mag niet door naar de volgende card.
+                    }
+                }   
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }   
-            this.cl.next(this.cardHolder);
-                
+        
             }                
         }
 }
