@@ -95,6 +95,8 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.tfProfielfoto.setText(specifiekePersoon[9]);
         this.tfRechten.setText(specifiekePersoon[10]);
         
+        this.tfId.setEditable(false);
+        
         this.lId = new JLabel("Persoon ID:");
         this.lVoornaam = new JLabel("Voornaam:");
         this.lTussenvoegsel = new JLabel("Tussenvoegsel:");
@@ -139,14 +141,12 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.jFieldPanel.add(lRechten);
         this.jFieldPanel.add(tfRechten);
 
-
         this.jInputfields.add(jFieldPanel);
 
         this.jSouth.add(btTerug);
         this.jSouth.add(btWijzig);
 
         this.jNorth.add(logo);
-        
 
         this.add(jNorth, BorderLayout.NORTH);
 
