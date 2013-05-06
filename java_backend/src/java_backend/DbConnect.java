@@ -117,41 +117,52 @@ public class DbConnect {
     }
 
     public String[] getSpecificUser(Object ID){
-        // Moet nog afgemaakt worden
-        // Haalt een specifieke gebruiker op uit de database gebaseerd op ID
         try{
-            System.out.println("Hier.");
-            String[] returnval = new String[] {rs.getString("PersoonID"),
-            rs.getString("Voornaam"),
-            rs.getString("Tussenvoegsel"),
-            rs.getString("Achternaam"),
-            rs.getString("Emailadres"),
-            rs.getString("Wachtwoord"),
-            rs.getString("Geboortedatum"),
-            rs.getString("Mobielnummer"),
-            rs.getString("Profielfoto"),
-            rs.getString("IBAN"),
-            rs.getString("Rechten")};
-            System.out.println("Hier.");
-            query = "SELECT * from Persoon WHERE PersoonID = " + ID;
-            System.out.println("Hier.");
+            String[] returnval = new String[11];
+            query = "SELECT * from Persoon Where PersoonID = " + ID;
             rs = st.executeQuery(query);
-            System.out.println("Hier.");
-            returnval[0] = rs.getString("PersoonID");
-            returnval[1] = rs.getString("Voornaam");
-            returnval[2] = rs.getString("Tussenvoegsel");
-            returnval[3] = rs.getString("Achternaam");
-            returnval[4] = rs.getString("Emailadres");
-            returnval[5] = rs.getString("Wachtwoord");
-            returnval[6] = rs.getString("Geboortedatum");
-            returnval[7] = rs.getString("Mobielnummer");
-            returnval[8] = rs.getString("Profielfoto");
-            returnval[9] = rs.getString("IBAN");
-            returnval[10] = rs.getString("Rechten");
+            int i = 0;
+            while(rs.next()){
+                returnval[0] = rs.getString("PersoonID");
+                returnval[1] = rs.getString("Voornaam");
+                returnval[2] = rs.getString("Tussenvoegsel");
+                returnval[3] = rs.getString("Achternaam");
+                returnval[4] = rs.getString("Emailadres");
+                returnval[5] = rs.getString("Wachtwoord");
+                returnval[6] = rs.getString("Geboortedatum");
+                returnval[7] = rs.getString("Mobielnummer");
+                returnval[8] = rs.getString("Profielfoto");
+                returnval[9] = rs.getString("IBAN");
+                returnval[10] = rs.getString("Rechten");
+                i++;
+            }
             return returnval;
         }catch(Exception e){
             System.out.println("error : " + e.getClass());
-            System.out.println("Hier??");
+
+        }
+        return null;
+    }
+    
+    public Boolean updateGebruiker(String[] data){
+        try{
+            query = "UPDATE Persoon "
+                    + "SET Voornaam = \"" + data[1] + "\", "
+                    + "Tussenvoegsel = \"" + data[2] + "\", "
+                    + "Achternaam = \"" + data[3] + "\", "
+                    + "Emailadres = \"" + data[4] + "\", "
+                    + "Wachtwoord = \"" + data[5] + "\", " 
+                    + "Geboortedatum = \"" + data[6] + "\", "
+                    + "Mobielnummer = \"" + data[7] + "\", "
+                    + "Profielfoto = \"" + data[8] + "\", "
+                    + "IBAN = \"" + data[9] + "\", "
+                    + "Rechten = \"" + data[10] + "\" "
+                    + "WHERE PersoonID = \"" + data[0] + "\"";
+            System.out.println(query);
+            st.executeUpdate(query);
+        }catch(Exception e){
+            System.out.println("error : " + e.getMessage());
+
         }
         return null;
     }    

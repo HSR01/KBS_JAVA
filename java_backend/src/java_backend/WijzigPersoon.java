@@ -95,8 +95,6 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.tfProfielfoto.setText(specifiekePersoon[9]);
         this.tfRechten.setText(specifiekePersoon[10]);
         
-        
-
         this.lId = new JLabel("Persoon ID:");
         this.lVoornaam = new JLabel("Voornaam:");
         this.lTussenvoegsel = new JLabel("Tussenvoegsel:");
@@ -161,11 +159,12 @@ public class WijzigPersoon extends JDialog implements ActionListener{
 
         
     }
-        public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent ae) {
 	if (ae.getSource() == btWijzig) {
              DbConnect a = new DbConnect();
-             a.insertData("Persoon",tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), tfWachtwoord.getText(), tfGeboortedatum.getText(), tfMobielnummer.getText(), tfIBANnummer.getText(), "aaaaa");   
-             
+             String[] waardes = this.getTekstvelden();
+             System.out.println(waardes[1]);
+             a.updateGebruiker(waardes);
 	} 
         if (ae.getSource() == btTerug) {
             //this.hide();
@@ -174,6 +173,22 @@ public class WijzigPersoon extends JDialog implements ActionListener{
              
 	}        
             
+    }
+    
+    public String[] getTekstvelden(){
+        String[] waardes = new String[11];
+        waardes[0] = this.tfId.getText();
+        waardes[1] = this.tfVoornaam.getText();
+        waardes[2] = this.tfTussenvoegsel.getText();
+        waardes[3] = this.tfAchternaam.getText();
+        waardes[4] = this.tfGeboortedatum.getText();
+        waardes[5] = this.tfEmailadres.getText();
+        waardes[6] = this.tfWachtwoord.getText();
+        waardes[7] = this.tfIBANnummer.getText();
+        waardes[8] = this.tfMobielnummer.getText();
+        waardes[9] = this.tfProfielfoto.getText();
+        waardes[10] = this.tfRechten.getText();
+        return waardes;
     }
     
 }
