@@ -116,30 +116,42 @@ public class DbConnect {
         return null;
     }
 
-    public Object[][] getSpecificUser(){
+    public String[] getSpecificUser(Object ID){
         // Moet nog afgemaakt worden
         // Haalt een specifieke gebruiker op uit de database gebaseerd op ID
         try{
-            //get aantal personen.
-            rs = st.executeQuery("Select Count(*) from Persoon");
-            int aantal = 0;
-            while(rs.next()){
-                aantal = rs.getInt("Count(*)");
-            }
-            //haal alles op.
-            Object[][] returnval = new Object[aantal][2];
-            query = "SELECT * from Persoon WHERE PersoonID = ";
+            System.out.println("Hier.");
+            String[] returnval = new String[] {rs.getString("PersoonID"),
+            rs.getString("Voornaam"),
+            rs.getString("Tussenvoegsel"),
+            rs.getString("Achternaam"),
+            rs.getString("Emailadres"),
+            rs.getString("Wachtwoord"),
+            rs.getString("Geboortedatum"),
+            rs.getString("Mobielnummer"),
+            rs.getString("Profielfoto"),
+            rs.getString("IBAN"),
+            rs.getString("Rechten")};
+            System.out.println("Hier.");
+            query = "SELECT * from Persoon WHERE PersoonID = " + ID;
+            System.out.println("Hier.");
             rs = st.executeQuery(query);
-            int i = 0;
-            while(rs.next()){
-                returnval[i][0] = rs.getString("PersoonID");
-                returnval[i][1] = rs.getString("Voornaam");
-                i++;
-            }
+            System.out.println("Hier.");
+            returnval[0] = rs.getString("PersoonID");
+            returnval[1] = rs.getString("Voornaam");
+            returnval[2] = rs.getString("Tussenvoegsel");
+            returnval[3] = rs.getString("Achternaam");
+            returnval[4] = rs.getString("Emailadres");
+            returnval[5] = rs.getString("Wachtwoord");
+            returnval[6] = rs.getString("Geboortedatum");
+            returnval[7] = rs.getString("Mobielnummer");
+            returnval[8] = rs.getString("Profielfoto");
+            returnval[9] = rs.getString("IBAN");
+            returnval[10] = rs.getString("Rechten");
             return returnval;
         }catch(Exception e){
             System.out.println("error : " + e.getClass());
-
+            System.out.println("Hier??");
         }
         return null;
     }    

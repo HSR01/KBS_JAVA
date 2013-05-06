@@ -176,3 +176,4 @@ Thumbs.db
 
 # Netbeans files
 java_backend/nbproject/project.properties
+/java_backend_lokale_backup/nbproject/private/

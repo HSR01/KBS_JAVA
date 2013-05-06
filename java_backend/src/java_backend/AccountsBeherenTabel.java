@@ -7,6 +7,7 @@ import javax.swing.table.*;
 
 public class AccountsBeherenTabel extends JPanel implements ListSelectionListener {
     JTable aTable;
+    private Object geselecteerdeWaarde;
     // private String tableinhoud[] = {"ID", "Naam"};
     
     public AccountsBeherenTabel() {
@@ -57,35 +58,26 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
                 @Override
                 public void mouseClicked(MouseEvent e){
                     if (e.getClickCount() == 2){
-                        // System.out.println(" double click" );
-                           JOptionPane.showMessageDialog(aTable, "Hoi");
-                        AccountsBeherenTabel tabel2;
-                        tabel2 = new AccountsBeherenTabel();
+                        DbConnect dbc = new DbConnect();
+                        System.out.println(geselecteerdeWaarde);
+                        final String[] specifiekeGebruiker = dbc.getSpecificUser(geselecteerdeWaarde);
+                        System.out.println(specifiekeGebruiker);
+                        WijzigPersoon wijzigData = new WijzigPersoon(specifiekeGebruiker);
                     }
                 }
             }
         );
-
-        this.setVisible(true);
-   }
+    }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        int maxRows;
-        int[] selRows;
-        Object value;
-
-        if (!e.getValueIsAdjusting()) {        
-            selRows = aTable.getSelectedRows();
-            if (selRows.length > 0) {
-                for (int i= 0; i < 11 ; i++) {
-                    // get Table data
-                    TableModel tm = aTable.getModel();
-                    value = tm.getValueAt(selRows[0],i);
-                    System.out.println("Selection : " + value );
-                }
-            System.out.println("test");
-            }
-        }
+        TableModel tm = aTable.getModel();
+        int[] selRows = aTable.getSelectedRows();
+        Object geselecteerdeWaarde = tm.getValueAt(selRows[0],0);
+        getSelecteerdeWaarde(geselecteerdeWaarde);
+    }
+    
+    public void getSelecteerdeWaarde(Object string){
+        this.geselecteerdeWaarde = string;
     }
 }
