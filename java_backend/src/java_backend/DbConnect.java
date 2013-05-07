@@ -243,8 +243,8 @@ public class DbConnect {
                     p.setTussenvoegsel(rs.getString("Tussenvoegsel"));
                     p.setAchternaam(rs.getString("Achternaam"));
                     p.setEmailadres(rs.getString("Emailadres"));
-                    //need to create a thing with converts geboortedatum to date.
-                    //p.setGeboortedatum(rs.getString("Geboortedatum"));
+                    
+                    //zet geboortedatum om van String uit DB naar Date in Java
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     try {
                         p.setGeboortedatum(df.parse(rs.getString("Geboortedatum")));

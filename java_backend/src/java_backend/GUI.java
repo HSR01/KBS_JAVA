@@ -104,6 +104,7 @@ public class GUI extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(rootPane, "Niet alle verplichte velden zijn ingevuld.", "Waarschuwing", 2);
                 }else{
                     //maak Persoon aan aan de hand van inloggegevens en methode in inlogdata
+                    //dit is een attribuut zodat deze beschikbaar is in de gehele GUI.
                     this.persoon = a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), true);
                     if(this.persoon != null){
                         //succesvol ingelogd
