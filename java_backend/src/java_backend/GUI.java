@@ -84,11 +84,13 @@ public class GUI extends JFrame implements ActionListener {
 
         //Actionlistener toevoegen voor btLogin.
         btLogin.addActionListener(this);
-
+                    this.cl.next(this.cardHolder);
+    
         
         this.setVisible(true);
     }
-        public void actionPerformed(ActionEvent ae) {
+    
+    public void actionPerformed(ActionEvent ae) {
             //Acties voor login button
             System.out.println(ae.getSource());
             if (ae.getSource() == btLogin) {

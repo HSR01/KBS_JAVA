@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -66,7 +68,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
     private JButton btSluiten, btOpslaan;
     private JPanel jLogo, jProfielfoto, jButtons;
 
-    public WijzigPersoon(String[] specifiekePersoon){
+    public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie){
         super();
         this.setTitle("TZT Post - Account Beheer");
         this.setLayout(new BorderLayout());
@@ -175,6 +177,14 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.jFieldPanel.add(tfEmailadres);
         this.jFieldPanel.add(tfWachtwoord);
         
+        //this.jFieldPanel.add(lId);
+        //this.jFieldPanel.add(lRechten);
+        //this.jFieldPanel.add(new JLabel(""));
+        
+        //this.jFieldPanel.add(tfId);
+        //this.jFieldPanel.add(tfRechten);
+        //this.jFieldPanel.add(new JLabel(""));
+        
         this.jInputfields.add(jFieldPanel);
 
         this.jButtons.add(btSluiten);
@@ -187,26 +197,14 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.add(jProfielfoto, BorderLayout.EAST);
         this.add(jButtons, BorderLayout.SOUTH);
         
-        this.tfId.setText(specifiekePersoon[0]);
-        this.tfVoornaam.setText(specifiekePersoon[1]);
-        this.tfTussenvoegsel.setText(specifiekePersoon[2]);
-        this.tfAchternaam.setText(specifiekePersoon[3]);
-        this.tfGeboortedatum.setText(specifiekePersoon[4]);
-        this.tfEmailadres.setText(specifiekePersoon[5]);
-        // Wachtwoord bewust niet laden
-        //this.tfWachtwoord.setText(specifiekePersoon[6]);
-        this.tfIBANnummer.setText(specifiekePersoon[7]);
-        this.tfMobielnummer.setText(specifiekePersoon[8]);
-        // Word anders geregeld
-        //this.tfProfielfoto.setText(specifiekePersoon[9]);
-        this.tfRechten.setText(specifiekePersoon[10]);
-        
         this.tfId.setEditable(false);
         
         this.jInputfields.add(jFieldPanel);
 
         this.add(jInputfields, BorderLayout.CENTER);
 
+        this.vulTekstvelden(specifiekePersoonGegevens, specifiekePersoonLocatie);
+        
         this.setVisible(true);       
     }
     
@@ -229,7 +227,12 @@ public class WijzigPersoon extends JDialog implements ActionListener{
                 DbConnect a = new DbConnect();
                 a.insertData("Persoon",tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), wachtwoord, tfGeboortedatum.getText(), tfMobielnummer.getText(), tfIBANnummer.getText(), "aaaaa");   
                 a.insertData("Locatie","00000", "00000" ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
+                //a.insertData("Persoon_Locatie",,2);
                 
+                //a.executeQuery("SELECT Lname FROM Customers WHERE Snum = 2001");
+                
+
+//a.insertData("Persoon_Locatie","",)
             }
         }
         
@@ -237,7 +240,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
              DbConnect a = new DbConnect();
              String[] waardes = this.getTekstvelden();
              System.out.println(waardes[1]);
-             a.updateGebruiker(waardes);
+             a.updateGebruikerAccount(waardes);
              this.setVisible(false);
 	}
         
@@ -297,6 +300,27 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         return waardes;
     }
     
+    public void vulTekstvelden(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie){
+        this.tfId.setText(specifiekePersoonGegevens[0]);
+        this.tfVoornaam.setText(specifiekePersoonGegevens[1]);
+        this.tfTussenvoegsel.setText(specifiekePersoonGegevens[2]);
+        this.tfAchternaam.setText(specifiekePersoonGegevens[3]);
+        this.tfGeboortedatum.setText(specifiekePersoonGegevens[4]);
+        this.tfEmailadres.setText(specifiekePersoonGegevens[5]);
+        // Wachtwoord bewust niet laden
+        //this.tfWachtwoord.setText(specifiekePersoon[6]);
+        this.tfIBANnummer.setText(specifiekePersoonGegevens[7]);
+        this.tfMobielnummer.setText(specifiekePersoonGegevens[8]);
+        // Word anders geregeld
+        //this.tfProfielfoto.setText(specifiekePersoon[9]);
+        this.tfRechten.setText(specifiekePersoonGegevens[10]);
+        
+        this.tfPlaatsnaam.setText(specifiekePersoonLocatie[0]);
+        this.tfStraatnaam.setText(specifiekePersoonLocatie[1]);
+        this.tfHuisnummer.setText(specifiekePersoonLocatie[2]);
+        this.tfToevoeging.setText(specifiekePersoonLocatie[3]);
+        this.tfPostcode.setText(specifiekePersoonLocatie[4]);
+    }
 }
 
 

@@ -59,9 +59,10 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
                 public void mouseClicked(MouseEvent e){
                     if (e.getClickCount() == 2){
                         DbConnect dbc = new DbConnect();
-                        final String[] specifiekeGebruiker = dbc.getSpecificUser(geselecteerdeWaarde);
-                        System.out.println(specifiekeGebruiker);
-                        WijzigPersoon wijzigData = new WijzigPersoon(specifiekeGebruiker);
+                        final String[] specifiekeGebruikerGegevens = dbc.getSpecifiekeGebruikerGegevens(geselecteerdeWaarde);
+                        System.out.println(specifiekeGebruikerGegevens);
+                        final String[] specifiekeGebruikerLocatie = dbc.getSpecifiekeGebruikerLocatie(geselecteerdeWaarde);
+                        WijzigPersoon wijzigData = new WijzigPersoon(specifiekeGebruikerGegevens, specifiekeGebruikerLocatie);
                     }
                 }
             }
