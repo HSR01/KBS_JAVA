@@ -73,7 +73,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         //this.setResizable(false);
-        this.setSize(1000, 800);   
+        this.setSize(1000, 600);   
 
         this.jLogo = new JPanel();
         this.jInputfields = new JPanel();
@@ -170,11 +170,15 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Daniel\\Google Drive\\KBS HSR\\tztklein.png"));
 
         this.btSluiten = new JButton("Sluiten");
-        this.btOpslaan = new JButton("Wijzig");
+        this.btOpslaan = new JButton("Nieuw");
+        this.btWijzig = new JButton("Wijzig");
+        
+        
         
         btOpslaan.addActionListener(this);
         btSluiten.addActionListener(this);
-               
+        btWijzig.addActionListener(this);
+        
         this.jFieldPanel.add(lVoornaam);
         this.jFieldPanel.add(lTussenvoegsel);
         this.jFieldPanel.add(lAchternaam); 
@@ -226,6 +230,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.jInputfields.add(jFieldPanel);
 
         this.jButtons.add(btSluiten);
+        this.jButtons.add(btWijzig);
         this.jButtons.add(btOpslaan);
 
         this.jLogo.add(logo);
@@ -245,6 +250,188 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         
         this.setVisible(true);       
     }
+    
+    public WijzigPersoon(){
+        super();
+        this.setTitle("TZT Post - Account Beheer");
+        this.setLayout(new BorderLayout());
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        //this.setResizable(false);
+        this.setSize(1000, 600);   
+
+        this.jLogo = new JPanel();
+        this.jInputfields = new JPanel();
+        this.jFieldPanel = new JPanel();
+        this.jProfielfoto = new JPanel();
+        this.jButtons = new JPanel();
+        this.jDatums = new JPanel();
+        
+        //Laad profielfoto uit web omgeving
+        try{
+            URL url = new URL("http://tztpost.nl/images/Profielfotos/geenfoto.jpg");
+            Image im = ImageIO.read(url);
+            JLabel lblimage = new JLabel(new ImageIcon(im));
+            jProfielfoto.add(lblimage, BorderLayout.CENTER);
+        }catch(Exception e){
+            System.out.println("Profielfoto Error: " + e);
+        }
+        
+        //Layout voor inputfields
+        jFieldPanel.setLayout(new GridLayout(15, 8, 18, 6));
+
+        this.tfVoornaam = new JTextField(8);
+        this.tfTussenvoegsel = new JTextField("",8);
+     
+        this.tfAchternaam = new JTextField(8);
+        this.tfGeboortedatum = new JTextField(8);
+        this.tfPostcode = new JTextField(8);
+        this.tfStraatnaam = new JTextField(8);
+        this.tfHuisnummer = new JTextField(8);
+        this.tfToevoeging = new JTextField(8);
+        this.tfPlaatsnaam = new JTextField(8);
+        this.tfEmailadres = new JTextField(8);
+        this.tfWachtwoord = new JTextField(8);
+        this.tfIBANnummer = new JTextField(8);
+        this.tfMobielnummer = new JTextField(8);
+        this.tfId = new JTextField(8);
+        
+        this.lVoornaam = new JLabel("Voornaam");
+        this.lTussenvoegsel = new JLabel("Tussenv");
+        this.lAchternaam = new JLabel("Achternaam");
+        this.lGeboortedatum = new JLabel("Geboortedatum");
+        this.lPostcode = new JLabel("Postcode");
+        this.lStraatnaam = new JLabel("Straatnaam");
+        this.lHuisnummer = new JLabel("Huisnummer");
+        this.lToevoeging = new JLabel("Toevoeging");
+        this.lPlaatsnaam = new JLabel("Plaatsnaam");
+        this.lEmailadres = new JLabel("E-mailadres");
+        this.lWachtwoord = new JLabel("Wachtwoord");
+        this.lIBANnummer = new JLabel("IBAN-nummer");
+        this.lMobielnummer = new JLabel("Mobielnummer");
+        this.lId = new JLabel("Persoons ID");
+        this.lRechten = new JLabel ("Rechten");
+        
+        // De Dropdown box voor rechten
+        DefaultComboBoxModel rechten = new DefaultComboBoxModel();
+        rechten.addElement("BPS Koerier");
+        rechten.addElement("Koeriersdienst");
+        rechten.addElement("Kantoor");
+        rechten.addElement("Service Desk");
+        JComboBox recht = new JComboBox(rechten);
+        
+        DefaultComboBoxModel dagen = new DefaultComboBoxModel();
+        for(int dag = 1; dag < 32; dag++){
+            dagen.addElement(dag);
+        }
+        JComboBox dag = new JComboBox(dagen);
+        
+        DefaultComboBoxModel maanden = new DefaultComboBoxModel();
+        maanden.addElement("Januari");
+        maanden.addElement("Februari");
+        maanden.addElement("Maart");
+        maanden.addElement("April");
+        maanden.addElement("Mei");
+        maanden.addElement("Juni");
+        maanden.addElement("Juli");
+        maanden.addElement("Augustus");
+        maanden.addElement("September");
+        maanden.addElement("Oktober");
+        maanden.addElement("November");
+        maanden.addElement("December");
+        JComboBox maand = new JComboBox(maanden);
+        
+        DefaultComboBoxModel jaren = new DefaultComboBoxModel();
+        for(int jaar = 2013; jaar > 1899; jaar --){
+            jaren.addElement(jaar);
+        }
+        JComboBox jaar = new JComboBox(jaren);
+        jDatums.add(dag);
+        jDatums.add(maand);
+        jDatums.add(jaar);
+        
+        
+        this.logo = new JLabel();
+        logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Daniel\\Google Drive\\KBS HSR\\tztklein.png"));
+
+        this.btSluiten = new JButton("Sluiten");
+        this.btOpslaan = new JButton("Nieuw");
+        this.btWijzig = new JButton("Wijzig");
+        
+        
+        
+        btOpslaan.addActionListener(this);
+        btSluiten.addActionListener(this);
+        btWijzig.addActionListener(this);
+        
+        this.jFieldPanel.add(lVoornaam);
+        this.jFieldPanel.add(lTussenvoegsel);
+        this.jFieldPanel.add(lAchternaam); 
+        
+        this.jFieldPanel.add(tfVoornaam);  
+        this.jFieldPanel.add(tfTussenvoegsel);        
+        this.jFieldPanel.add(tfAchternaam); 
+        
+        this.jFieldPanel.add(lPlaatsnaam);
+        this.jFieldPanel.add(lPostcode);
+        this.jFieldPanel.add(new JLabel(""));    
+        
+        this.jFieldPanel.add(tfPlaatsnaam);
+        this.jFieldPanel.add(tfPostcode);
+        this.jFieldPanel.add(new JLabel(""));        
+        
+        this.jFieldPanel.add(lStraatnaam);
+        this.jFieldPanel.add(lHuisnummer);
+        this.jFieldPanel.add(lToevoeging);
+        
+        this.jFieldPanel.add(tfStraatnaam);
+        this.jFieldPanel.add(tfHuisnummer);
+        this.jFieldPanel.add(tfToevoeging);
+        
+        this.jFieldPanel.add(lGeboortedatum);
+        this.jFieldPanel.add(lIBANnummer);
+        this.jFieldPanel.add(new JLabel(""));  
+
+        this.jFieldPanel.add(jDatums);
+        this.jFieldPanel.add(tfIBANnummer);
+        this.jFieldPanel.add(new JLabel(""));  
+
+        this.jFieldPanel.add(lMobielnummer);
+        this.jFieldPanel.add(lEmailadres);
+        this.jFieldPanel.add(lWachtwoord);
+
+        this.jFieldPanel.add(tfMobielnummer);
+        this.jFieldPanel.add(tfEmailadres);
+        this.jFieldPanel.add(tfWachtwoord);
+        
+        this.jFieldPanel.add(lId);
+        this.jFieldPanel.add(lRechten);
+        this.jFieldPanel.add(new JLabel(""));
+        
+        this.jFieldPanel.add(tfId);
+        this.jFieldPanel.add(recht);
+        this.jFieldPanel.add(new JLabel(""));
+        
+        this.jInputfields.add(jFieldPanel);
+
+        this.jButtons.add(btSluiten);
+        this.jButtons.add(btWijzig);
+        this.jButtons.add(btOpslaan);
+
+        this.jLogo.add(logo);
+
+        this.add(jLogo, BorderLayout.NORTH);
+        this.add(jInputfields, BorderLayout.WEST);
+        this.add(jProfielfoto, BorderLayout.EAST);
+        this.add(jButtons, BorderLayout.SOUTH);
+        
+        this.tfId.setEditable(false);
+        
+        this.jInputfields.add(jFieldPanel);
+
+        this.add(jInputfields, BorderLayout.CENTER);
+        
+        this.setVisible(true);       
+    }    
     
     public void actionPerformed(ActionEvent ae) {
 	if (ae.getSource() == btOpslaan) {
@@ -316,7 +503,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
                 waardes[3] = this.tfAchternaam.getText();
             }
         // Check Geboortedatum        
-        waardes[4] = this.tfGeboortedatum.getText();
+  //      waardes[4] = this.tfGeboortedatum.getText();
         // Check Emailadres
         waardes[5] = this.tfEmailadres.getText();
         // Check Wachtwoord
@@ -326,9 +513,9 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         // Check Mobielnummer
         waardes[8] = this.tfMobielnummer.getText();
         // Check Profielfoto
-        waardes[9] = this.tfProfielfoto.getText();
+//        waardes[9] = this.tfProfielfoto.getText();
         // Check Rechten
-        waardes[10] = this.tfRechten.getText();
+//        waardes[10] = this.tfRechten.getText();
         if(fout == false){
             lijstAantal = foutLijst.size();
             for(lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++){
@@ -343,9 +530,9 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.tfVoornaam.setText(specifiekePersoonGegevens[1]);
         this.tfTussenvoegsel.setText(specifiekePersoonGegevens[2]);
         this.tfAchternaam.setText(specifiekePersoonGegevens[3]);
-        this.tfEmailadres.setText(specifiekePersoonGegevens[4]);
+        this.tfEmailadres.setText(specifiekePersoonGegevens[5]);
         // Wachtwoord bewust niet laden
-        //this.tfWachtwoord.setText(specifiekePersoon[5]);
+        //this.tfWachtwoord.setText(specifiekePersoon[4]);
         this.tfGeboortedatum.setText(specifiekePersoonGegevens[6]);
         this.tfIBANnummer.setText(specifiekePersoonGegevens[7]);
         this.tfMobielnummer.setText(specifiekePersoonGegevens[8]);
