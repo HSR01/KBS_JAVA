@@ -31,13 +31,12 @@ public class GUI extends JFrame implements ActionListener {
         //Standaard instellingen hoofdscherm
         super();
         this.setTitle("TZT Post");
-        this.setLayout(new FlowLayout());
+        this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(800, 600);        
         //set persoon op null om aan te tonen dat er geen ingelogde is.
         this.persoon = null;
-        
         //Instellingen eerste pagina.
         JPanel Card1 = new JPanel();
         Card1.setLayout(new BorderLayout());
@@ -45,20 +44,23 @@ public class GUI extends JFrame implements ActionListener {
         this.card1logo = new JLabel();
         
         //nog even kijken naar logo bovenaan de pagina met laden afbeelding van internet.
-        //this.card1logo.setIcon(new javax.swing.ImageIcon("http://www.tztpost.nl/tztklein.png"));
-        ////this.card1logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jelle\\Pictures\\zoidberg.png"));
+        this.card1logo.setIcon(new javax.swing.ImageIcon("http://www.tztpost.nl/tztklein.png"));
+        //this.card1logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jelle\\Pictures\\zoidberg.png"));
 
         
         //loginscherm voor card1
         this.login = new JPanel();
         this.logincenter = new JPanel();
+        
+
         //kies borderlayout
-        this.login.setLayout(new BorderLayout());
-        this.logincenter.setLayout(new GridLayout(3, 2));
+        this.login.setLayout(new BorderLayout()); 
+        this.logincenter.setLayout(new FlowLayout());
+       // this.logincenter.setSize(50, 50);
         //instancieer buttons en velden.
         this.btLogin = new JButton("Log in");
         this.tfEmailadres = new JTextField(20);
-        this.pfWachtwoord = new JPasswordField(10);
+        this.pfWachtwoord = new JPasswordField(20);
         
         this.lWachtwoord = new JLabel("Wachtwoord:");
         this.lEmailadres = new JLabel("E-mailadres:");
