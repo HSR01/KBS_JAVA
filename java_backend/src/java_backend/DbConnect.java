@@ -116,7 +116,8 @@ public class DbConnect {
         return null;
     }
 
-    public String[] getSpecificUser(Object ID){
+    public String[] getSpecifiekeGebruikerGegevens(Object ID){
+        // Auteur Dominique
         try{
             String[] returnval = new String[11];
             query = "SELECT * from Persoon Where PersoonID = " + ID;
@@ -144,7 +145,36 @@ public class DbConnect {
         return null;
     }
     
-    public Boolean updateGebruiker(String[] data){
+    public String[] getSpecifiekeGebruikerLocatie(Object ID){
+        // Auteur Dominique
+        try{
+            String[] returnval = new String[5];
+            
+            // Haalt het bijbehorende LocatieID object op.
+            query = "SELECT LocatieID from Persoon_Locatie Where PersoonID = " + ID;
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                returnval[0] = rs.getString("LocatieID");
+            }
+            
+            // Gebruikt locatieID en haalt de records daarvan uit database
+            query = "SELECT * from Locatie Where LocatieID = " + returnval[0];
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                returnval[0] = rs.getString("Plaatsnaam");
+                returnval[1] = rs.getString("Straatnaam");
+                returnval[2] = rs.getString("Huisnummer");
+                returnval[3] = rs.getString("Toevoeging");
+                returnval[4] = rs.getString("Postcode");}
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
+    
+    public Boolean updateGebruikerAccount(String[] data){
         try{
             query = "UPDATE Persoon "
                     + "SET Voornaam = \"" + data[1] + "\", "
