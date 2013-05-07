@@ -12,8 +12,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -58,29 +60,27 @@ public class WijzigPersoon extends JDialog implements ActionListener{
     
     private JPanel
             jInputfields,
-            jFieldPanel,  // Bevat de labels en invulvelden
-            jNorth,
-            //jWest,
-            jEast,
-            jSouth;
+            jFieldPanel;  // Bevat de labels en invulvelden
+            
      private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
     private JLabel lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam;
     private JButton btSluiten, btOpslaan;
-    private JPanel jLogo, jProfielfoto, jButtons;
+    private JPanel jLogo, jProfielfoto, jButtons, jDatums;
 
     public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie){
         super();
         this.setTitle("TZT Post - Account Beheer");
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        this.setResizable(false);
-        this.setSize(700, 550);   
+        //this.setResizable(false);
+        this.setSize(1000, 800);   
 
         this.jLogo = new JPanel();
         this.jInputfields = new JPanel();
         this.jFieldPanel = new JPanel();
         this.jProfielfoto = new JPanel();
         this.jButtons = new JPanel();
+        this.jDatums = new JPanel();
         
         //Laad profielfoto uit web omgeving
         try{
@@ -93,7 +93,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         }
         
         //Layout voor inputfields
-        jFieldPanel.setLayout(new GridLayout(10, 8, 18, 6));
+        jFieldPanel.setLayout(new GridLayout(15, 8, 18, 6));
 
         this.tfVoornaam = new JTextField(8);
         this.tfTussenvoegsel = new JTextField("",8);
@@ -110,7 +110,6 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.tfIBANnummer = new JTextField(8);
         this.tfMobielnummer = new JTextField(8);
         this.tfId = new JTextField(8);
-        this.tfRechten = new JTextField(8);
         
         this.lVoornaam = new JLabel("Voornaam");
         this.lTussenvoegsel = new JLabel("Tussenv");
@@ -127,6 +126,45 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.lMobielnummer = new JLabel("Mobielnummer");
         this.lId = new JLabel("Persoons ID");
         this.lRechten = new JLabel ("Rechten");
+        
+        // De Dropdown box voor rechten
+        DefaultComboBoxModel rechten = new DefaultComboBoxModel();
+        rechten.addElement("BPS Koerier");
+        rechten.addElement("Koeriersdienst");
+        rechten.addElement("Kantoor");
+        rechten.addElement("Service Desk");
+        JComboBox recht = new JComboBox(rechten);
+        
+        DefaultComboBoxModel dagen = new DefaultComboBoxModel();
+        for(int dag = 1; dag < 32; dag++){
+            dagen.addElement(dag);
+        }
+        JComboBox dag = new JComboBox(dagen);
+        
+        DefaultComboBoxModel maanden = new DefaultComboBoxModel();
+        maanden.addElement("Januari");
+        maanden.addElement("Februari");
+        maanden.addElement("Maart");
+        maanden.addElement("April");
+        maanden.addElement("Mei");
+        maanden.addElement("Juni");
+        maanden.addElement("Juli");
+        maanden.addElement("Augustus");
+        maanden.addElement("September");
+        maanden.addElement("Oktober");
+        maanden.addElement("November");
+        maanden.addElement("December");
+        JComboBox maand = new JComboBox(maanden);
+        
+        DefaultComboBoxModel jaren = new DefaultComboBoxModel();
+        for(int jaar = 2013; jaar > 1899; jaar --){
+            jaren.addElement(jaar);
+        }
+        JComboBox jaar = new JComboBox(jaren);
+        jDatums.add(dag);
+        jDatums.add(maand);
+        jDatums.add(jaar);
+        
         
         this.logo = new JLabel();
         logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Daniel\\Google Drive\\KBS HSR\\tztklein.png"));
@@ -165,7 +203,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.jFieldPanel.add(lIBANnummer);
         this.jFieldPanel.add(new JLabel(""));  
 
-        this.jFieldPanel.add(tfGeboortedatum);
+        this.jFieldPanel.add(jDatums);
         this.jFieldPanel.add(tfIBANnummer);
         this.jFieldPanel.add(new JLabel(""));  
 
@@ -177,13 +215,13 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.jFieldPanel.add(tfEmailadres);
         this.jFieldPanel.add(tfWachtwoord);
         
-        //this.jFieldPanel.add(lId);
-        //this.jFieldPanel.add(lRechten);
-        //this.jFieldPanel.add(new JLabel(""));
+        this.jFieldPanel.add(lId);
+        this.jFieldPanel.add(lRechten);
+        this.jFieldPanel.add(new JLabel(""));
         
-        //this.jFieldPanel.add(tfId);
-        //this.jFieldPanel.add(tfRechten);
-        //this.jFieldPanel.add(new JLabel(""));
+        this.jFieldPanel.add(tfId);
+        this.jFieldPanel.add(recht);
+        this.jFieldPanel.add(new JLabel(""));
         
         this.jInputfields.add(jFieldPanel);
 
@@ -305,15 +343,15 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.tfVoornaam.setText(specifiekePersoonGegevens[1]);
         this.tfTussenvoegsel.setText(specifiekePersoonGegevens[2]);
         this.tfAchternaam.setText(specifiekePersoonGegevens[3]);
-        this.tfGeboortedatum.setText(specifiekePersoonGegevens[4]);
-        this.tfEmailadres.setText(specifiekePersoonGegevens[5]);
+        this.tfEmailadres.setText(specifiekePersoonGegevens[4]);
         // Wachtwoord bewust niet laden
-        //this.tfWachtwoord.setText(specifiekePersoon[6]);
+        //this.tfWachtwoord.setText(specifiekePersoon[5]);
+        this.tfGeboortedatum.setText(specifiekePersoonGegevens[6]);
         this.tfIBANnummer.setText(specifiekePersoonGegevens[7]);
         this.tfMobielnummer.setText(specifiekePersoonGegevens[8]);
         // Word anders geregeld
         //this.tfProfielfoto.setText(specifiekePersoon[9]);
-        this.tfRechten.setText(specifiekePersoonGegevens[10]);
+        //this.tfRechten.setText(specifiekePersoonGegevens[10]);
         
         this.tfPlaatsnaam.setText(specifiekePersoonLocatie[0]);
         this.tfStraatnaam.setText(specifiekePersoonLocatie[1]);
