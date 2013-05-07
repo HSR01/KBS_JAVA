@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -183,7 +184,17 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == btAanmelden) {
-
+            
+             ArrayList foutenlijst = new ArrayList();
+              boolean fout = true;
+              int lijstAantal = 0;
+              int lijstScroller = 0;
+           
+            if(tfMobielnummer.getText().length() < 10 || tfMobielnummer.getText().length() > 10){
+                fout = false;
+                foutenlijst.add("Het veld \"Mobielnummer\" moet ingevuld zijn. Bv.: Harry.");
+                }
+            
             
 
             //controleer de gegevens.
@@ -191,14 +202,21 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
                     || tfAchternaam.getText().equals("") || tfHuisnummer.getText().equals("") || tfPostcode.getText().equals("") || tfStraatnaam.getText().equals("")
                     || tfPlaatsnaam.getText().equals("") || tfToevoeging.getText().equals("") || tfMobielnummer.getText().equals("") || tfIbannummer.getText().equals("")
                     || pfWachtwoord.getText().equals("") ) {
-                
-            JOptionPane.showMessageDialog(rootPane, "Niet alle velden zijn ingevuld.", "Waarschuwing", 2);
+            fout = false;
+            foutenlijst.add("Alle velden moet ingevuld zijn.");
 
             
             }
             
+            if(fout == false){
+            lijstAantal = foutenlijst.size();
+            for(lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++){
+                System.out.println("Account number:" + foutenlijst.get(lijstScroller)); 
+            }
+        }
+            
                 
-            } else {
+             else {
                 //Hash het wachtwoord naar MD5
                 String wachtwoord = pfWachtwoord.getText();
                 try {
@@ -208,19 +226,26 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
                 } catch (Exception o) {
                     System.out.println("Hash Error:" + o);
                 }
-        }
+        
+                //Maak connectie database
                 DbConnect a = new DbConnect();
-                String Geboortedatum = "moi";
+                String LocatieID = "0";
+                String Geboortedatum = "hoi";
                 String Profielfoto = "hoi";
-                a.insertData("Persoon", tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), pfWachtwoord.getText() , Geboortedatum, tfMobielnummer.getText(), Profielfoto, tfIbannummer.getText()); 
+                //Sla de gegevens op in de database
+                a.insertData("Persoon", LocatieID, tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), wachtwoord , Geboortedatum, tfMobielnummer.getText(), Profielfoto, tfIbannummer.getText()); 
                 
                 //SELECT ID 
                 a.insertData("Locatie","00000", "00000" ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");
-
                 
+                 JOptionPane.showMessageDialog(rootPane, "Aanmelding voltooid!", "Bericht", 2);
+                 this.setVisible(false);
+                
+            }
         
                
 
         }
     }
+}
 

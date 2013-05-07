@@ -31,7 +31,7 @@ public class DbConnect {
     private Statement st;
     private ResultSet rs;
 
-    private String persoontabel = "Voornaam, Tussenvoegsel, Achternaam, Emailadres, Wachtwoord, Geboortedatum, Mobielnummer, Profielfoto, IBAN";
+    private String persoontabel = "LocatieID, Voornaam, Tussenvoegsel, Achternaam, Emailadres, Wachtwoord, Geboortedatum, Mobielnummer, Profielfoto, IBAN";
     private String locatie = "Latitude, Longitude, Plaatsnaam, Straatnaam, Huisnummer, Toevoeging, Postcode, Telefoonnummer, TZTPoint";
     
     private String tabel;
@@ -351,6 +351,7 @@ public class DbConnect {
                 
                 //Query uitvoeren
                 st.executeUpdate(query);
+                System.out.println(query);
                 
             }catch(Exception e){
                 System.out.println(e);
