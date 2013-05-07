@@ -181,6 +181,27 @@ public class Geocoding{
         return null;
     }
     /**
+     * @param postcode Plaatsnaam
+     * @param huisnummer Huisnummer
+     * @return De value van key, lege string als hij niet gevonden kan worden.
+     */
+    public Coordinaten QueryAndGetCoordinates(String postcode, int huisnummer) throws MultipleAdressesFoundException {
+        try {
+            URL url = new URL("http://geocoding.cloudmade.com/3b072221200c491981975ab50d5134b3/geocoding/v2/find.js?query=country:NL;postcode:" + postcode + ";house:" + huisnummer);
+            try {
+                return new JSON().getCoordinatenFromJSONURL(url,
+                        "GET");
+            } catch (IOException ex) {
+                Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    /**
      * @param locatie Locatie
      * @return De value van key, lege string als hij niet gevonden kan worden.
      */
@@ -264,7 +285,7 @@ public class Geocoding{
      * @return Traject
      * @throws MultipleAdressesFoundException 
      */
-    public Traject GetRouteFrom(Coordinaten fromCoordinaten, Coordinaten toCoordinaten) throws MultipleAdressesFoundException {
+    public Traject GetRouteFrom(Coordinaten fromCoordinaten, Coordinaten toCoordinaten) {
         String km = "-1";
         try {
             km = QueryAndGetKey(new URL("http://routes.cloudmade.com/3b072221200c491981975ab50d5134b3/api/0.3/" + fromCoordinaten.toString() + "," + toCoordinaten.toString() + "/car.js?lang=nl"), "total_distance");
@@ -273,5 +294,43 @@ public class Geocoding{
         }
         
         return new Traject(Integer.parseInt(km));
+    }
+    
+    public Locatie GetNearestTZTPoint(Locatie locatie) {
+        try {
+            Coordinaten van = QueryAndGetCoordinates(locatie);
+            URL url = new URL("http://geocoding.cloudmade.com/3b072221200c491981975ab50d5134b3/geocoding/v2/find.js?object_type=station&around=" + van + "&distance=20000");
+            try {
+                return new JSON().getTZTPointFromJSONURL(url, "GET");
+            } catch (IOException ex) {
+                Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (MultipleAdressesFoundException ex) {
+            Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return new Locatie();
+    }
+    
+    
+    public Locatie GetNearestTZTPoint(Coordinaten van) {
+        try {
+            URL url = new URL("http://geocoding.cloudmade.com/3b072221200c491981975ab50d5134b3/geocoding/v2/find.js?object_type=station&around=" + van + "&distance=200000");
+            try {
+                return new JSON().getTZTPointFromJSONURL(url, "GET");
+            } catch (IOException ex) {
+                Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return new Locatie();
     }
 }
