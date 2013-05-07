@@ -5,6 +5,8 @@ package java_backend;
  */
 import java.util.Date;
 public class Persoon {
+  private int persoonID;
+  private int rechten;
   private String Voornaam;
   private String Tussenvoegsel;
   private String Achternaam;
@@ -14,6 +16,8 @@ public class Persoon {
   private String Mobielnummer;
   
   public Persoon(){
+      this.persoonID = 0;
+      this.rechten = 0;
       this.Voornaam = "";
       this.Tussenvoegsel = "";
       this.Achternaam = "";
@@ -33,7 +37,7 @@ public class Persoon {
   }
     @Override
   public String toString(){
-      return this.Voornaam + " "+this.Tussenvoegsel+ " "+this.Achternaam;
+      return this.getVoornaam() + " "+this.getTussenvoegsel()+ " "+this.getAchternaam();
   }
     /**
      * @return the Voornaam
@@ -131,6 +135,34 @@ public class Persoon {
      */
     public void setMobielnummer(String Mobielnummer) {
         this.Mobielnummer = Mobielnummer;
+    }
+
+    /**
+     * @return the persoonID
+     */
+    public int getPersoonID() {
+        return persoonID;
+    }
+
+    /**
+     * @param persoonID the persoonID to set
+     */
+    public void setPersoonID(int persoonID) {
+        this.persoonID = persoonID;
+    }
+
+    /**
+     * @return the rechten
+     */
+    public int getRechten() {
+        return rechten;
+    }
+
+    /**
+     * @param rechten the rechten to set
+     */
+    public void setRechten(int rechten) {
+        this.rechten = rechten;
     }
     
 }

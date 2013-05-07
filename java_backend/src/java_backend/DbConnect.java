@@ -196,19 +196,28 @@ public class DbConnect {
         }
         return null;
     }    
-
-    public boolean getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException {
+    /**
+     * @author Laurens
+     * @autorv2 Jelle
+     * @param emailadres
+     * @param wachtwoord
+     * @param succes
+     * @return Object of Persoon or NULL
+     * @throws SQLException 
+     */
+    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException {
         //Query voor uitlezen login gegevens!!!!----->
 
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Persoon WHERE Emailadres = ? AND Wachtwoord = ?");
-           //Select query
-              
-           
+            //Select query
+            //rechten >0 houd in dat iedereen met rechten BOVEN BPS'er in mogen loggen.
+            stmt = con.prepareStatement("SELECT * FROM Persoon WHERE Emailadres = ? AND Wachtwoord = ? AND rechten > 0");
+
            stmt.setString(1, emailadres);
            stmt.setString(2, wachtwoord);
+           
             //Select collum
             String password = "Wachtwoord";
             String email = "Emailadres";
@@ -218,32 +227,35 @@ public class DbConnect {
 
             //Loop door de query data heen
             while (rs.next()) {
-
+                
                 String content = rs.getString(password);
                 String content1 = rs.getString(email);
 
-                if (content1.equals(emailadres) && content.equals(wachtwoord)) {
+                if (content1.equals(emailadres) && content.equals(wachtwoord)) {     
+                    //inloggen is gelukt, vul persoon object.
+                    Persoon p = new Persoon();
+                    p.setVoornaam(rs.getString("Voornaam"));
+                    p.setTussenvoegsel(rs.getString("Tussenvoegsel"));
+                    p.setAchternaam(rs.getString("Achternaam"));
+                    p.setEmailadres(rs.getString("Emailadres"));
+                    //need to create a thing with converts geboortedatum to date.
+                    //p.setGeboortedatum(rs.getString("Geboortedatum"));
+                    p.setMobielnummer(rs.getString("Mobielnummer"));
+                    p.setPersoonID(rs.getInt("PersoonID"));
+                    p.setRechten(rs.getInt("Rechten"));
                     
-                    System.out.println("Success! Je bent ingelogd!");
-                    return succes = true;
+                    //object is gevuld geef het object terug.
+                    return p;
 
                 }
                 else {
-                    System.out.println("Faal! Je bent niet ingelogd!");
-                    return succes = false;
+                    //geen match gevonden in het systeem, inloggen is niet succesvol.
+                    return null;
                 }
             }
-            
-           // if (succes != true) {
-          //      System.out.println("Je bent niet ingelogd.");
-           // }
-           // //Afvangen fouten voor getdata    
-       // }// catch (Exception ea) {
-         //   System.out.println("Query lees ERROR: " + ea);
-       // }
-
         }
        finally {
+            //sluiten van databaseconnectie
       try {
          if (stmt != null) { stmt.close(); }
       }
@@ -257,7 +269,7 @@ public class DbConnect {
          // log this error
       }
    }
-        return false;
+        return null;
 } 
         
 

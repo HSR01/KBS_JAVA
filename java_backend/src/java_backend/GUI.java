@@ -24,6 +24,7 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel login, logincenter;
     private JTextField tfEmailadres;
     private JPasswordField pfWachtwoord;
+    private Persoon persoon;
     //private JPanel jInputfields, jNorth, jWest, jEast, jSouth, jFieldPanel;
     
     public GUI() {
@@ -34,6 +35,8 @@ public class GUI extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(800, 600);        
+        //set persoon op null om aan te tonen dat er geen ingelogde is.
+        this.persoon = null;
         
         //Instellingen eerste pagina.
         JPanel Card1 = new JPanel();
@@ -92,22 +95,24 @@ public class GUI extends JFrame implements ActionListener {
     
     public void actionPerformed(ActionEvent ae) {
             //Acties voor login button
-            System.out.println(ae.getSource());
             if (ae.getSource() == btLogin) {
                 //instancieer databaseconnectie
                 DbConnect a = new DbConnect();
             try {
-                //controleer de gegevens.
+                //controleer de gegevens. allebei niet leeg.
                 if(tfEmailadres.getText().equals("") || pfWachtwoord.getText().equals("")){
+                    //show message dialog met foutmelding.
                     JOptionPane.showMessageDialog(rootPane, "Niet alle verplichte velden zijn ingevuld.", "Waarschuwing", 2);
                 }else{
-                    if(a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), true)){
+                    //maak Persoon aan aan de hand van inloggegevens en methode in inlogdata
+                    this.persoon = a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), true);
+                    if(this.persoon != null){
                         //succesvol ingelogd
-                    
+                        
                         //alleen bij succesvolle inlog mag iemand door naar de volgende card.
                         this.cl.next(this.cardHolder);
-                    } else if (a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), false)){
-                        //show error dialog, inloggen is niet gelukt.
+                    } else{
+                        //show error dialog, inloggen is niet gelukt, object is leeg (controle en afhandeling in methode getLoginData
                         JOptionPane.showMessageDialog(rootPane, "Het inloggen is niet gelukt!", "Waarschuwing", 2);
                         //zet het formulier weer op leeg om opnieuw in te kunnen loggen.
                         tfEmailadres.setText("");
