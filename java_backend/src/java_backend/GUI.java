@@ -87,9 +87,8 @@ public class GUI extends JFrame implements ActionListener {
 
         //Actionlistener toevoegen voor btLogin.
         btLogin.addActionListener(this);
-                    this.cl.next(this.cardHolder);
-    
         
+        //alles tonen
         this.setVisible(true);
     }
     

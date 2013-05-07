@@ -15,6 +15,11 @@ import java.sql.*;
 
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Daniel
@@ -205,7 +210,7 @@ public class DbConnect {
      * @return Object of Persoon or NULL
      * @throws SQLException 
      */
-    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException {
+    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException{
         //Query voor uitlezen login gegevens!!!!----->
 
         PreparedStatement stmt = null;
@@ -240,6 +245,13 @@ public class DbConnect {
                     p.setEmailadres(rs.getString("Emailadres"));
                     //need to create a thing with converts geboortedatum to date.
                     //p.setGeboortedatum(rs.getString("Geboortedatum"));
+                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    try {
+                        p.setGeboortedatum(df.parse(rs.getString("Geboortedatum")));
+                        System.out.println(p.getGeboortedatum());
+                    } catch (ParseException ex) {
+                        Logger.getLogger(DbConnect.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     p.setMobielnummer(rs.getString("Mobielnummer"));
                     p.setPersoonID(rs.getInt("PersoonID"));
                     p.setRechten(rs.getInt("Rechten"));
