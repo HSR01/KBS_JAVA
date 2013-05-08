@@ -83,9 +83,25 @@ public class GUI extends JFrame implements ActionListener {
         
         //instellingen tweede pagina/card.
         JPanel Card2 = new AccountsBeherenTabel();
-        cardHolder.add(Card1);
-        cardHolder.add(Card2);
-        this.add(cardHolder);
+        
+        //controle of DB connectie geset is.
+        DbConnect dbc = new DbConnect();
+        //als er connectie is laad dan ook alle items die daar bij horen.
+        if(dbc.checkConnection()){
+            cardHolder.add(Card1);
+            cardHolder.add(Card2);   
+            this.add(cardHolder);
+        }else{
+            //als er geen connectie is laad dan een scherm met foutmelding.
+            JPanel error = new JPanel();
+            error.setLayout(new FlowLayout());
+            JLabel label = new JLabel("Er is geen verbinding met de database! Herstart de applicatie om het nog een keer te proberen.");
+            error.add(label);
+            this.add(error);
+        }
+        
+
+        
 
         //Actionlistener toevoegen voor btLogin.
         btLogin.addActionListener(this);
