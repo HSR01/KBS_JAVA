@@ -52,16 +52,30 @@ public class DbConnect {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(url, user, pasw);
             st = con.createStatement();
-
             //Afvangen fouten voor database connectie    
-        } catch (Exception ex) {
-            System.out.println("Connectie ERROR: " + ex);
+        } catch(SQLException ex){
+            System.out.println("Problemen met verbinding.");
+        }catch (Exception ex) {
+            System.out.println("Onbekende error");
         }
-
+        System.out.println(st);
 
     }
-
-    public void getData() {
+    /**
+     * @author Jelle
+     * @description Controleerd of verbinding goed is of niet adhv dbconnect.
+     * @return Boolean
+     */
+    public boolean checkConnection(){
+        //als st niet null is is connection actief.
+        if(st != null){
+            return true;
+        }else{
+            //bij null stuur false, omdat connectie niet actief is.
+            return false;
+        }
+    }
+    public void getData() throws Exception {
         //Query voor uitlezen!!!!----->
         try {
 
@@ -86,7 +100,7 @@ public class DbConnect {
 
     }
 
-    public Object[][] getUsers(){
+    public Object[][] getUsers() throws Exception{
         try{
             //get aantal personen.
             rs = st.executeQuery("Select Count(*) from Persoon");
@@ -121,7 +135,7 @@ public class DbConnect {
         return null;
     }
 
-    public String[] getSpecifiekeGebruikerGegevens(Object ID){
+    public String[] getSpecifiekeGebruikerGegevens(Object ID) throws Exception{
         // Auteur Dominique
         try{
             String[] returnval = new String[11];
@@ -150,7 +164,7 @@ public class DbConnect {
         return null;
     }
     
-    public String[] getSpecifiekeGebruikerLocatie(Object ID){
+    public String[] getSpecifiekeGebruikerLocatie(Object ID) throws Exception{
         // Auteur Dominique
         try{
             String[] returnval = new String[5];
@@ -179,7 +193,7 @@ public class DbConnect {
         return null;
     }
     
-    public Boolean updateGebruikerAccount(String[] data){
+    public Boolean updateGebruikerAccount(String[] data) throws Exception{
         try{
             query = "UPDATE Persoon "
                     + "SET Voornaam = \"" + data[1] + "\", "
@@ -210,9 +224,8 @@ public class DbConnect {
      * @return Object of Persoon or NULL
      * @throws SQLException 
      */
-    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException{
+    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException, Exception{
         //Query voor uitlezen login gegevens!!!!----->
-
         PreparedStatement stmt = null;
 
         try {
@@ -287,8 +300,11 @@ public class DbConnect {
 
     
 
-    public void insertData(String content, String aa) {
+    public void insertData(String content, String aa) throws Exception {
         //Query voor inserten!!!!----->       
+        if(!this.checkConnection()){
+            throw new Exception("Database connectie mislukt.");
+        }
         try {
 
             //Insert query
@@ -304,8 +320,11 @@ public class DbConnect {
 
     }
 
-    public void insertData() {
+    public void insertData() throws Exception {
         //Query voor inserten!!!!----->       
+                if(!this.checkConnection()){
+            throw new Exception("Database connectie mislukt.");
+        }
         try {
 
             //Insert query
@@ -323,9 +342,8 @@ public class DbConnect {
 
 
       
-    public void insertData(String tabelnaam, String ... value){
+    public void insertData(String tabelnaam, String ... value) throws Exception{
         //Query voor inserten!!!!----->   
-        
         String waardes = "";
         
         if(tabelnaam.equals("Persoon")){
@@ -361,7 +379,7 @@ public class DbConnect {
   
 
 
-    public void updateData(String field, String content) {
+    public void updateData(String field, String content) throws Exception {
         //Query voor updaten!!!!----->
         try {
 
