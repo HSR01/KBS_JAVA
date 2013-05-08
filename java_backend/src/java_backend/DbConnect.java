@@ -75,7 +75,7 @@ public class DbConnect {
             return false;
         }
     }
-    public void getData() throws Exception {
+    public void getData(){
         //Query voor uitlezen!!!!----->
         try {
 
@@ -100,7 +100,7 @@ public class DbConnect {
 
     }
 
-    public Object[][] getUsers() throws Exception{
+    public Object[][] getUsers(){
         try{
             //get aantal personen.
             rs = st.executeQuery("Select Count(*) from Persoon");
@@ -135,7 +135,7 @@ public class DbConnect {
         return null;
     }
 
-    public String[] getSpecifiekeGebruikerGegevens(Object ID) throws Exception{
+    public String[] getSpecifiekeGebruikerGegevens(Object ID){
         // Auteur Dominique
         try{
             String[] returnval = new String[11];
@@ -164,7 +164,7 @@ public class DbConnect {
         return null;
     }
     
-    public String[] getSpecifiekeGebruikerLocatie(Object ID) throws Exception{
+    public String[] getSpecifiekeGebruikerLocatie(Object ID){
         // Auteur Dominique
         try{
             String[] returnval = new String[5];
@@ -193,7 +193,7 @@ public class DbConnect {
         return null;
     }
     
-    public Boolean updateGebruikerAccount(String[] data) throws Exception{
+    public Boolean updateGebruikerAccount(String[] data){
         try{
             query = "UPDATE Persoon "
                     + "SET Voornaam = \"" + data[1] + "\", "
@@ -224,7 +224,7 @@ public class DbConnect {
      * @return Object of Persoon or NULL
      * @throws SQLException 
      */
-    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException, Exception{
+    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException{
         //Query voor uitlezen login gegevens!!!!----->
         PreparedStatement stmt = null;
 
@@ -300,11 +300,9 @@ public class DbConnect {
 
     
 
-    public void insertData(String content, String aa) throws Exception {
+    public void insertData(String content, String aa){
         //Query voor inserten!!!!----->       
-        if(!this.checkConnection()){
-            throw new Exception("Database connectie mislukt.");
-        }
+
         try {
 
             //Insert query
@@ -320,11 +318,8 @@ public class DbConnect {
 
     }
 
-    public void insertData() throws Exception {
+    public void insertData(){
         //Query voor inserten!!!!----->       
-                if(!this.checkConnection()){
-            throw new Exception("Database connectie mislukt.");
-        }
         try {
 
             //Insert query
@@ -342,7 +337,7 @@ public class DbConnect {
 
 
       
-    public void insertData(String tabelnaam, String ... value) throws Exception{
+    public void insertData(String tabelnaam, String ... value){
         //Query voor inserten!!!!----->   
         String waardes = "";
         
@@ -379,7 +374,7 @@ public class DbConnect {
   
 
 
-    public void updateData(String field, String content) throws Exception {
+    public void updateData(String field, String content){
         //Query voor updaten!!!!----->
         try {
 
