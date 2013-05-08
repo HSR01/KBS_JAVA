@@ -1,11 +1,5 @@
 package java_backend;
 
-import java.sql.Array;
-
-/**
- *
- * @author Jelle
- */
 public class Financien {
     
     public Financien(){
@@ -13,6 +7,7 @@ public class Financien {
     }
     /**
      * @author Daniel van der Berg (bitch!)
+     * Pas de onderstaande gegevens aan om koeriers te wijzigen.
      */
     
     //Theo Snel en zonen gegevens
@@ -38,13 +33,16 @@ public class Financien {
     
     public double[] BerekenKoerier(int m){   
         
+        //variabelen waarin de waardes teruggegeven worden.
         double ret = 0;
         double type = 0;
        
+        //tarief per koerier berekenen inclusief start kosten
         double TS = m > TS_Startm ? TS_Perkm * ((m - TS_Startm) / 1000) + TS_Starttarief : TS_Starttarief;        
         double SF = m > SF_Startm ? SF_Perkm * ((m - SF_Startm) / 1000) + SF_Starttarief : SF_Starttarief;
         double JT = m > JT_Startm ? JT_Perkm * ((m - JT_Startm) / 1000) + JT_Starttarief : JT_Starttarief;
         
+        //controleren welke koerier het goedkoopst is
         if(TS <= SF && TS <= JT){
             ret = TS;
             type = TheoSnelenZonen;
@@ -56,9 +54,10 @@ public class Financien {
             type = JansenTransport;
         }
         
+        //na de vorige loop is in de return array gevuld in ret zit de prijs van de goedkoopste koerier in type welke koerier het goedkoopst is.
         double[] result = {ret,type};
         
-        // nog even koeriers objecten vanuit de database inladen om te returnen.
+        //array returnen.
         return result;
  
     }
