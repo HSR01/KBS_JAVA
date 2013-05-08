@@ -18,26 +18,26 @@ public class Java_backend {
         Coordinaten jelle=null, daniel=null;
         try {
             jelle = geo.QueryAndGetCoordinates("Zutphen", "Slindewaterstraat", 26);
-            System.out.println(jelle.toString());
+            System.out.println("Coordinaten Zuthpen, Slindewaterstraat 26: " + jelle.toString());
             
             daniel = geo.QueryAndGetCoordinates("Elburg", "Hoekwant", 62);
-            System.out.println(daniel.toString());
+            System.out.println("Coordinaten Elburg, Hoekwant 62: " + daniel.toString());
         } catch (MultipleAdressesFoundException ex) {
             Logger.getLogger(Java_backend.class.getName()).log(Level.SEVERE, null, ex);
         }
         Traject traj;
         traj = geo.GetRouteFrom(jelle, daniel);
-        System.out.println(traj.toString());
+        System.out.println("Aantal kilometer van (Jelle) naar (Daniel)" + traj.toString());
         if (traj.Meters < 20000) {
             // Direct koerier!
         } else if (traj.Meters > 20000) {
             // Coordinaten van TZTPoint (station)
             Coordinaten jelletotzt, tzttodaniel;
             jelletotzt = geo.GetNearestTZTPoint(jelle).getCoordinaten();
-            System.out.println(jelletotzt.toString());
+            System.out.println("Aantal kilometer van (Jelle) naar het dichtsbijzijnde TZTPoint" + jelletotzt.toString());
             
             tzttodaniel = geo.GetNearestTZTPoint(daniel).getCoordinaten();
-            System.out.println(tzttodaniel.toString());
+            System.out.println("Aantal kilometer van het dichtsbijzijnde TZTPoint naar (Daniel)" + tzttodaniel.toString());
             Traject eerste, tweede;
             eerste = geo.GetRouteFrom(jelle, jelletotzt);
             tweede = geo.GetRouteFrom(tzttodaniel, daniel);
