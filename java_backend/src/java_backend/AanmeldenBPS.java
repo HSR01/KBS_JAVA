@@ -36,7 +36,8 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
     private JButton btAanmelden;
     private CardLayout cl = new CardLayout();
     private JPanel cardHolder = new JPanel(cl);
-    private JPanel login, logincenter, jDatums;
+    protected JPanel login, logincenter, jDatums;
+    protected JComboBox dag, maand, jaar;
     private JTextField tfEmailadres, tfVoornaam, tfPostcode, tfPlaatsnaam, tfStraatnaam, tfHuisnummer, tfToevoeging, tfTussenvoegsel, tfAchternaam, tfGeboortedatum, tfMobielnummer, tfIbannummer;
     private JPasswordField pfWachtwoord;
 
@@ -99,12 +100,12 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
         this.lToevoeging = new JLabel("Toevoeging:");
         //voeg velden toe aan login center
 
-          DefaultComboBoxModel dagen = new DefaultComboBoxModel();
-        for(int dag = 1; dag < 32; dag++){
+        DefaultComboBoxModel dagen = new DefaultComboBoxModel();
+        for (int dag = 1; dag < 32; dag++) {
             dagen.addElement(dag);
         }
-        JComboBox dag = new JComboBox(dagen);
-        
+        dag = new JComboBox(dagen);
+
         DefaultComboBoxModel maanden = new DefaultComboBoxModel();
         maanden.addElement("Januari");
         maanden.addElement("Februari");
@@ -118,17 +119,23 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
         maanden.addElement("Oktober");
         maanden.addElement("November");
         maanden.addElement("December");
-        JComboBox maand = new JComboBox(maanden);
-        
+        maand = new JComboBox(maanden);
+
         DefaultComboBoxModel jaren = new DefaultComboBoxModel();
-        for(int jaar = 2013; jaar > 1899; jaar --){
+        for (int jaar = 2013; jaar > 1899; jaar--) {
             jaren.addElement(jaar);
         }
-        JComboBox jaar = new JComboBox(jaren);
+        jaar = new JComboBox(jaren);
         jDatums.add(dag);
         jDatums.add(maand);
         jDatums.add(jaar);
-        
+
+        System.out.println(dag.getSelectedItem());
+        System.out.println(maand.getSelectedItem());
+        System.out.println(jaar.getSelectedItem());
+
+
+
         this.logincenter.add(lVoornaam);
         this.logincenter.add(tfVoornaam);
         this.logincenter.add(lTussenvoegsel);
@@ -158,9 +165,9 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
         this.logincenter.add(btLeeg);
         this.logincenter.add(btAanmelden);
 
-        
-        
-        
+
+
+
         //voeg velden toe aan loginpanel
         this.login.add(this.logincenter);
 
@@ -184,68 +191,94 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == btAanmelden) {
-            
-             ArrayList foutenlijst = new ArrayList();
-              boolean fout = true;
-              int lijstAantal = 0;
-              int lijstScroller = 0;
-           
-            if(tfMobielnummer.getText().length() < 10 || tfMobielnummer.getText().length() > 10){
-                fout = false;
-                foutenlijst.add("Het veld \"Mobielnummer\" moet ingevuld zijn. Bv.: Harry.");
-                }
-            
-            
+
+            ArrayList flijstje = new ArrayList();
+            int lijstAantal = 0;
+            int lijstScroller = 0;
+            boolean fout = true;
+
+
+
 
             //controleer de gegevens.
             if (tfEmailadres.getText().equals("") || tfVoornaam.getText().equals("") || tfTussenvoegsel.getText().equals("")
                     || tfAchternaam.getText().equals("") || tfHuisnummer.getText().equals("") || tfPostcode.getText().equals("") || tfStraatnaam.getText().equals("")
                     || tfPlaatsnaam.getText().equals("") || tfToevoeging.getText().equals("") || tfMobielnummer.getText().equals("") || tfIbannummer.getText().equals("")
-                    || pfWachtwoord.getText().equals("") ) {
-            fout = false;
-            foutenlijst.add("Alle velden moet ingevuld zijn.");
+                    || pfWachtwoord.getText().equals("")) {
+                fout = false;
+                flijstje.add("Niet alle velden zijn ingevuld.");
 
-            
             }
-            
-            if(fout == false){
-            lijstAantal = foutenlijst.size();
-            for(lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++){
-                System.out.println("Account number:" + foutenlijst.get(lijstScroller)); 
+
+            String Mobielcijfer = tfMobielnummer.getText();
+            int val;
+            try {
+                val = Integer.parseInt(Mobielcijfer);
+
+            } catch (NumberFormatException nfe) {
+                // bad data - set to sentinel
+                val = Integer.MIN_VALUE;
+                fout = false;
+                flijstje.add("Een mobielnummer bevat cijfers.");
+
             }
-        }
-            
-                
-             else {
-                //Hash het wachtwoord naar MD5
-                String wachtwoord = pfWachtwoord.getText();
-                try {
-                    MessageDigest md = MessageDigest.getInstance("MD5");
-                    md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
-                    wachtwoord = new BigInteger(1, md.digest()).toString(16);
-                } catch (Exception o) {
-                    System.out.println("Hash Error:" + o);
+
+            if (tfMobielnummer.getText().length() < 10 || tfMobielnummer.getText().length() > 10) {
+                fout = false;
+                flijstje.add("Het veld \"Mobielnummer\" moet 10 cijfers bevatten.");
+            }
+
+            String Huisnummercijfer = tfHuisnummer.getText();
+            int val1;
+            try {
+                val1 = Integer.parseInt(Huisnummercijfer);
+
+            } catch (NumberFormatException nfe) {
+                // bad data - set to sentinel
+                val1 = Integer.MIN_VALUE;
+                fout = false;
+                flijstje.add("Een huisnummer bevat cijfers.");
+
+            }
+
+
+
+
+            if (fout == false) {
+                lijstAantal = flijstje.size();
+                for (lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++) {
+                    JOptionPane.showMessageDialog(rootPane, flijstje.get(lijstScroller), "Waarschuwing", 2);
+
                 }
-        
-                //Maak connectie database
-                DbConnect a = new DbConnect();
-                String LocatieID = "0";
-                String Geboortedatum = "hoi";
-                String Profielfoto = "hoi";
-                //Sla de gegevens op in de database
-                a.insertData("Persoon", LocatieID, tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), wachtwoord , Geboortedatum, tfMobielnummer.getText(), Profielfoto, tfIbannummer.getText()); 
-                
-                //SELECT ID 
-                a.insertData("Locatie","00000", "00000" ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");
-                
-                 JOptionPane.showMessageDialog(rootPane, "Aanmelding voltooid!", "Bericht", 2);
-                 this.setVisible(false);
-                
             }
-        
-               
 
+
+        } else {
+            //Hash het wachtwoord naar MD5
+            String wachtwoord = pfWachtwoord.getText();
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
+                wachtwoord = new BigInteger(1, md.digest()).toString(16);
+            } catch (Exception o) {
+                System.out.println("Hash Error:" + o);
+            }
         }
+
+        DbConnect a = new DbConnect();
+        String LocatieID = "hoi";
+        String Geboortedatum = "";
+        String Profielfoto = "hoi";
+
+
+        a.insertData("Persoon", LocatieID, tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), pfWachtwoord.getText(), Geboortedatum, tfMobielnummer.getText(), Profielfoto, tfIbannummer.getText());
+
+        //SELECT ID 
+        a.insertData("Locatie", "00000", "00000", tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");
+
+
+
+
+
     }
 }
-
