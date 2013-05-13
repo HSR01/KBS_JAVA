@@ -10,7 +10,7 @@ public class Java_backend {
     }
     
     /**
-     * 
+     * author Leon Huzen
      */
     public static void geoTest() {
     
