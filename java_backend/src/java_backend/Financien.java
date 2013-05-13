@@ -43,16 +43,22 @@ public class Financien {
         double JT = m > JT_Startm ? JT_Perkm * ((m - JT_Startm) / 1000) + JT_Starttarief : JT_Starttarief;
         
         //controleren welke koerier het goedkoopst is
-        if(TS <= SF && TS <= JT){
-            ret = TS;
-            type = TheoSnelenZonen;
-        }if(SF <= TS && SF <= JT){
-            ret = SF;
+        if(m < 1000){
+            ret = 0.25;
             type = SjorsFietsKoeriers;
-        }if(JT <= TS && JT <= SF){
-            ret = JT;  
-            type = JansenTransport;
+        }else{
+            if(TS <= SF && TS <= JT){
+                ret = TS;
+                type = TheoSnelenZonen;
+            }if(SF <= TS && SF <= JT){
+                ret = SF;
+                type = SjorsFietsKoeriers;
+            }if(JT <= TS && JT <= SF){
+                ret = JT;  
+                type = JansenTransport;
+            }              
         }
+        
         
         //na de vorige loop is in de return array gevuld in ret zit de prijs van de goedkoopste koerier in type welke koerier het goedkoopst is.
         double[] result = {ret,type};
