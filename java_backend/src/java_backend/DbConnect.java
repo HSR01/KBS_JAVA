@@ -145,7 +145,7 @@ public class DbConnect {
             }
             //haal alles op.
             Object[][] returnval = new Object[aantal][4];
-            query = "SELECT PersoonID, Voornaam, Tussenvoegsel, Achternaam from Persoon";
+            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID";
             rs = st.executeQuery(query);
             int i = 0;
             while(rs.next()){
@@ -153,6 +153,9 @@ public class DbConnect {
                 returnval[i][1] = rs.getString("Voornaam");
                 returnval[i][2] = rs.getString("Tussenvoegsel");
                 returnval[i][3] = rs.getString("Achternaam");
+                returnval[i][4] = rs.getString("TrajectID");
+                returnval[i][5] = rs.getString("Begin");
+                returnval[i][6] = rs.getString("Eind");
                 i++;
             }
             return returnval;
