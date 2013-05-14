@@ -134,26 +134,25 @@ public class DbConnect {
         }
         return null;
     }
-    
-      public Object[][] getPakket(){
+
+        public Object[][] getPersonen(){
         try{
             //get aantal personen.
-            rs = st.executeQuery("Select Count(*) from Pakket");
+            rs = st.executeQuery("Select count(*) from Persoon");
             int aantal = 0;
             while(rs.next()){
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
-            Object[][] returnval = new Object[aantal][5];
-            query = "SELECT * from Pakket";
+            Object[][] returnval = new Object[aantal][4];
+            query = "SELECT PersoonID, Voornaam, Tussenvoegsel, Achternaam from Persoon";
             rs = st.executeQuery(query);
             int i = 0;
             while(rs.next()){
-                returnval[i][0] = rs.getString("PakketID");
-                returnval[i][1] = rs.getString("Gewicht");
-                returnval[i][2] = rs.getString("Prijs");
-                returnval[i][3] = rs.getString("Omschrijving");
-                returnval[i][4] = rs.getString("Datum");
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                returnval[i][2] = rs.getString("Tussenvoegsel");
+                returnval[i][3] = rs.getString("Achternaam");
                 i++;
             }
             return returnval;
@@ -163,7 +162,7 @@ public class DbConnect {
         }
         return null;
     }
-
+    
     public String[] getSpecifiekeGebruikerGegevens(Object ID){
         // Auteur Dominique
         try{
