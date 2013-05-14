@@ -7,9 +7,13 @@ package java_backend;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -30,7 +34,7 @@ public class GUI extends JFrame implements ActionListener {
     private JMenuItem afsluiten, acbeheer, meldenpakket, feedbackbeheer, statistieken, blokbps;
     //private JPanel jInputfields, jNorth, jWest, jEast, jSouth, jFieldPanel;
     
-    public GUI() {
+    public GUI() throws IOException {
         //Standaard instellingen hoofdscherm
         super();
         this.setTitle("TZT Post");
@@ -70,9 +74,10 @@ public class GUI extends JFrame implements ActionListener {
         
         
         
-        //nog even kijken naar logo bovenaan de pagina met laden afbeelding van internet.
-        this.card1logo.setIcon(new javax.swing.ImageIcon("http://www.tztpost.nl/tztklein.png"));
-        //this.card1logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jelle\\Pictures\\zoidberg.png"));
+        //logo
+        BufferedImage img = ImageIO.read(new URL("http://www.tztpost.nl/tztklein.png"));
+        this.card1logo.setIcon(new javax.swing.ImageIcon(img));
+
 
         
         //loginscherm voor card1
@@ -80,9 +85,12 @@ public class GUI extends JFrame implements ActionListener {
         this.logincenter = new JPanel();
         
 
-        //kies borderlayout
+        //maak instellingen voor layout
         this.login.setLayout(new BorderLayout()); 
-        this.logincenter.setLayout(new FlowLayout());
+       
+        //instellingen voor logincenter panel
+         this.logincenter.setLayout(new FlowLayout());
+        
        // this.logincenter.setSize(50, 50);
         //instancieer buttons en velden.
         this.btLogin = new JButton("Log in");
