@@ -69,7 +69,7 @@ public class GUI extends JFrame implements ActionListener {
         this.lWachtwoord = new JLabel("Wachtwoord:");
         this.lEmailadres = new JLabel("E-mailadres:");
         
-        this.btNieuwBPS = new JButton("Nieuwe BPS");
+        this.btNieuwBPS = new JButton("Nieuw");
         this.btSluiten = new JButton("Sluit");
         
         this.tfZoekveld = new JTextField(20);
@@ -102,7 +102,7 @@ public class GUI extends JFrame implements ActionListener {
         //instellingen tweede pagina/card.
         JPanel Card2 = new JPanel();
         Card2.setLayout(new BorderLayout());
-        Card2.add( new AccountsBeherenTabel(), BorderLayout.CENTER);
+        Card2.add( new AccountsBeherenTabel());
         Card2.add(buttonssouth, BorderLayout.SOUTH);
         Card2.add(buttonsnorth, BorderLayout.NORTH);
         
@@ -146,7 +146,7 @@ public class GUI extends JFrame implements ActionListener {
                 }else{
                     //maak Persoon aan aan de hand van inloggegevens en methode in inlogdata
                     //dit is een attribuut zodat deze beschikbaar is in de gehele GUI.
-                    this.persoon = a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), true);
+                        this.persoon = a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), true);
                     if(this.persoon != null){
                         //succesvol ingelogd
                         
