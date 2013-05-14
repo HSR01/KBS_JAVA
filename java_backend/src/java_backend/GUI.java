@@ -7,9 +7,12 @@ package java_backend;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -43,9 +46,15 @@ public class GUI extends JFrame implements ActionListener {
         //Card1.add();
         this.card1logo = new JLabel();
         
+        //try catch om logo van internet op te halen.
+        try{
+        BufferedImage img = ImageIO.read(new URL("http://www.tztpost.nl/tztklein.png"));
         //nog even kijken naar logo bovenaan de pagina met laden afbeelding van internet.
-        this.card1logo.setIcon(new javax.swing.ImageIcon("http://www.tztpost.nl/tztklein.png"));
-        //this.card1logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jelle\\Pictures\\zoidberg.png"));
+        this.card1logo.setIcon(new javax.swing.ImageIcon(img));
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
 
         
         //loginscherm voor card1
