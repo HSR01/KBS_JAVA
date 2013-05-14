@@ -6,7 +6,8 @@ import java.util.logging.Logger;
 public class Java_backend {
     public static void main(String[] args) {
         
-        geoTest();
+        GUI GUI = new GUI();
+        //geoTest();
 
         
         
