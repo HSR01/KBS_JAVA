@@ -422,4 +422,35 @@ public class DbConnect {
         }
 
     }
+          public Object[][] getPakket(){
+        try{
+            //get aantal personen.
+            rs = st.executeQuery("Select Count(*) from Pakket");
+           int aantal = 0;
+            while(rs.next()){
+                aantal = rs.getInt("Count(*)");
+            }
+            //haal alles op.
+            Object[][] returnval = new Object[aantal][5];
+            query = "SELECT * from Pakket";
+            rs = st.executeQuery(query);
+            int i = 0;
+            while(rs.next()){
+                returnval[i][0] = rs.getString("PakketID");
+                returnval[i][1] = rs.getString("Gewicht");
+                returnval[i][2] = rs.getString("Prijs");
+                returnval[i][3] = rs.getString("Omschrijving");
+                returnval[i][4] = rs.getString("Datum");
+                i++;
+            }
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
 }
+  
+
+

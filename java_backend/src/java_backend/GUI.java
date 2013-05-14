@@ -28,6 +28,12 @@ public class GUI extends JFrame implements ActionListener {
     private JTextField tfEmailadres, tfZoekveld;
     private JPasswordField pfWachtwoord;
     private Persoon persoon;
+    
+    //menu onderdelen.
+    private JMenuBar menubar;
+    private JMenu bestand;
+    private JMenuItem afsluiten, acbeheer, meldenpakket, feedbackbeheer, statistieken, blokbps;
+
     //private JPanel jInputfields, jNorth, jWest, jEast, jSouth, jFieldPanel;
     
     public GUI() {
@@ -45,6 +51,29 @@ public class GUI extends JFrame implements ActionListener {
         Card1.setLayout(new BorderLayout());
         //Card1.add();
         this.card1logo = new JLabel();
+        
+        //instancieer menu
+        this.menubar = new JMenuBar();
+        this.bestand = new JMenu("Bestand");
+        
+        //instancieer menuitems
+        this.acbeheer = new JMenuItem("Accounts beheren");
+        this.meldenpakket = new JMenuItem("Volgen pakket");
+        this.feedbackbeheer = new JMenuItem("Feedback beheren");
+        this.statistieken = new JMenuItem("Statistieken");
+        this.blokbps = new JMenuItem("Blokkeren BPS'ers");
+        this.afsluiten = new JMenuItem("Afsluiten");
+        
+        //voeg items zo aan het menu.
+        this.bestand.add(this.acbeheer);
+        this.bestand.add(this.meldenpakket);
+        this.bestand.add(this.feedbackbeheer);
+        this.bestand.add(this.statistieken);
+        this.bestand.add(this.blokbps);
+        this.bestand.add(this.afsluiten);
+        this.menubar.add(this.bestand);
+
+        
         
         //try catch om logo van internet op te halen.
         try{
@@ -101,26 +130,45 @@ public class GUI extends JFrame implements ActionListener {
         this.buttonsnorth.add(this.tfZoekveld);
         this.buttonsnorth.add(this.btZoek);
         
-        
+        //VUL KAARTEN
         //voeg logo toe aan loginpanel
         Card1.add(this.card1logo, BorderLayout.NORTH);
         //voeg panel toe aan loginscherm.
         Card1.add(this.login, BorderLayout.CENTER);
-        
-        
-        //instellingen tweede pagina/card.
+
+        JPanel Card3 = new JPanel();
+        JPanel Card4 = new JPanel();
+        JPanel Card5 = new JPanel();
+        JPanel Card6 = new JPanel();
+
         JPanel Card2 = new JPanel();
         Card2.setLayout(new BorderLayout());
         Card2.add( new AccountsBeherenTabel());
         Card2.add(buttonssouth, BorderLayout.SOUTH);
         Card2.add(buttonsnorth, BorderLayout.NORTH);
         
+       //voeg kaarten toe aan kaartenhouder de string is voor naam om deze later aan te roepen.
+       cardHolder.add(Card1, "login");
+       cardHolder.add(Card2, "acbeheer");   
+       cardHolder.add(Card3, "meldenpakket");  
+       cardHolder.add(Card4, "feedbackbeheer");
+       cardHolder.add(Card5, "statistieken");
+       cardHolder.add(Card6, "blokbps");
+
+        
+
+        
         //controle of DB connectie geset is.
         DbConnect dbc = new DbConnect();
         //als er connectie is laad dan ook alle items die daar bij horen.
         if(dbc.checkConnection()){
             cardHolder.add(Card1);
-            cardHolder.add(Card2);   
+            cardHolder.add(Card2);
+            cardHolder.add(Card3);
+            cardHolder.add(Card4);
+            cardHolder.add(Card5);
+            cardHolder.add(Card6);
+            
             this.add(cardHolder);
         }else{
             //als er geen connectie is laad dan een scherm met foutmelding.
@@ -133,12 +181,19 @@ public class GUI extends JFrame implements ActionListener {
         
 
         
-
-        //Actionlistener toevoegen voor btLogin.
+        
+        //Actionlistener toevoegen
         btLogin.addActionListener(this);
         btNieuwBPS.addActionListener(this);
-        
-        //alles tonen
+        afsluiten.addActionListener(this);
+        acbeheer.addActionListener(this);
+        meldenpakket.addActionListener(this);
+        feedbackbeheer.addActionListener(this);
+        statistieken.addActionListener(this);
+        blokbps.addActionListener(this);
+
+        //alles tonen en menu toevoegen
+        this.setJMenuBar(menubar);
         this.setVisible(true);
     }
     
@@ -174,6 +229,60 @@ public class GUI extends JFrame implements ActionListener {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }   
         
+            //VANAF HIER MENU ITEMS AFVANGEN.
+            }else if (ae.getSource() == afsluiten){
+                //afsluiten button 
+               System.exit(0);
+            }else if(ae.getSource() == acbeheer){
+                //account beheer button.
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "acbeheer");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }
+            }else if (ae.getSource() == meldenpakket){
+                //melden pakket button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "meldenpakket");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == feedbackbeheer){
+                //feedbackbeheer button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "feedbackbeheer");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == statistieken){
+                //statistieken button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "statistieken");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == blokbps){
+                //blokkeer bps'er button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "blokbps");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
             }
             if (ae.getSource() == btNieuwBPS) {
              WijzigPersoon p = new WijzigPersoon();   

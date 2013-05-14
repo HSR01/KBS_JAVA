@@ -5,25 +5,8 @@ import java.util.logging.Logger;
 
 public class Java_backend {
     public static void main(String[] args) {
-        
 
-        //geoTest();
-
-        
-
-        //Financien fin = new Financien();
-        
-        //double test[] = fin.BerekenKoerier(24000);
-        
-        //System.out.println("prijs van de reis! € " + test[0]);
-        //System.out.println("bezorgd door koerier " + test[1]);      
-        //System.out.println();
-        PakketOverzicht over = new PakketOverzicht();
-        //geoTest();
-        //GUI GUI = new GUI();
-        //AanmeldenBPS bps = new AanmeldenBPS();
-        //WijzigPersoon persoon = new WijzigPersoon();
-        
+        GUI GUI = new GUI();      
     }
     
     /**
