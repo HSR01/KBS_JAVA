@@ -34,7 +34,7 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
         
         this.setSize(800, 600);  
         
-        final String[] tabelinhoud = {"PakketID", "Gewicht", "Prijs", "Omschrijving", "Datum"};
+        final String[] tabelinhoud = {"PakketID", "Gewicht", "Prijs", "Omschrijving", "Datum", "VerzendingID", "TrajectID", "Begin", "Eind"};
         DbConnect dbc = new DbConnect();
         final Object[][] data = dbc.getPakket();
         
@@ -51,6 +51,8 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
             //public Class getColumnClass(int col) {
               //  return getValueAt(0,col).getClass();
             //}
+            
+            
             @Override
             public void setValueAt(Object aValue, int row, int column) {
                 data[row][column] = aValue;

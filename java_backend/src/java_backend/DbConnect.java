@@ -422,17 +422,17 @@ public class DbConnect {
         }
 
     }
-          public Object[][] getPakket(){
+            public Object[][] getPakket(){
         try{
             //get aantal personen.
-            rs = st.executeQuery("Select Count(*) from Pakket");
+            rs = st.executeQuery("SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID");
            int aantal = 0;
             while(rs.next()){
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
-            Object[][] returnval = new Object[aantal][5];
-            query = "SELECT * from Pakket";
+            Object[][] returnval = new Object[aantal][9];
+            query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID";
             rs = st.executeQuery(query);
             int i = 0;
             while(rs.next()){
@@ -441,6 +441,10 @@ public class DbConnect {
                 returnval[i][2] = rs.getString("Prijs");
                 returnval[i][3] = rs.getString("Omschrijving");
                 returnval[i][4] = rs.getString("Datum");
+                returnval[i][5] = rs.getString("VerzendingID");
+                returnval[i][6] = rs.getString("TrajectID");
+                returnval[i][7] = rs.getString("Begin");
+                returnval[i][8] = rs.getString("Eind");
                 i++;
             }
             return returnval;
