@@ -20,6 +20,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
@@ -33,12 +34,13 @@ public class WijzigPersoon extends JDialog implements ActionListener{
             tfTussenvoegsel, 
             tfAchternaam,
             tfEmailadres, 
-            tfWachtwoord,
             tfGeboortedatum,
             tfMobielnummer,
             tfProfielfoto,
             tfIBANnummer,
             tfRechten;
+    
+     private JPasswordField pfWachtwoord;
     
     private JLabel
             logo,
@@ -106,7 +108,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.tfToevoeging = new JTextField(8);
         this.tfPlaatsnaam = new JTextField(8);
         this.tfEmailadres = new JTextField(8);
-        this.tfWachtwoord = new JTextField(8);
+        this.pfWachtwoord = new JPasswordField(8);
         this.tfIBANnummer = new JTextField(8);
         this.tfMobielnummer = new JTextField(8);
         this.tfId = new JTextField(8);
@@ -172,12 +174,13 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.btSluiten = new JButton("Sluiten");
         this.btOpslaan = new JButton("Nieuw");
         this.btWijzig = new JButton("Wijzig");
-        
+       
         
         
         btOpslaan.addActionListener(this);
         btSluiten.addActionListener(this);
         btWijzig.addActionListener(this);
+       
         
         this.jFieldPanel.add(lVoornaam);
         this.jFieldPanel.add(lTussenvoegsel);
@@ -217,7 +220,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
 
         this.jFieldPanel.add(tfMobielnummer);
         this.jFieldPanel.add(tfEmailadres);
-        this.jFieldPanel.add(tfWachtwoord);
+        this.jFieldPanel.add(pfWachtwoord);
         
         this.jFieldPanel.add(lId);
         this.jFieldPanel.add(lRechten);
@@ -232,6 +235,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.jButtons.add(btSluiten);
         this.jButtons.add(btWijzig);
         this.jButtons.add(btOpslaan);
+        
 
         this.jLogo.add(logo);
 
@@ -290,7 +294,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.tfToevoeging = new JTextField(8);
         this.tfPlaatsnaam = new JTextField(8);
         this.tfEmailadres = new JTextField(8);
-        this.tfWachtwoord = new JTextField(8);
+        this.pfWachtwoord = new JPasswordField(8);
         this.tfIBANnummer = new JTextField(8);
         this.tfMobielnummer = new JTextField(8);
         this.tfId = new JTextField(8);
@@ -359,9 +363,11 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         
         
         
+        
         btOpslaan.addActionListener(this);
         btSluiten.addActionListener(this);
         btWijzig.addActionListener(this);
+        
         
         this.jFieldPanel.add(lVoornaam);
         this.jFieldPanel.add(lTussenvoegsel);
@@ -401,7 +407,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
 
         this.jFieldPanel.add(tfMobielnummer);
         this.jFieldPanel.add(tfEmailadres);
-        this.jFieldPanel.add(tfWachtwoord);
+        this.jFieldPanel.add(pfWachtwoord);
         
         this.jFieldPanel.add(lId);
         this.jFieldPanel.add(lRechten);
@@ -416,6 +422,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.jButtons.add(btSluiten);
         this.jButtons.add(btWijzig);
         this.jButtons.add(btOpslaan);
+        
 
         this.jLogo.add(logo);
 
@@ -436,11 +443,11 @@ public class WijzigPersoon extends JDialog implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
 	if (ae.getSource() == btOpslaan) {
             //Controleer of de verplichte velden zijn ingevuld
-            if (tfWachtwoord.getText().equals("")){ 
+            if (pfWachtwoord.getText().equals("")){ 
                 JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
             }else{
                 //Hash het wachtwoord naar MD5
-                String wachtwoord = tfWachtwoord.getText();
+                String wachtwoord = pfWachtwoord.getText();
                 try{
                     MessageDigest md = MessageDigest.getInstance("MD5");
                     md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
@@ -468,6 +475,8 @@ public class WijzigPersoon extends JDialog implements ActionListener{
              a.updateGebruikerAccount(waardes);
              this.setVisible(false);
 	}
+        
+        
         
         if (ae.getSource() == btSluiten) {
             //this.hide();
@@ -507,7 +516,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         // Check Emailadres
         waardes[5] = this.tfEmailadres.getText();
         // Check Wachtwoord
-        waardes[6] = this.tfWachtwoord.getText();
+        waardes[6] = this.pfWachtwoord.getText();
         // Check IBANnummer
         waardes[7] = this.tfIBANnummer.getText();
         // Check Mobielnummer

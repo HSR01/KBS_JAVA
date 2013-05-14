@@ -7,6 +7,7 @@ import javax.swing.table.*;
 
 public class AccountsBeherenTabel extends JPanel implements ListSelectionListener {
     JTable aTable;
+    
     private Object geselecteerdeWaarde;
     // private String tableinhoud[] = {"ID", "Naam"};
     
@@ -46,12 +47,16 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         aTable.getColumnModel().getColumn(8).setPreferredWidth(70);
         aTable.getColumnModel().getColumn(9).setPreferredWidth(40);
         aTable.getColumnModel().getColumn(10).setPreferredWidth(25);
+        
+        
 
         this.add(new JScrollPane(aTable));
+      
         
         ListSelectionModel listMod = aTable.getSelectionModel();
         listMod.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listMod.addListSelectionListener( this );
+        
          
         aTable.addMouseListener(
             new MouseAdapter(){
@@ -76,6 +81,8 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         Object geselecteerdeWaarde = tm.getValueAt(selRows[0],0);
         getSelecteerdeWaarde(geselecteerdeWaarde);
     }
+    
+     
     
     public void getSelecteerdeWaarde(Object string){
         this.geselecteerdeWaarde = string;
