@@ -32,7 +32,7 @@ public class GUI extends JFrame implements ActionListener {
     //menu onderdelen.
     private JMenuBar menubar;
     private JMenu bestand;
-    private JMenuItem afsluiten, acbeheer, meldenpakket, feedbackbeheer, statistieken, blokbps;
+    private JMenuItem afsluiten, acbeheer, meldenpakket, feedbackbeheer, statistieken, blokbps, aanmeldenpakket;
 
     //private JPanel jInputfields, jNorth, jWest, jEast, jSouth, jFieldPanel;
     
@@ -62,6 +62,7 @@ public class GUI extends JFrame implements ActionListener {
         this.feedbackbeheer = new JMenuItem("Feedback beheren");
         this.statistieken = new JMenuItem("Statistieken");
         this.blokbps = new JMenuItem("Blokkeren BPS'ers");
+        this.aanmeldenpakket = new JMenuItem("Aanmelden pakket");
         this.afsluiten = new JMenuItem("Afsluiten");
         
         //voeg items zo aan het menu.
@@ -70,10 +71,11 @@ public class GUI extends JFrame implements ActionListener {
         this.bestand.add(this.feedbackbeheer);
         this.bestand.add(this.statistieken);
         this.bestand.add(this.blokbps);
+        this.bestand.add(this.aanmeldenpakket);
         this.bestand.add(this.afsluiten);
         this.menubar.add(this.bestand);
 
-        
+        this.setJMenuBar(menubar);
         
         //try catch om logo van internet op te halen.
         try{
@@ -140,6 +142,8 @@ public class GUI extends JFrame implements ActionListener {
         JPanel Card4 = new JPanel();
         JPanel Card5 = new JPanel();
         JPanel Card6 = new JPanel();
+        JPanel Card7 = new AanmeldenPakket();
+
 
         JPanel Card2 = new JPanel();
         Card2.setLayout(new BorderLayout());
@@ -147,13 +151,7 @@ public class GUI extends JFrame implements ActionListener {
         Card2.add(buttonssouth, BorderLayout.SOUTH);
         Card2.add(buttonsnorth, BorderLayout.NORTH);
         
-       //voeg kaarten toe aan kaartenhouder de string is voor naam om deze later aan te roepen.
-       cardHolder.add(Card1, "login");
-       cardHolder.add(Card2, "acbeheer");   
-       cardHolder.add(Card3, "meldenpakket");  
-       cardHolder.add(Card4, "feedbackbeheer");
-       cardHolder.add(Card5, "statistieken");
-       cardHolder.add(Card6, "blokbps");
+
 
         
 
@@ -162,13 +160,14 @@ public class GUI extends JFrame implements ActionListener {
         DbConnect dbc = new DbConnect();
         //als er connectie is laad dan ook alle items die daar bij horen.
         if(dbc.checkConnection()){
-            cardHolder.add(Card1);
-            cardHolder.add(Card2);
-            cardHolder.add(Card3);
-            cardHolder.add(Card4);
-            cardHolder.add(Card5);
-            cardHolder.add(Card6);
-            
+       //voeg kaarten toe aan kaartenhouder de string is voor naam om deze later aan te roepen.
+       cardHolder.add(Card1, "login");
+       cardHolder.add(Card2, "acbeheer");   
+       cardHolder.add(Card3, "meldenpakket");  
+       cardHolder.add(Card4, "feedbackbeheer");
+       cardHolder.add(Card5, "statistieken");
+       cardHolder.add(Card6, "blokbps");
+       cardHolder.add(Card7, "aanmeldenpakket");   
             this.add(cardHolder);
         }else{
             //als er geen connectie is laad dan een scherm met foutmelding.
@@ -191,9 +190,10 @@ public class GUI extends JFrame implements ActionListener {
         feedbackbeheer.addActionListener(this);
         statistieken.addActionListener(this);
         blokbps.addActionListener(this);
+        aanmeldenpakket.addActionListener(this);
 
         //alles tonen en menu toevoegen
-        this.setJMenuBar(menubar);
+        
         this.setVisible(true);
     }
     
@@ -280,6 +280,16 @@ public class GUI extends JFrame implements ActionListener {
                 if(this.persoon != null){
                     //laad de card van accountbeheer.
                     this.cl.show(this.cardHolder, "blokbps");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == aanmeldenpakket){
+                //aanmeldenpakket button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "aanmeldenpakket");
                 }else{
                     JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
                 }  
