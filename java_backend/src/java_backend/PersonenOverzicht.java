@@ -26,16 +26,15 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
  private Object geselecteerdeWaarde;
  JTable aTable;  
     
-    public PersonenOverzicht() {
+    public PersonenOverzicht(int geselecteerdeWaarde) {
         super();
         
-        this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setSize(800, 600);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         final String[] tabelinhoud = {"PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "TrajectID", "Begin", "Eind"};
         DbConnect dbc = new DbConnect();
-        final Object[][] data = dbc.getPersonen();
+        final Object[][] data = dbc.getPersonen(geselecteerdeWaarde);
         
         TableModel dataModel = new AbstractTableModel() {
             @Override
@@ -57,7 +56,7 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
         };
 
         aTable = new JTable(dataModel);
-        aTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+  /*      aTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         aTable.getColumnModel().getColumn(0).setPreferredWidth(25);
         aTable.getColumnModel().getColumn(1).setPreferredWidth(70);
         aTable.getColumnModel().getColumn(2).setPreferredWidth(40);
@@ -65,6 +64,7 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
         aTable.getColumnModel().getColumn(4).setPreferredWidth(25);
         aTable.getColumnModel().getColumn(5).setPreferredWidth(70);
         aTable.getColumnModel().getColumn(6).setPreferredWidth(70);       
+        */
         
 
         this.add(new JScrollPane(aTable));

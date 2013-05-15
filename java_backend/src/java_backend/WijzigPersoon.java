@@ -68,7 +68,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
             
      private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
     private JLabel lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam;
-    private JButton btSluiten, btOpslaan;
+    private JButton btSluiten, btOpslaan, btTraject, btPlaceholder;
     private JPanel jLogo, jProfielfoto, jButtons, jDatums;
 
     public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie){
@@ -237,12 +237,12 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         this.jLogo.add(logo);
         
         this.jBtnsOnderFoto.setLayout( new GridLayout(2,1));
-        JButton btTrajecten = new JButton("Trajecten");
-        JButton btPlaceholder = new JButton("Placeholder");
+        btTraject = new JButton("Trajecten");
+        btPlaceholder = new JButton("Placeholder");
         
-        this.jBtnsOnderFoto.add ( btTrajecten );
+        this.jBtnsOnderFoto.add ( btTraject );
         this.jBtnsOnderFoto.add ( btPlaceholder);
-        btTrajecten.addActionListener( this );
+        btTraject.addActionListener( this );
         btPlaceholder.addActionListener( this );
         jProfielfoto.add(jBtnsOnderFoto, BorderLayout.SOUTH);
         
@@ -441,6 +441,10 @@ public class WijzigPersoon extends JDialog implements ActionListener{
     }    
     
     public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == btTraject){
+            System.out.println("Traject");
+            PersonenOverzicht personenOverzicht = new PersonenOverzicht(Integer.parseInt(tfId.getText()));
+        }
 	if (ae.getSource() == btOpslaan) {
             //Controleer of de verplichte velden zijn ingevuld
             if (pfWachtwoord.getText().equals("")){ 

@@ -24,14 +24,40 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener, ListS
     private JTable aTable;
     private String geselecteerdeWaarde;
     
-    public BPSTrajectToewijzen(){     
-        TrajectTabel();
-        TrajectInstellingen();
-    }
+    JPanel jpVelden, jpKnoppen;
+    JTextField jtBegin, jtEind;
+    JLabel jlBegin, jlEind;
+    JButton jbVerwijder, jbSluit, jbWijzig;
     
-    public void TrajectInstellingen(){
+    public BPSTrajectToewijzen(){     
         this.setSize(800,600);
         this.setVisible(true);
+        
+        jpVelden = new JPanel();
+        jpVelden.setLayout( new GridLayout(2,2));
+        
+        jtBegin = new JTextField();
+        jtEind = new JTextField();
+        jlBegin = new JLabel("Beginpunt");
+        jlEind = new JLabel("Eindpunt");
+        
+        jpVelden.add( jlBegin );
+        jpVelden.add( jtBegin );
+        jpVelden.add( jlEind );
+        jpVelden.add( jtEind );
+        
+        jpKnoppen = new JPanel();
+        jbSluit = new JButton("Sluit");
+        jbVerwijder = new JButton("Verwijder");
+        jbWijzig = new JButton("Wijzig");
+        this.setLayout(new BorderLayout());
+        this.add( jpVelden, BorderLayout.CENTER );
+        this.add( jpKnoppen, BorderLayout.SOUTH );
+        
+        
+        
+        
+        
     }
     
     public void TrajectTabel(){

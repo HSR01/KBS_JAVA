@@ -135,7 +135,7 @@ public class DbConnect {
         return null;
     }
 
-        public Object[][] getPersonen(){
+        public Object[][] getPersonen(int ID){
         try{
             //get aantal personen.
             rs = st.executeQuery("Select count(*) from Persoon");
@@ -145,7 +145,7 @@ public class DbConnect {
             }
             //haal alles op.
             Object[][] returnval = new Object[aantal][7];
-            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID";
+            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID WHERE P.PersoonID = \"" + ID + "\"";
             rs = st.executeQuery(query);
             int i = 0;
             while(rs.next()){
