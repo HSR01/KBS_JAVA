@@ -60,7 +60,7 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
         };
 
         aTable = new JTable(dataModel);
-        aTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         aTable.getColumnModel().getColumn(0).setPreferredWidth(25);
         aTable.getColumnModel().getColumn(1).setPreferredWidth(70);
         aTable.getColumnModel().getColumn(2).setPreferredWidth(40);

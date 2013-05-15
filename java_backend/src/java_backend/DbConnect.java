@@ -428,7 +428,7 @@ public class DbConnect {
             public Object[][] getPakket(){
         try{
             //get aantal personen.
-            rs = st.executeQuery("SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID");
+            rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID");
            int aantal = 0;
             while(rs.next()){
                 aantal = rs.getInt("Count(*)");
