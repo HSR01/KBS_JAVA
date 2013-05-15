@@ -12,8 +12,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,8 +33,10 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
 
     private Object geselecteerdeWaarde;
     JTable aTable;
-    protected JComboBox dag, maand, jaar;
+    protected JComboBox Begin, Eind;
     private JPanel North, South;
+    private JLabel van, naar;
+    private JButton Start;
 
     public PakketOverzicht() {
         super();
@@ -78,16 +82,19 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
             }
         };
 
-        DefaultComboBoxModel dagen = new DefaultComboBoxModel();
-        for (int dag = 1; dag < 32; dag++) {
-            dagen.addElement(dag);
+        DefaultComboBoxModel Beginn = new DefaultComboBoxModel();
+        for (int i = 0; i < 26; i++) {
+            Beginn.addElement(stad[i]);
         }
-        dag = new JComboBox(dagen);
+        Begin = new JComboBox(Beginn);
 
-        DefaultComboBoxModel maanden = new DefaultComboBoxModel();
-        maanden.addElement(stad[0]);
+        DefaultComboBoxModel Einde = new DefaultComboBoxModel();
+        for (int i = 0; i < 26; i++) {
+
+            Einde.addElement(stad[i]);
+        }
         
-         maand = new JComboBox(maanden);
+        Eind = new JComboBox(Einde);
 
 
 
@@ -102,9 +109,15 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
 
         this.North = new JPanel();
         this.South = new JPanel();
-
-        South.add(dag);
-        South.add(maand);
+        this.van = new JLabel("Van:");
+        this.naar = new JLabel("Naar:");
+        this.Start = new JButton("Start");
+        
+        South.add(van);
+        South.add(Begin);
+        South.add(naar);
+        South.add(Eind);
+        South.add(Start);
 
         this.add(new JScrollPane(aTable));
 
@@ -127,7 +140,10 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
     }
 
     public void actionPerformed(ActionEvent ae) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (ae.getSource() == Start) {
+            //this.hide();
+            System.out.println("Start");
+	}   
     }
 
     public void valueChanged(ListSelectionEvent e) {

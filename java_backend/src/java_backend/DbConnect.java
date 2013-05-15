@@ -466,16 +466,17 @@ public class DbConnect {
                 public Object[] getLocatie  (){
         try{
             //LAURENS
-            String[] returnval = new String[1];
+            String[] returnval = new String[26];
             //haal alles op.
             
-            query = "SELECT Plaats FROM Locatie";
+            query = "SELECT Plaatsnaam FROM Locatie";
             rs = st.executeQuery(query);
-            
+            int i = 0;
             while(rs.next()){
-                returnval[0] = rs.getString("Plaatsnaam");
+                returnval[i] = rs.getString("Plaatsnaam");
                 
                 
+                i++;
             }
             return returnval;
         }catch(Exception e){
