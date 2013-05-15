@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 public class Java_backend {
     public static void main(String[] args) {
-        PakketOverzicht p = new PakketOverzicht();
-        //GUI GUI = new GUI();      
+
+        GUI GUI = new GUI();      
     }
     
     /**
