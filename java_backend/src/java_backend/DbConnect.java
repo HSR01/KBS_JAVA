@@ -195,7 +195,10 @@ public class DbConnect {
         return null;
     }
     
-    public String[] getSpecifiekeGebruikerLocatie(Object ID){
+ 
+    
+    
+      public String[] getSpecifiekeGebruikerLocatie(Object ID){
         // Auteur Dominique
         try{
             String[] returnval = new String[5];
@@ -223,6 +226,7 @@ public class DbConnect {
         }
         return null;
     }
+    
     
     public Boolean updateGebruikerAccount(String[] data){
         try{
@@ -427,6 +431,7 @@ public class DbConnect {
     }
             public Object[][] getPakket(){
         try{
+            //LAURENS
             //get aantal personen.
             rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID");
            int aantal = 0;
@@ -449,6 +454,28 @@ public class DbConnect {
                 returnval[i][7] = rs.getString("Begin");
                 returnval[i][8] = rs.getString("Eind");
                 i++;
+            }
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
+            
+                public Object[] getLocatie  (){
+        try{
+            //LAURENS
+            String[] returnval = new String[1];
+            //haal alles op.
+            
+            query = "SELECT Plaats FROM Locatie";
+            rs = st.executeQuery(query);
+            
+            while(rs.next()){
+                returnval[0] = rs.getString("Plaatsnaam");
+                
+                
             }
             return returnval;
         }catch(Exception e){
