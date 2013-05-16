@@ -336,6 +336,7 @@ public class GUI extends JFrame implements ActionListener {
         }else if (ae.getSource() == Afmelden){
             //werk voor justin
             //Auteur Justin
+            //JAAAAAAAAAAAA JUSTIN HEEFT EINDELIJK WAT AF IN JAVA JAAAAAAAA
             this.persoon = null;
             this.cl.show(this.cardHolder, "login");
             tfEmailadres.setText("");
@@ -373,6 +374,12 @@ public class GUI extends JFrame implements ActionListener {
             this.setVisible(false);
         }
     }
+    /**
+     * @author Jelle
+     * @param Card Die opgegeven is in het vullen van de cardholder.
+     * @description Zorgt ervoor dat er gewijzijgd wordt naar een card die ingegeven wordt als string. Er wordt ook gecontroleerd of er al ingelogd is.
+     * 
+     */
     public void ChangeMenu(String Card){
         //controleer inloggen
             if(this.persoon != null){
