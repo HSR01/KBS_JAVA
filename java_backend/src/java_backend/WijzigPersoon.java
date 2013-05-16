@@ -450,7 +450,7 @@ public class WijzigPersoon extends JDialog implements ActionListener{
             if (pfWachtwoord.getText().equals("")){ 
                 JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
             }else{
-                //Hash het wachtwoord naar MD5
+//                //Hash het wachtwoord naar MD5
                 String wachtwoord = pfWachtwoord.getText();
                 try{
                     MessageDigest md = MessageDigest.getInstance("MD5");

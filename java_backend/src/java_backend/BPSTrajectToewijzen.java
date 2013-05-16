@@ -15,13 +15,16 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
 
     private JTable aTable;
     private String[] geselecteerdeWaardes;
+    private int persoonID;
     
     JPanel jpHoofd, jpCenter, jpVelden, jpKnoppen, jpLabels;
     JTextField jtBegin, jtEind;
     JLabel jlBegin, jlEind;
     JButton jbVerwijder, jbSluit, jbWijzig;
+    private int PersoonID;
     
-    public BPSTrajectToewijzen(String[] geselecteerdeWaardes){     
+    public BPSTrajectToewijzen(String[] geselecteerdeWaardes, int persoonID){
+        this.persoonID = persoonID;
         this.setSize(250,150);
         this.geselecteerdeWaardes = geselecteerdeWaardes;
         jpVelden = new JPanel();
@@ -43,7 +46,7 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
         jpKnoppen = new JPanel();
         jbSluit = new JButton("Sluit");
         jbVerwijder = new JButton("Verwijder");
-        jbWijzig = new JButton("Wijzig");
+            jbWijzig = new JButton("Wijzig");
         
         jbSluit.addActionListener ( this );
         jbVerwijder.addActionListener ( this );
@@ -77,7 +80,7 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
         if( ae.getSource() == jbSluit){
-            
+            this.setVisible(false);
         }
         if( ae.getSource() == jbWijzig){
             String[] gewijzigd = new String[3];
@@ -86,6 +89,9 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
             gewijzigd[2] = geselecteerdeWaardes[4];
             DbConnect dbc = new DbConnect();
             dbc.bpsTrajectUpdate(gewijzigd);
+            
+            PersonenOverzicht.VerVerstabel(persoonID);
+            this.setVisible(false);
             
         }
         if( ae.getSource() == jbVerwijder){
