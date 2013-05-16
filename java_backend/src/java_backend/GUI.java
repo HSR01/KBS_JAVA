@@ -132,6 +132,7 @@ public class GUI extends JFrame implements ActionListener {
         cardHolder.add(Card4, "feedbackbeheer");
         cardHolder.add(Card5, "statistieken");
         cardHolder.add(Card6, "blokbps");
+        cardHolder.add(Card7, "nieuweverzending");
    
             this.add(cardHolder);
         }else{
@@ -402,7 +403,16 @@ public class GUI extends JFrame implements ActionListener {
                 }else{
                     JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
                 }  
+            }else if (ae.getSource() == NieuweVerzending){
+                //verzenden pakket aanmelden meuk
+                if(this.persoon != null){
+                    this.cl.show(this.cardHolder, "nieuweverzending");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }
+                
             }
+            
             if (ae.getSource() == btNieuwBPS) {
              WijzigPersoon p = new WijzigPersoon();   
             }
