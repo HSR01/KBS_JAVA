@@ -168,7 +168,7 @@ public class DbConnect {
         return null;
     }
     
-    public Object[][] getPersonen(){
+    public Object[][] getPersonen(int ID){
         try{
             //get aantal personen.
             rs = st.executeQuery("Select count(*) from Persoon");
@@ -540,6 +540,42 @@ public class DbConnect {
             st.executeUpdate(query);
         }catch(Exception e){
             System.out.println("error : " + e.getMessage());
+
+        }
+        return null;
+    }
+    
+     public Object[][] getSpecifiekPakket(String begin, String eind){
+        try{
+            //LAURENS
+            //get aantal personen.
+            rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID");
+           int aantal = 0;
+            while(rs.next()){
+                aantal = rs.getInt("Count(*)");
+            }
+            //haal alles op.
+           
+            
+            Object[][] returnval = new Object[aantal][9];
+            query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON "
+                    + "P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '"+ eind + "'";
+            int i = 0;
+            while(rs.next()){
+                returnval[i][0] = rs.getString("PakketID");
+                returnval[i][1] = rs.getString("Gewicht");
+                returnval[i][2] = rs.getString("Prijs");
+                returnval[i][3] = rs.getString("Omschrijving");
+                returnval[i][4] = rs.getString("Datum");
+                returnval[i][5] = rs.getString("VerzendingID");
+                returnval[i][6] = rs.getString("TrajectID");
+                returnval[i][7] = rs.getString("Begin");
+                returnval[i][8] = rs.getString("Eind");
+                i++;
+            }
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
 
         }
         return null;

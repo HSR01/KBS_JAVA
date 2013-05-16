@@ -29,7 +29,7 @@ import javax.swing.table.TableModel;
  *
  * @author Laurens
  */
-public class PakketOverzicht extends JFrame implements ListSelectionListener {
+public class PakketOverzicht extends JFrame implements ListSelectionListener, ActionListener {
 
     private Object geselecteerdeWaarde;
     JTable aTable;
@@ -37,6 +37,7 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
     private JPanel North, South;
     private JLabel van, naar;
     private JButton Start;
+    private String begin, eind;
 
     public PakketOverzicht() {
         super();
@@ -131,20 +132,61 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener {
         this.add(North, BorderLayout.NORTH);
         this.add(South, BorderLayout.SOUTH);
 
-
+        Start.addActionListener(this);
 
         this.setVisible(true);
 
 
 
     }
+    
+    public TableModel VerVerstabel(){
+        
+        DbConnect dbc = new DbConnect();
+        final String[] tabelinhoud = {"PakketID", "Gewicht", "Prijs", "Omschrijving", "Datum", "VerzendingID", "TrajectID", "Begin", "Eind"};
+        begin = (String) Begin.getSelectedItem();
+        eind = (String) Eind.getSelectedItem();
+        final Object[][] data = dbc.getSpecifiekPakket(begin, eind);
+        
+                        TableModel dataModel = new AbstractTableModel() {
+                            @Override
+                            public int getColumnCount() { return tabelinhoud.length; }
+                            @Override
+                            public int getRowCount() { return data.length;}
+                            @Override
+                            public Object getValueAt(int row, int col) { return data[row][col]; }
+                            @Override
+                            public String getColumnName(int column) {return tabelinhoud[column];}
+                            //@Override
+                            //public Class getColumnClass(int col) {
+                              //  return getValueAt(0,col).getClass();
+                            //}
+                            
+                            
+                            
+                            @Override
+                            public void setValueAt(Object aValue, int row, int column) {
+                                data[row][column] = aValue;
+                            }
+                        };
+                        
+                        return dataModel;
+      }
 
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == Start) {
+        if (ae.getSource() == Start) { //Aantal pakketen op een traject
             //this.hide();
+            DbConnect dbc = new DbConnect();
+            
+            aTable.setModel(VerVerstabel()); //Ververst tabel, maakt hem leeg
+            aTable.repaint(); 
+            //final Object[][] data = dbc.getPakket();
+            
             System.out.println("Start");
 	}   
     }
+
+   
 
     public void valueChanged(ListSelectionEvent e) {
         TableModel tm = aTable.getModel();
