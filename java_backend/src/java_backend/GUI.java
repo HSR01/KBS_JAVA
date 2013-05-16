@@ -131,6 +131,7 @@ public class GUI extends JFrame implements ActionListener {
         cardHolder.add(Card4, "feedbackbeheer");
         cardHolder.add(Card5, "statistieken");
         cardHolder.add(Card6, "blokbps");
+        cardHolder.add(Card7, "nieuweverzending");
    
             this.add(cardHolder);
         }else{
@@ -366,6 +367,72 @@ public class GUI extends JFrame implements ActionListener {
                 this.cl.show(this.cardHolder, "home");
             }else{
                 JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+            } if (ae.getSource() == PakketStatus) {
+                //melden pakket button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "meldenpakket");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == AccountToevoegen){
+                //feedbackbeheer button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "feedbackbeheer");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == AccountWijzigen){
+                //statistieken button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "statistieken");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == FinancieelOverzicht){
+                //blokkeer bps'er button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "blokbps");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == GebruikStatistieken){
+                //aanmeldenpakket button
+                
+                //als persoon niet null is er een persoon ingelogd dus mag er geswitched worden.
+                if(this.persoon != null){
+                    //laad de card van accountbeheer.
+                    this.cl.show(this.cardHolder, "aanmeldenpakket");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }  
+            }else if (ae.getSource() == NieuweVerzending){
+                //verzenden pakket aanmelden meuk
+                if(this.persoon != null){
+                    this.cl.show(this.cardHolder, "nieuweverzending");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
+                }
+                
+            }
+            
+            if (ae.getSource() == btNieuwBPS) {
+             WijzigPersoon p = new WijzigPersoon();   
+            }
+            
+            if (ae.getSource() == btSluiten) {
+             this.setVisible(false);
             }
         } else if (ae.getSource() == PakketStatus) {
             //melden pakket button
