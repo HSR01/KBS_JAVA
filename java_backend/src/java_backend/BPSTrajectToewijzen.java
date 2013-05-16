@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
-
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -15,16 +14,16 @@ import javax.swing.table.TableModel;
 public class BPSTrajectToewijzen extends JFrame implements ActionListener{
 
     private JTable aTable;
-    private String geselecteerdeWaarde;
+    private String[] geselecteerdeWaardes;
     
     JPanel jpHoofd, jpCenter, jpVelden, jpKnoppen, jpLabels;
     JTextField jtBegin, jtEind;
     JLabel jlBegin, jlEind;
     JButton jbVerwijder, jbSluit, jbWijzig;
     
-    public BPSTrajectToewijzen(){     
-        this.setSize(800,600);
-        
+    public BPSTrajectToewijzen(String[] geselecteerdeWaardes){     
+        this.setSize(250,150);
+        this.geselecteerdeWaardes = geselecteerdeWaardes;
         jpVelden = new JPanel();
         jpVelden.setLayout( new GridLayout(2,1));
         
@@ -65,16 +64,28 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
         jpHoofd.add( jpCenter, BorderLayout.WEST );
         jpHoofd.add( jpKnoppen, BorderLayout.SOUTH );
         
+        vulVelden(geselecteerdeWaardes);
         this.add(jpHoofd);
         this.setVisible(true);   
     }
 
+    public void vulVelden(String[] geselecteerdeWaardes){
+        jtBegin.setText(geselecteerdeWaardes[5]);
+        jtEind.setText(geselecteerdeWaardes[6]);
+    }
+    
     @Override
     public void actionPerformed(ActionEvent ae) {
         if( ae.getSource() == jbSluit){
             
         }
         if( ae.getSource() == jbWijzig){
+            String[] gewijzigd = new String[3];
+            gewijzigd[0] = jtBegin.getText();
+            gewijzigd[1] = jtEind.getText();
+            gewijzigd[2] = geselecteerdeWaardes[4];
+            DbConnect dbc = new DbConnect();
+            dbc.bpsTrajectUpdate(gewijzigd);
             
         }
         if( ae.getSource() == jbVerwijder){

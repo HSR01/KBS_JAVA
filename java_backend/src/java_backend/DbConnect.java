@@ -485,6 +485,24 @@ public class DbConnect {
         }
         return null;
     }
+                
+    public Boolean bpsTrajectUpdate(String[] data){
+        /*
+         * Auteur: Dominique
+         */
+        try{
+            query = "UPDATE Traject "
+                    + "SET Begin = \"" + data[0] + "\", "
+                    + "Eind = \"" + data[1] + "\""
+                    + "WHERE TrajectID = \"" + data[2] + "\"";
+            System.out.println(query);
+            st.executeUpdate(query);
+        }catch(Exception e){
+            System.out.println("error : " + e.getMessage());
+
+        }
+        return null;
+    }
 }
   
 

@@ -24,6 +24,7 @@ import javax.swing.table.TableModel;
  */
 public class PersonenOverzicht extends JFrame implements ListSelectionListener {
  private Object geselecteerdeWaarde;
+ private String[] geselecteerdeWaardes;
  JTable aTable;  
     
     public PersonenOverzicht(int geselecteerdeWaarde) {
@@ -56,7 +57,7 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
         };
 
         aTable = new JTable(dataModel);
-  /*      aTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        aTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         aTable.getColumnModel().getColumn(0).setPreferredWidth(25);
         aTable.getColumnModel().getColumn(1).setPreferredWidth(70);
         aTable.getColumnModel().getColumn(2).setPreferredWidth(40);
@@ -64,7 +65,7 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
         aTable.getColumnModel().getColumn(4).setPreferredWidth(25);
         aTable.getColumnModel().getColumn(5).setPreferredWidth(70);
         aTable.getColumnModel().getColumn(6).setPreferredWidth(70);       
-        */
+        
         
 
         this.add(new JScrollPane(aTable));
@@ -74,7 +75,17 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
         listModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listModel.addListSelectionListener( this );
         
-     
+        aTable.addMouseListener(
+            new MouseAdapter(){
+                int geselecteerdeWaarde = 14;
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    if (e.getClickCount() == 2){
+                        BPSTrajectToewijzen trajectwijzigen = new BPSTrajectToewijzen(geselecteerdeWaardes);
+                    }
+                }
+            }
+        );     
         
         
         
@@ -93,11 +104,18 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
         TableModel tm = aTable.getModel();
         int[] selRows = aTable.getSelectedRows();
-        Object geselecteerdeWaarde = tm.getValueAt(selRows[0],0);
-        getSelecteerdeWaarde(geselecteerdeWaarde);
+  //      Object geselecteerdeWaarde = tm.getValueAt(selRows[0],0);
+    //    getSelecteerdeWaarde((int) geselecteerdeWaarde);
+                String[] geselecteerdeWaardes = new String[7];
+        for(int i = 0; i<7; i++){
+            geselecteerdeWaardes[i] = (String) tm.getValueAt(selRows[0],i);
+        }
+        getSelecteerdeWaardes(geselecteerdeWaardes);
     }
     
-     
+    public void getSelecteerdeWaardes(String[] string){
+        this.geselecteerdeWaardes = string;
+    }     
     
     public void getSelecteerdeWaarde(Object string){
         this.geselecteerdeWaarde = string;
