@@ -335,6 +335,12 @@ public class GUI extends JFrame implements ActionListener {
            System.exit(0);
         }else if (ae.getSource() == Afmelden){
             //werk voor justin
+            //Auteur Justin
+            this.persoon = null;
+            this.cl.show(this.cardHolder, "login");
+            tfEmailadres.setText("");
+            pfWachtwoord.setText("");
+            this.setJMenuBar(null);
         }else if(ae.getSource() == NieuweVerzending){
             ChangeMenu("nieuweverzending");
         }else if(ae.getSource() == StatusVerzending){
