@@ -165,6 +165,13 @@ public class GUI extends JFrame implements ActionListener {
             this.add(error);
         }
 //-------------------------->Card 1: Login venster<--------------------------//
+        //De loginpagina is de enige card die in de GUI staat.
+        //Dit vanwege het wisselen van kaarten in combinatie met action listeners.
+        //bij andere paginas gebeurd dit via het menu en wordt dit dus ook geregeld in het menu en niet de losse klasse.
+        //
+        
+        
+        
         //Layoutmanager
         Card1.setLayout(new BorderLayout());
         
@@ -215,11 +222,6 @@ public class GUI extends JFrame implements ActionListener {
        
         Card1.add(this.loginlogo, BorderLayout.NORTH);
         Card1.add(this.login, BorderLayout.CENTER);
-
-
-//-------------------------->Card 3: Start scherm<--------------------------//     
-  
-
 //-------------------------->ActionListeners<--------------------------//           
         
         //Actionlistener voor login
@@ -344,17 +346,17 @@ public class GUI extends JFrame implements ActionListener {
         }else if(ae.getSource() == PakketWijzigen){
             ChangeMenu("pakketwijzigen");
         }else if(ae.getSource() == AccountToevoegen){
-                        ChangeMenu("accounttoevoegen");
+            ChangeMenu("accounttoevoegen");
         }else if(ae.getSource() == AccountWijzigen){
-                        ChangeMenu("accountwijzigen");
+            ChangeMenu("accountwijzigen");
         }else if(ae.getSource() == AccountBlokeren){
-                        ChangeMenu("accountblokkeren");
+            ChangeMenu("accountblokkeren");
         }else if(ae.getSource() == GebruikStatistieken){
-                        ChangeMenu("gebruikstatistieken");
+            ChangeMenu("gebruikstatistieken");
         }else if(ae.getSource() == PakketStatistieken){
-                        ChangeMenu("pakketstatistieken");
+            ChangeMenu("pakketstatistieken");
         }else if(ae.getSource() == FinancieelOverzicht){
-                        ChangeMenu("financieeloverzicht");
+            ChangeMenu("financieeloverzicht");
         }
         //EINDE MENU
         if (ae.getSource() == btNieuwBPS) {
