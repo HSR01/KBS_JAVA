@@ -2,6 +2,8 @@ package java_backend;
 
 
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.sql.*;
 import javax.security.auth.login.FailedLoginException;
 
@@ -229,14 +231,22 @@ public class DbConnect {
     
     
     public Boolean updateGebruikerAccount(String[] data){
+        String wachtwoord = data[6];
+                try{
+                    MessageDigest md = MessageDigest.getInstance("MD5");
+                    md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
+                    wachtwoord = new BigInteger(1, md.digest()).toString(16);
+                }catch(Exception o){
+                    System.out.println("Hash Error:" + o);
+                }
         try{
             query = "UPDATE Persoon "
                     + "SET Voornaam = \"" + data[1] + "\", "
                     + "Tussenvoegsel = \"" + data[2] + "\", "
                     + "Achternaam = \"" + data[3] + "\", "
-                    + "Emailadres = \"" + data[4] + "\", "
-                    + "Wachtwoord = \"" + data[5] + "\", " 
-                    + "Geboortedatum = \"" + data[6] + "\", "
+                    + "Emailadres = \"" + data[5] + "\", "
+                    + "Wachtwoord = \"" + wachtwoord + "\", " 
+                    + "Geboortedatum = \"" + data[4] + "\", "
                     + "Mobielnummer = \"" + data[7] + "\", "
                     + "Profielfoto = \"" + data[8] + "\", "
                     + "IBAN = \"" + data[9] + "\", "
