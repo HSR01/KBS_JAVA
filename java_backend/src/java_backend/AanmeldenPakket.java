@@ -5,13 +5,15 @@
 package java_backend;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
  *
  * @author Jelle
  */
-class AanmeldenPakket extends JPanel {
+class AanmeldenPakket extends JPanel implements ActionListener{
     private JLabel zoeklabel, adres, postcode, huisnr, plaats, telefoonnummer, naam;
     private JTextField zoekveld, tadres, tpostcode, thuisnr, tplaats, ttelefoonnummer, tnaam;
     private JButton zoek, submit;
@@ -74,12 +76,46 @@ class AanmeldenPakket extends JPanel {
         //instancieer velden voor bottompanel
         submit = new JButton("Verstuur");
         
+        //voeg velden toe aan bottompanel
         bottompanel.add(submit);
+        
+        //activeer action listeners voor 2 buttons
+        zoek.addActionListener(this);
+        submit.addActionListener(this);
+        
         //voeg alle onderdelen toe aan layout.
         this.add(toppanel, BorderLayout.NORTH);
         this.add(midpanel, BorderLayout.CENTER);
         this.add(bottompanel, BorderLayout.SOUTH);
+        
+
+        
         this.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        DbConnect dbc = new DbConnect();
+       if(ae.getSource() == zoek){
+           //zoek button
+
+           if(zoekveld.getText().equals("")){
+               //er is niks ingevuld toon foutmelding
+               //maak jdialog omdat joptionpane niet werk in jpanel.
+              JDialog jd = new JDialog();
+              jd.setSize(200,100);
+              jd.setTitle("Foutmelding");
+              jd.add(new JLabel("U heeft geen zoekterm ingevuld."));
+              jd.setVisible(true);
+              
+           }else{
+               //er is wat ingevuld voer query uit.
+               
+           }
+           
+       }else if (ae.getSource() == submit){
+           //verstuur buttom
+       }
     }
     
 }
