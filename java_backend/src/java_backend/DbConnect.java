@@ -481,7 +481,7 @@ public class DbConnect {
             }
             //haal alles op.
             Object[][] returnval = new Object[aantal][9];
-            query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID";
+            query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID";
             rs = st.executeQuery(query);
             int i = 0;
             while(rs.next()){
@@ -549,7 +549,7 @@ public class DbConnect {
         try{
             //LAURENS
             //get aantal personen.
-            rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID");
+            rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '"+ eind + "'");
            int aantal = 0;
             while(rs.next()){
                 aantal = rs.getInt("Count(*)");
@@ -559,9 +559,11 @@ public class DbConnect {
             
             Object[][] returnval = new Object[aantal][9];
             query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON "
-                    + "P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '"+ eind + "'";
+                    + "P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '"+ eind + "'";
             int i = 0;
+            rs = st.executeQuery(query);
             while(rs.next()){
+                
                 returnval[i][0] = rs.getString("PakketID");
                 returnval[i][1] = rs.getString("Gewicht");
                 returnval[i][2] = rs.getString("Prijs");
@@ -572,6 +574,8 @@ public class DbConnect {
                 returnval[i][7] = rs.getString("Begin");
                 returnval[i][8] = rs.getString("Eind");
                 i++;
+                
+                
             }
             return returnval;
         }catch(Exception e){

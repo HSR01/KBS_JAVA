@@ -6,7 +6,8 @@ import javax.swing.UIManager;
 
 public class Java_backend {
     public static void main(String[] args) {
-        GUI GUI = new GUI();      
+        PakketOverzicht p = new PakketOverzicht();
+        //GUI GUI = new GUI();      
     }
     
     /**

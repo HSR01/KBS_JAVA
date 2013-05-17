@@ -32,12 +32,13 @@ import javax.swing.table.TableModel;
 public class PakketOverzicht extends JFrame implements ListSelectionListener, ActionListener {
 
     private Object geselecteerdeWaarde;
-    JTable aTable;
+    static JTable aTable;
     protected JComboBox Begin, Eind;
     private JPanel North, South;
     private JLabel van, naar;
     private JButton Start;
     private String begin, eind;
+    private TableModel dataModel;
 
     public PakketOverzicht() {
         super();
@@ -82,7 +83,8 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
                 data[row][column] = aValue;
             }
         };
-
+        
+        //voegt Steden toe aan het dropdown menu
         DefaultComboBoxModel Beginn = new DefaultComboBoxModel();
         for (int i = 0; i < 26; i++) {
             Beginn.addElement(stad[i]);
@@ -94,7 +96,7 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
 
             Einde.addElement(stad[i]);
         }
-        
+
         Eind = new JComboBox(Einde);
 
 
@@ -113,7 +115,7 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
         this.van = new JLabel("Van:");
         this.naar = new JLabel("Naar:");
         this.Start = new JButton("Start");
-        
+
         South.add(van);
         South.add(Begin);
         South.add(naar);
@@ -139,54 +141,64 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
 
 
     }
-    
-    public TableModel VerVerstabel(){
-        
+
+    public TableModel VerVerstabel() {
+
         DbConnect dbc = new DbConnect();
         final String[] tabelinhoud = {"PakketID", "Gewicht", "Prijs", "Omschrijving", "Datum", "VerzendingID", "TrajectID", "Begin", "Eind"};
         begin = (String) Begin.getSelectedItem();
         eind = (String) Eind.getSelectedItem();
+        System.out.println(begin);
+        System.out.println(eind);
         final Object[][] data = dbc.getSpecifiekPakket(begin, eind);
         
-                        TableModel dataModel = new AbstractTableModel() {
-                            @Override
-                            public int getColumnCount() { return tabelinhoud.length; }
-                            @Override
-                            public int getRowCount() { return data.length;}
-                            @Override
-                            public Object getValueAt(int row, int col) { return data[row][col]; }
-                            @Override
-                            public String getColumnName(int column) {return tabelinhoud[column];}
-                            //@Override
-                            //public Class getColumnClass(int col) {
-                              //  return getValueAt(0,col).getClass();
-                            //}
-                            
-                            
-                            
-                            @Override
-                            public void setValueAt(Object aValue, int row, int column) {
-                                data[row][column] = aValue;
-                            }
-                        };
-                        
-                        return dataModel;
-      }
+        TableModel dataModel = new AbstractTableModel() {
+            @Override
+            public int getColumnCount() {
+                return tabelinhoud.length;
+            }
+
+            @Override
+            public int getRowCount() {
+                return data.length;
+            }
+
+            @Override
+            public Object getValueAt(int row, int col) {
+                return data[row][col];
+            }
+
+            @Override
+            public String getColumnName(int column) {
+                return tabelinhoud[column];
+            }
+            //@Override
+            //public Class getColumnClass(int col) {
+            //  return getValueAt(0,col).getClass();
+            //}
+
+            @Override
+            public void setValueAt(Object aValue, int row, int column) {
+                data[row][column] = aValue;
+            }
+        };
+
+        return dataModel;
+    }
 
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == Start) { //Aantal pakketen op een traject
             //this.hide();
             DbConnect dbc = new DbConnect();
-            
-            aTable.setModel(VerVerstabel()); //Ververst tabel, maakt hem leeg
-            aTable.repaint(); 
-            //final Object[][] data = dbc.getPakket();
-            
-            System.out.println("Start");
-	}   
-    }
+            PakketOverzicht.aTable.setModel(VerVerstabel()); //Ververst tabel, maakt hem leeg
+            PakketOverzicht.aTable.repaint();
+             
 
-   
+            
+            
+
+        }
+    }
 
     public void valueChanged(ListSelectionEvent e) {
         TableModel tm = aTable.getModel();
