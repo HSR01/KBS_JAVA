@@ -584,6 +584,37 @@ public class DbConnect {
         }
         return null;
     }
+
+    public Object[][] getGebruikStatistiek() {
+         try{
+            //get aantal personen.
+            rs = st.executeQuery("SELECT Count(*) FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID");
+           int aantal = 0;
+            while(rs.next()){
+                aantal = rs.getInt("Count(*)");
+            }
+            //haal alles op.
+            Object[][] returnval = new Object[aantal][6];
+            query = "SELECT p.PersoonID, p.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID";
+            rs = st.executeQuery(query);
+            int i = 0;
+            while(rs.next()){
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                returnval[i][2] = rs.getString("Tussenvoegsel");
+                returnval[i][3] = rs.getString("Achternaam");
+                returnval[i][4] = rs.getString("TrajectID");
+                returnval[i][5] = rs.getString("Begin");
+                returnval[i][6] = rs.getString("Eind");
+                i++;
+            }
+            return returnval;
+        }catch(Exception e){
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
 }
   
 
