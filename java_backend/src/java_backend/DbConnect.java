@@ -1,7 +1,5 @@
 package java_backend;
 
-
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.*;
@@ -32,13 +30,9 @@ public class DbConnect {
     private Connection con;
     private Statement st;
     private ResultSet rs;
-
     private String persoontabel = "LocatieID, Voornaam, Tussenvoegsel, Achternaam, Emailadres, Wachtwoord, Geboortedatum, Mobielnummer, Profielfoto, IBAN";
     private String locatie = "Latitude, Longitude, Plaatsnaam, Straatnaam, Huisnummer, Toevoeging, Postcode, Telefoonnummer, TZTPoint";
-    
     private String tabel;
-    
-
     //Server url
     String url = "jdbc:mysql://server48.firstfind.nl/vanderbe-2";
     //Server login naam
@@ -55,29 +49,31 @@ public class DbConnect {
             con = DriverManager.getConnection(url, user, pasw);
             st = con.createStatement();
             //Afvangen fouten voor database connectie    
-        } catch(SQLException ex){
+        } catch (SQLException ex) {
             System.out.println("Problemen met verbinding.");
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Onbekende error");
         }
         System.out.println(st);
 
     }
+
     /**
      * @author Jelle
      * @description Controleerd of verbinding goed is of niet adhv dbconnect.
      * @return Boolean
      */
-    public boolean checkConnection(){
+    public boolean checkConnection() {
         //als st niet null is is connection actief.
-        if(st != null){
+        if (st != null) {
             return true;
-        }else{
+        } else {
             //bij null stuur false, omdat connectie niet actief is.
             return false;
         }
     }
-    public void getData(){
+
+    public void getData() {
         //Query voor uitlezen!!!!----->
         try {
 
@@ -102,12 +98,12 @@ public class DbConnect {
 
     }
 
-    public Object[][] getUsers(){
-        try{
+    public Object[][] getUsers() {
+        try {
             //get aantal personen.
             rs = st.executeQuery("Select Count(*) from Persoon");
             int aantal = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
@@ -115,7 +111,7 @@ public class DbConnect {
             query = "SELECT * from Persoon";
             rs = st.executeQuery(query);
             int i = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[i][0] = rs.getString("PersoonID");
                 returnval[i][1] = rs.getString("Voornaam");
                 returnval[i][2] = rs.getString("Tussenvoegsel");
@@ -130,19 +126,19 @@ public class DbConnect {
                 i++;
             }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
         return null;
     }
 
-    public Object[][] getPakketPersoon(int ID){
-        try{
+    public Object[][] getPakketPersoon(int ID) {
+        try {
             //get aantal personen.
             rs = st.executeQuery("Select count(*) from Persoon");
             int aantal = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
@@ -150,7 +146,7 @@ public class DbConnect {
             query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID WHERE P.PersoonID = \"" + ID + "\"";
             rs = st.executeQuery(query);
             int i = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[i][0] = rs.getString("PersoonID");
                 returnval[i][1] = rs.getString("Voornaam");
                 returnval[i][2] = rs.getString("Tussenvoegsel");
@@ -161,19 +157,19 @@ public class DbConnect {
                 i++;
             }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
         return null;
     }
-    
-    public Object[][] getPersonen(int ID){
-        try{
+
+    public Object[][] getPersonen(int ID) {
+        try {
             //get aantal personen.
             rs = st.executeQuery("Select count(*) from Persoon");
             int aantal = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
@@ -181,7 +177,7 @@ public class DbConnect {
             query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID";
             rs = st.executeQuery(query);
             int i = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[i][0] = rs.getString("PersoonID");
                 returnval[i][1] = rs.getString("Voornaam");
                 returnval[i][2] = rs.getString("Tussenvoegsel");
@@ -192,21 +188,21 @@ public class DbConnect {
                 i++;
             }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
         return null;
-    }    
-    
-    public String[] getSpecifiekeGebruikerGegevens(Object ID){
+    }
+
+    public String[] getSpecifiekeGebruikerGegevens(Object ID) {
         // Auteur Dominique
-        try{
+        try {
             String[] returnval = new String[11];
             query = "SELECT * from Persoon Where PersoonID = " + ID;
             rs = st.executeQuery(query);
             int i = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[0] = rs.getString("PersoonID");
                 returnval[1] = rs.getString("Voornaam");
                 returnval[2] = rs.getString("Tussenvoegsel");
@@ -221,62 +217,59 @@ public class DbConnect {
                 i++;
             }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
         return null;
     }
-    
- 
-    
-    
-      public String[] getSpecifiekeGebruikerLocatie(Object ID){
+
+    public String[] getSpecifiekeGebruikerLocatie(Object ID) {
         // Auteur Dominique
-        try{
+        try {
             String[] returnval = new String[5];
-            
+
             // Haalt het bijbehorende LocatieID object op.
             query = "SELECT LocatieID from Persoon_Locatie Where PersoonID = " + ID;
             rs = st.executeQuery(query);
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[0] = rs.getString("LocatieID");
             }
-            
+
             // Gebruikt locatieID en haalt de records daarvan uit database
             query = "SELECT * from Locatie Where LocatieID = " + returnval[0];
             rs = st.executeQuery(query);
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[0] = rs.getString("Plaatsnaam");
                 returnval[1] = rs.getString("Straatnaam");
                 returnval[2] = rs.getString("Huisnummer");
                 returnval[3] = rs.getString("Toevoeging");
-                returnval[4] = rs.getString("Postcode");}
+                returnval[4] = rs.getString("Postcode");
+            }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
         return null;
     }
-    
-    
-    public Boolean updateGebruikerAccount(String[] data){
+
+    public Boolean updateGebruikerAccount(String[] data) {
         String wachtwoord = data[6];
-                try{
-                    MessageDigest md = MessageDigest.getInstance("MD5");
-                    md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
-                    wachtwoord = new BigInteger(1, md.digest()).toString(16);
-                }catch(Exception o){
-                    System.out.println("Hash Error:" + o);
-                }
-        try{
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
+            wachtwoord = new BigInteger(1, md.digest()).toString(16);
+        } catch (Exception o) {
+            System.out.println("Hash Error:" + o);
+        }
+        try {
             query = "UPDATE Persoon "
                     + "SET Voornaam = \"" + data[1] + "\", "
                     + "Tussenvoegsel = \"" + data[2] + "\", "
                     + "Achternaam = \"" + data[3] + "\", "
                     + "Emailadres = \"" + data[5] + "\", "
-                    + "Wachtwoord = \"" + wachtwoord + "\", " 
+                    + "Wachtwoord = \"" + wachtwoord + "\", "
                     + "Geboortedatum = \"" + data[4] + "\", "
                     + "Mobielnummer = \"" + data[7] + "\", "
                     + "Profielfoto = \"" + data[8] + "\", "
@@ -285,12 +278,13 @@ public class DbConnect {
                     + "WHERE PersoonID = \"" + data[0] + "\"";
             System.out.println(query);
             st.executeUpdate(query);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
 
         }
         return null;
-    }    
+    }
+
     /**
      * @author Laurens
      * @autorv2 Jelle
@@ -298,9 +292,9 @@ public class DbConnect {
      * @param wachtwoord
      * @param succes
      * @return Object of Persoon or NULL
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException{
+    public Persoon getLoginData(String emailadres, String wachtwoord, boolean succes) throws SQLException {
         //Query voor uitlezen login gegevens!!!!----->
         PreparedStatement stmt = null;
 
@@ -309,9 +303,9 @@ public class DbConnect {
             //rechten >0 houd in dat iedereen met rechten BOVEN BPS'er in mogen loggen.
             stmt = con.prepareStatement("SELECT * FROM Persoon WHERE Emailadres = ? AND Wachtwoord = ? AND rechten > 0");
 
-           stmt.setString(1, emailadres);
-           stmt.setString(2, wachtwoord);
-           
+            stmt.setString(1, emailadres);
+            stmt.setString(2, wachtwoord);
+
             //Select collum
             String password = "Wachtwoord";
             String email = "Emailadres";
@@ -321,18 +315,18 @@ public class DbConnect {
 
             //Loop door de query data heen
             while (rs.next()) {
-                
+
                 String content = rs.getString(password);
                 String content1 = rs.getString(email);
 
-                if (content1.equals(emailadres) && content.equals(wachtwoord)) {     
+                if (content1.equals(emailadres) && content.equals(wachtwoord)) {
                     //inloggen is gelukt, vul persoon object.
                     Persoon p = new Persoon();
                     p.setVoornaam(rs.getString("Voornaam"));
                     p.setTussenvoegsel(rs.getString("Tussenvoegsel"));
                     p.setAchternaam(rs.getString("Achternaam"));
                     p.setEmailadres(rs.getString("Emailadres"));
-                    
+
                     //zet geboortedatum om van String uit DB naar Date in Java
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     try {
@@ -344,39 +338,36 @@ public class DbConnect {
                     p.setMobielnummer(rs.getString("Mobielnummer"));
                     p.setPersoonID(rs.getInt("PersoonID"));
                     p.setRechten(rs.getInt("Rechten"));
-                    
+
                     //object is gevuld geef het object terug.
                     return p;
 
-                }
-                else {
+                } else {
                     //geen match gevonden in het systeem, inloggen is niet succesvol.
                     return null;
                 }
             }
-        }
-       finally {
+        } finally {
             //sluiten van databaseconnectie
-      try {
-         if (stmt != null) { stmt.close(); }
-      }
-      catch (Exception e) {
-         // log this error
-      }
-      try {
-         if (con != null) { con.close(); }
-      }
-      catch (Exception e) {
-         // log this error
-      }
-   }
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                // log this error
+            }
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                // log this error
+            }
+        }
         return null;
-} 
-        
+    }
 
-    
-
-    public void insertData(String content, String aa){
+    public void insertData(String content, String aa) {
         //Query voor inserten!!!!----->       
 
         try {
@@ -394,7 +385,7 @@ public class DbConnect {
 
     }
 
-    public void insertData(){
+    public void insertData() {
         //Query voor inserten!!!!----->       
         try {
 
@@ -411,46 +402,41 @@ public class DbConnect {
 
     }
 
-
-      
-    public void insertData(String tabelnaam, String ... value){
+    public void insertData(String tabelnaam, String... value) {
         //Query voor inserten!!!!----->   
         String waardes = "";
-        
-        if(tabelnaam.equals("Persoon")){
-            this.tabel = this.persoontabel;                      
-        }else if(tabelnaam.equals("Locatie")){
+
+        if (tabelnaam.equals("Persoon")) {
+            this.tabel = this.persoontabel;
+        } else if (tabelnaam.equals("Locatie")) {
             this.tabel = this.locatie;
-        }  
-        
-        for (int i = 0; i < value.length; i++){
-            waardes += i <= value.length-2  ? 
-                    value [i] + "','" : 
-                    value [i] + "" ;
         }
-            System.out.println(tabelnaam);
-            System.out.println(tabel);
-            System.out.println(waardes);
 
-            try{
-                  
-                //Insert query
-                query = "INSERT INTO  " + tabelnaam + " ( " + tabel + ")"
-                      + " VALUES('" + waardes + "')"; 
-                
-                //Query uitvoeren
-                st.executeUpdate(query);
-                System.out.println(query);
-                
-            }catch(Exception e){
-                System.out.println(e);
-            }
+        for (int i = 0; i < value.length; i++) {
+            waardes += i <= value.length - 2
+                    ? value[i] + "','"
+                    : value[i] + "";
+        }
+        System.out.println(tabelnaam);
+        System.out.println(tabel);
+        System.out.println(waardes);
+
+        try {
+
+            //Insert query
+            query = "INSERT INTO  " + tabelnaam + " ( " + tabel + ")"
+                    + " VALUES('" + waardes + "')";
+
+            //Query uitvoeren
+            st.executeUpdate(query);
+            System.out.println(query);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
-            
-  
 
-
-    public void updateData(String field, String content){
+    public void updateData(String field, String content) {
         //Query voor updaten!!!!----->
         try {
 
@@ -470,13 +456,14 @@ public class DbConnect {
         }
 
     }
-            public Object[][] getPakket(){
-        try{
+
+    public Object[][] getPakket() {
+        try {
             //LAURENS
             //get aantal personen.
             rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID");
-           int aantal = 0;
-            while(rs.next()){
+            int aantal = 0;
+            while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
@@ -484,7 +471,7 @@ public class DbConnect {
             query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID";
             rs = st.executeQuery(query);
             int i = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[i][0] = rs.getString("PakketID");
                 returnval[i][1] = rs.getString("Gewicht");
                 returnval[i][2] = rs.getString("Prijs");
@@ -497,73 +484,73 @@ public class DbConnect {
                 i++;
             }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
         return null;
     }
-            
-                public Object[] getLocatie  (){
-        try{
+
+    public Object[] getLocatie() {
+        try {
             //LAURENS
             String[] returnval = new String[26];
             //haal alles op.
-            
+
             query = "SELECT Plaatsnaam FROM Locatie";
             rs = st.executeQuery(query);
             int i = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[i] = rs.getString("Plaatsnaam");
-                
-                
+
+
                 i++;
             }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
         return null;
     }
-                
-    public Boolean bpsTrajectUpdate(String[] data){
+
+    public Boolean bpsTrajectUpdate(String[] data) {
         /*
          * Auteur: Dominique
          */
-        try{
+        try {
             query = "UPDATE Traject "
                     + "SET Begin = \"" + data[0] + "\", "
                     + "Eind = \"" + data[1] + "\""
                     + "WHERE TrajectID = \"" + data[2] + "\"";
             System.out.println(query);
             st.executeUpdate(query);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
 
         }
         return null;
     }
-    
-     public Object[][] getSpecifiekPakket(String begin, String eind){
-        try{
+
+    public Object[][] getSpecifiekPakket(String begin, String eind) {
+        try {
             //LAURENS
             //get aantal personen.
-            rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '"+ eind + "'");
-           int aantal = 0;
-            while(rs.next()){
+            rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '" + eind + "'");
+            int aantal = 0;
+            while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
-           
-            
+
+
             Object[][] returnval = new Object[aantal][9];
             query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON "
-                    + "P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '"+ eind + "'";
+                    + "P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '" + eind + "'";
             int i = 0;
             rs = st.executeQuery(query);
-            while(rs.next()){
-                
+            while (rs.next()) {
+
                 returnval[i][0] = rs.getString("PakketID");
                 returnval[i][1] = rs.getString("Gewicht");
                 returnval[i][2] = rs.getString("Prijs");
@@ -574,11 +561,11 @@ public class DbConnect {
                 returnval[i][7] = rs.getString("Begin");
                 returnval[i][8] = rs.getString("Eind");
                 i++;
-                
-                
+
+
             }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
@@ -586,19 +573,19 @@ public class DbConnect {
     }
 
     public Object[][] getGebruikStatistiek() {
-         try{
+        try {
             //get aantal personen.
-            rs = st.executeQuery("SELECT Count(*) FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID");
-           int aantal = 0;
-            while(rs.next()){
+            rs = st.executeQuery(" SELECT Count(*) FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID");
+            int aantal = 0;
+            while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
-            Object[][] returnval = new Object[aantal][6];
-            query = "SELECT p.PersoonID, p.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID";
+            Object[][] returnval = new Object[aantal][7];
+            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID";
             rs = st.executeQuery(query);
             int i = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 returnval[i][0] = rs.getString("PersoonID");
                 returnval[i][1] = rs.getString("Voornaam");
                 returnval[i][2] = rs.getString("Tussenvoegsel");
@@ -609,13 +596,10 @@ public class DbConnect {
                 i++;
             }
             return returnval;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
         }
         return null;
     }
 }
-  
-
-
