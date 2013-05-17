@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,57 +28,17 @@ import javax.swing.JTextField;
  *
  * @author Daniel
  */
-public class WijzigPersoon extends JDialog implements ActionListener{
-    private JTextField
-            tfId,
-            tfVoornaam,
-            tfTussenvoegsel, 
-            tfAchternaam,
-            tfEmailadres, 
-            tfGeboortedatum,
-            tfMobielnummer,
-            tfProfielfoto,
-            tfIBANnummer,
-            tfRechten;
-    
-     private JPasswordField pfWachtwoord;
-    
-    private JLabel
-            logo,
-            lId,
-            lVoornaam,
-            lTussenvoegsel, 
-            lAchternaam,
-            lEmailadres, 
-            lWachtwoord,
-            lGeboortedatum,
-            lMobielnummer,
-            lProfielfoto,
-            lIBANnummer,
-            lRechten;
-    
-    private JButton
-            btTerug,
-            btWijzig;
-    
-    private JPanel
-            jInputfields,
-            jFieldPanel, // Bevat de labels en invulvelden
-            jBtnsOnderFoto;
-            
-            
-     private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
-    private JLabel lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam;
-    private JButton btSluiten, btOpslaan, btTraject, btPlaceholder;
-    private JPanel jLogo, jProfielfoto, jButtons, jDatums;
+public class WijzigPersoon extends JPanel implements ActionListener{
+    private JTextField tfId, tfVoornaam, tfTussenvoegsel, tfAchternaam, tfEmailadres, tfGeboortedatum, tfMobielnummer, tfProfielfoto, tfIBANnummer, tfRechten;
+    private JPasswordField pfWachtwoord;
+    private JLabel logo, lId, lVoornaam, lTussenvoegsel, lAchternaam, lEmailadres, lWachtwoord, lGeboortedatum, lMobielnummer, lProfielfoto, lIBANnummer, lRechten, lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam;
+    private JPanel jInputfields, jFieldPanel, jBtnsOnderFoto, jLogo, jProfielfoto, jButtons, jDatums;        
+    private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
+    private JButton btSluiten, btOpslaan, btTraject, btPlaceholder, btWijzig;
 
     public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie){
         super();
-        this.setTitle("TZT Post - Account Beheer");
         this.setLayout(new BorderLayout());
-        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        //this.setResizable(false);
-        this.setSize(1000, 600);   
 
         this.jLogo = new JPanel();
         this.jInputfields = new JPanel();
@@ -99,23 +60,23 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         }
         
         //Layout voor inputfields
-        jFieldPanel.setLayout(new GridLayout(15, 8, 18, 6));
+        jFieldPanel.setLayout(new GridLayout(15, 1, 18, 1));
 
-        this.tfVoornaam = new JTextField(8);
-        this.tfTussenvoegsel = new JTextField("",8);
+        this.tfVoornaam = new JTextField(4);
+        this.tfTussenvoegsel = new JTextField("",4);
      
-        this.tfAchternaam = new JTextField(8);
-        this.tfGeboortedatum = new JTextField(8);
-        this.tfPostcode = new JTextField(8);
-        this.tfStraatnaam = new JTextField(8);
-        this.tfHuisnummer = new JTextField(8);
-        this.tfToevoeging = new JTextField(8);
-        this.tfPlaatsnaam = new JTextField(8);
-        this.tfEmailadres = new JTextField(8);
-        this.pfWachtwoord = new JPasswordField(8);
-        this.tfIBANnummer = new JTextField(8);
-        this.tfMobielnummer = new JTextField(8);
-        this.tfId = new JTextField(8);
+        this.tfAchternaam = new JTextField(4);
+        this.tfGeboortedatum = new JTextField(4);
+        this.tfPostcode = new JTextField(4);
+        this.tfStraatnaam = new JTextField(4);
+        this.tfHuisnummer = new JTextField(4);
+        this.tfToevoeging = new JTextField(4);
+        this.tfPlaatsnaam = new JTextField(4);
+        this.tfEmailadres = new JTextField(4);
+        this.pfWachtwoord = new JPasswordField(4);
+        this.tfIBANnummer = new JTextField(4);
+        this.tfMobielnummer = new JTextField(4);
+        this.tfId = new JTextField(4);
         
         this.lVoornaam = new JLabel("Voornaam");
         this.lTussenvoegsel = new JLabel("Tussenv");
@@ -264,63 +225,52 @@ public class WijzigPersoon extends JDialog implements ActionListener{
     
     public WijzigPersoon(){
         super();
-        this.setTitle("TZT Post - Account Beheer");
-        this.setLayout(new BorderLayout());
-        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        //this.setResizable(false);
-        this.setSize(1000, 600);   
-
-        this.jLogo = new JPanel();
-        this.jInputfields = new JPanel();
-        this.jFieldPanel = new JPanel();
-        this.jProfielfoto = new JPanel();
-        this.jButtons = new JPanel();
-        this.jDatums = new JPanel();
         
-        //Laad profielfoto uit web omgeving
-        try{
-            URL url = new URL("http://tztpost.nl/images/Profielfotos/geenfoto.jpg");
-            Image im = ImageIO.read(url);
-            JLabel lblimage = new JLabel(new ImageIcon(im));
-            jProfielfoto.add(lblimage, BorderLayout.CENTER);
-        }catch(Exception e){
-            System.out.println("Profielfoto Error: " + e);
-        }
+        // Aanmaken Panels
+        this.jLogo          = new JPanel();
+        this.jInputfields   = new JPanel();
+        this.jFieldPanel    = new JPanel();
+        this.jButtons       = new JPanel();
+        this.jDatums        = new JPanel();
         
-        //Layout voor inputfields
-        jFieldPanel.setLayout(new GridLayout(15, 8, 18, 6));
-
-        this.tfVoornaam = new JTextField(8);
-        this.tfTussenvoegsel = new JTextField("",8);
-     
-        this.tfAchternaam = new JTextField(8);
-        this.tfGeboortedatum = new JTextField(8);
-        this.tfPostcode = new JTextField(8);
-        this.tfStraatnaam = new JTextField(8);
-        this.tfHuisnummer = new JTextField(8);
-        this.tfToevoeging = new JTextField(8);
-        this.tfPlaatsnaam = new JTextField(8);
-        this.tfEmailadres = new JTextField(8);
-        this.pfWachtwoord = new JPasswordField(8);
-        this.tfIBANnummer = new JTextField(8);
-        this.tfMobielnummer = new JTextField(8);
-        this.tfId = new JTextField(8);
+        // Setten layouts
+        this.setLayout(         new BorderLayout());
+        jFieldPanel.setLayout(  new GridLayout(12,1,3,1));
         
-        this.lVoornaam = new JLabel("Voornaam");
-        this.lTussenvoegsel = new JLabel("Tussenv");
-        this.lAchternaam = new JLabel("Achternaam");
-        this.lGeboortedatum = new JLabel("Geboortedatum");
-        this.lPostcode = new JLabel("Postcode");
-        this.lStraatnaam = new JLabel("Straatnaam");
-        this.lHuisnummer = new JLabel("Huisnummer");
-        this.lToevoeging = new JLabel("Toevoeging");
-        this.lPlaatsnaam = new JLabel("Plaatsnaam");
-        this.lEmailadres = new JLabel("E-mailadres");
-        this.lWachtwoord = new JLabel("Wachtwoord");
-        this.lIBANnummer = new JLabel("IBAN-nummer");
-        this.lMobielnummer = new JLabel("Mobielnummer");
-        this.lId = new JLabel("Persoons ID");
-        this.lRechten = new JLabel ("Rechten");
+        // Aanmaken JTextFields
+        this.tfVoornaam         = new JTextField(4);
+        this.tfTussenvoegsel    = new JTextField("",4);
+        this.tfAchternaam       = new JTextField(4);
+        this.tfGeboortedatum    = new JTextField(4);
+        this.tfPostcode         = new JTextField(4);
+        this.tfStraatnaam       = new JTextField(4);
+        this.tfHuisnummer       = new JTextField(4);
+        this.tfToevoeging       = new JTextField(4);
+        this.tfPlaatsnaam       = new JTextField(4);
+        this.tfEmailadres       = new JTextField(4);
+        this.tfIBANnummer       = new JTextField(4);
+        this.tfMobielnummer     = new JTextField(4);
+        this.tfId               = new JTextField(4);
+        
+        // Aanmaken JPassWordField
+        this.pfWachtwoord       = new JPasswordField(4);
+        
+        // Aanmaken Labels
+        this.lVoornaam          = new JLabel("Voornaam");
+        this.lTussenvoegsel     = new JLabel("Tussenv");
+        this.lAchternaam        = new JLabel("Achternaam");
+        this.lGeboortedatum     = new JLabel("Geboortedatum");
+        this.lPostcode          = new JLabel("Postcode");
+        this.lStraatnaam        = new JLabel("Straatnaam");
+        this.lHuisnummer        = new JLabel("Huisnummer");
+        this.lToevoeging        = new JLabel("Toevoeging");
+        this.lPlaatsnaam        = new JLabel("Plaatsnaam");
+        this.lEmailadres        = new JLabel("E-mailadres");
+        this.lWachtwoord        = new JLabel("Wachtwoord");
+        this.lIBANnummer        = new JLabel("IBAN-nummer");
+        this.lMobielnummer      = new JLabel("Mobielnummer");
+        this.lId                = new JLabel("Persoons ID");
+        this.lRechten           = new JLabel ("Rechten");
         
         // De Dropdown box voor rechten
         DefaultComboBoxModel rechten = new DefaultComboBoxModel();
@@ -420,15 +370,12 @@ public class WijzigPersoon extends JDialog implements ActionListener{
         
         this.jInputfields.add(jFieldPanel);
 
-        this.jButtons.add(btSluiten);
         this.jButtons.add(btOpslaan);
-        
 
         this.jLogo.add(logo);
 
         this.add(jLogo, BorderLayout.NORTH);
         this.add(jInputfields, BorderLayout.WEST);
-        this.add(jProfielfoto, BorderLayout.EAST);
         this.add(jButtons, BorderLayout.SOUTH);
         
         this.tfId.setEditable(false);
@@ -441,16 +388,17 @@ public class WijzigPersoon extends JDialog implements ActionListener{
     }    
     
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == btTraject){
-            System.out.println("Traject");
-            PersonenOverzicht personenOverzicht = new PersonenOverzicht(Integer.parseInt(tfId.getText()));
-        }
-	if (ae.getSource() == btOpslaan) {
+	// Nieuw Account
+
+        if (ae.getSource() == btOpslaan) {
             //Controleer of de verplichte velden zijn ingevuld
+            
+            // Voornaam
+            
             if (pfWachtwoord.getText().equals("")){ 
                 JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
             }else{
-//                //Hash het wachtwoord naar MD5
+                //Hash het wachtwoord naar MD5
                 String wachtwoord = pfWachtwoord.getText();
                 try{
                     MessageDigest md = MessageDigest.getInstance("MD5");
@@ -480,18 +428,16 @@ public class WijzigPersoon extends JDialog implements ActionListener{
              this.setVisible(false);
 	}
         
-        
-        
-        if (ae.getSource() == btSluiten) {
-            //this.hide();
-            this.setVisible(false);
-            GUI a = new GUI();    
-	}   
+        // Account wijzigen
+        if (ae.getSource() == btTraject){
+            System.out.println("Traject");
+            PersonenOverzicht personenOverzicht = new PersonenOverzicht(Integer.parseInt(tfId.getText()));
+        }   
     }
     
     public String[] getTekstvelden(){
         String[] waardes = new String[11];
-        waardes[0] = this.tfId.getText();
+        
         ArrayList foutLijst = new ArrayList();
         int lijstAantal = 0;
         int lijstScroller = 0;

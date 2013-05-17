@@ -14,8 +14,6 @@ import javax.swing.JPanel;
 class AccountToevoegen extends JPanel {
 
     public AccountToevoegen() {
-                                this.add(new JLabel("Accounttoevoegen"));
-        this.setVisible(true);
+       this.add(new WijzigPersoon());
     }
-    
 }
