@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 public class Java_backend {
     public static void main(String[] args) {
-        GUI GUI = new GUI();      
+        GUI GUI = new GUI();
     }
     
     /**
@@ -14,7 +14,7 @@ public class Java_backend {
     public static void geoTest() {
     
         Geocoding geo = new Geocoding();
-        Coordinaten jelle=null, daniel=null;
+        Coordinaten jelle = null, daniel = null;
         try {
             jelle = geo.QueryAndGetCoordinates("Zutphen", "Slindewaterstraat", 26);
             System.out.println("Coordinaten Zuthpen, Slindewaterstraat 26: " + jelle.toString());

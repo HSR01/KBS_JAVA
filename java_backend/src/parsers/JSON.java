@@ -149,7 +149,6 @@ public class JSON {
         Stations.add("Maastricht");
         Stations.add("Nijmegen");
         Stations.add("Roermond");
-        Stations.add("Rozendaal");
         Stations.add("Rotterdam");
         Stations.add("Schiphol");
         Stations.add("Utrecht");

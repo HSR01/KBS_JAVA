@@ -1,14 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
 /**
  *
- * @author Jelle
+ * @author Jelle + Leon Huzen
  */
 public class Locatie {
+    private int Id;
     private String Postcode;
     private String Plaatsnaam;
     private String Straatnaam;
@@ -25,21 +22,29 @@ public class Locatie {
         this.Toevoeging = "";
         this.Telefoonnummer = "";
     }
-    public Locatie(String po, String pl, String sr, int h, String to, String tl) {
-        this.Postcode = po;
-        this.Plaatsnaam = pl;
-        this.Straatnaam = sr;
-        this.Huisnummer = h;
-        this.Toevoeging = to;
-        this.Telefoonnummer = tl;        
+    public Locatie(String postcode, String plaats, String straatnaam, int huisnummer, String toevoeging, String telefoonnummer) {
+        this.Postcode = postcode;
+        this.Plaatsnaam = plaats;
+        this.Straatnaam = straatnaam;
+        this.Huisnummer = huisnummer;
+        this.Toevoeging = toevoeging;
+        this.Telefoonnummer = telefoonnummer;        
     }
-    public Locatie(String po, String pl, String sr, int h, String to, String tl, Coordinaten coordinaten) {
-        this.Postcode = po;
-        this.Plaatsnaam = pl;
-        this.Straatnaam = sr;
-        this.Huisnummer = h;
-        this.Toevoeging = to;
-        this.Telefoonnummer = tl;    
+    public Locatie(String postcode, String plaats, String straatnaam, int huisnummer, String toevoeging, Coordinaten coordinaten) {
+        this.Postcode = postcode;
+        this.Plaatsnaam = plaats;
+        this.Straatnaam = straatnaam;
+        this.Huisnummer = huisnummer;
+        this.Toevoeging = toevoeging;
+        this.Coordinaten = coordinaten;
+    }
+    public Locatie(int id, String postcode, String plaats, String straatnaam, int huisnummer, String toevoeging, Coordinaten coordinaten) {
+        this.Id = id;
+        this.Postcode = postcode;
+        this.Plaatsnaam = plaats;
+        this.Straatnaam = straatnaam;
+        this.Huisnummer = huisnummer;
+        this.Toevoeging = toevoeging;
         this.Coordinaten = coordinaten;
     }
     
@@ -146,5 +151,9 @@ public class Locatie {
      */
     public Boolean hasCoordinaten() {
         return (this.Coordinaten != null ? true : false);
+    }
+
+    public int getId() {
+        return this.getId();
     }
 }

@@ -17,8 +17,8 @@ import javax.swing.JTextField;
  */
 class NieuweVerzending extends JPanel implements ActionListener {
     private Persoon afzender;
-    private JLabel zoeklabel, voornaam, tussenvoegsel, achternaam, straatnaam, huisnr, toevoeging, postcode, plaats, telefoonnummer;
-    private JTextField zoekveld, tvoornaam, ttussenvoegsel, tachternaam, tstraatnaam, thuisnr, ttoevoeging, tpostcode, tplaats, ttelefoonnummer;
+    private JLabel zoeklabel, voornaam, tussenvoegsel, achternaam, straatnaam, huisnr, toevoeging, postcode, plaats, telefoonnummer, gewicht, omschrijving, aankomst;
+    private JTextField zoekveld, tvoornaam, ttussenvoegsel, tachternaam, tstraatnaam, thuisnr, ttoevoeging, tpostcode, tplaats, ttelefoonnummer, tgewicht, tomschrijving, taankomst;
     private JButton zoek, submit;
 
     public NieuweVerzending() {
@@ -46,7 +46,7 @@ class NieuweVerzending extends JPanel implements ActionListener {
         //instancieer midpanel voor formulier
         JPanel midpanel = new JPanel();
         midpanel.setSize(200, 200);
-        midpanel.setLayout(new GridLayout(10, 2));
+        midpanel.setLayout(new GridLayout(13, 2));
         
         //instancieer velden voor midpanel
         voornaam = new JLabel("Voornaam");
@@ -59,6 +59,9 @@ class NieuweVerzending extends JPanel implements ActionListener {
         postcode = new JLabel("Postcode");
         plaats = new JLabel("Plaats");
         telefoonnummer = new JLabel("Telefoonnummer");
+        gewicht = new JLabel("Gewicht");
+        omschrijving = new JLabel("Omschrijving");
+        aankomst = new JLabel("Aankomst");
         
         tvoornaam = new JTextField();
         ttussenvoegsel = new JTextField();
@@ -70,6 +73,9 @@ class NieuweVerzending extends JPanel implements ActionListener {
         tpostcode = new JTextField();
         tplaats = new JTextField();
         ttelefoonnummer = new JTextField();
+        tgewicht = new JTextField();
+        tomschrijving = new JTextField();
+        taankomst = new JTextField();
         
         //voeg de velden toe aan het panel.
         midpanel.add(voornaam);
@@ -90,6 +96,10 @@ class NieuweVerzending extends JPanel implements ActionListener {
         midpanel.add(tplaats);
         midpanel.add(telefoonnummer);
         midpanel.add(ttelefoonnummer);
+        midpanel.add(gewicht);
+        midpanel.add(tgewicht);
+        midpanel.add(omschrijving);
+        midpanel.add(tomschrijving);
         
         //instancieer botompanel
         JPanel bottompanel = new JPanel();
@@ -162,7 +172,7 @@ class NieuweVerzending extends JPanel implements ActionListener {
                 jd.setVisible(true);
             } else {
                 // Valide formulier
-                String[] data = new String[10];
+                String[] data = new String[11];
                 data[0] = tvoornaam.getText().toString();
                 data[1] = ttussenvoegsel.getText().toString();
                 data[2] = tachternaam.getText().toString();
@@ -173,10 +183,11 @@ class NieuweVerzending extends JPanel implements ActionListener {
                 data[7] = tplaats.getText().toString();
                 data[8] = ttelefoonnummer.getText().toString();
                 
-                
-                //voornaam, tussenvoegsel, achternaam, straatnaam, huisnr, toevoeging, postcode, plaats, telefoonnummer
                 try {
-                    dbc.newVerzending(data);
+                    Geocoding geo = new Geocoding();
+                    Coordinaten coordinate = geo.QueryAndGetCoordinates("Zutphen", "Slindewaterstraat", 26);
+                    Locatie loc = new Locatie(40, "", "", "", 0, "", coordinate);
+                    dbc.newVerzending(loc, data);
                 } catch (MultipleAdressesFoundException ex) {
                     JDialog jd = new JDialog();
                     jd.setSize(200,175);

@@ -34,7 +34,7 @@ public class Financien {
     public double[] BerekenKoerier(int m) {   
         
         //variabelen waarin de waardes teruggegeven worden.
-        double ret = 0;
+        double prijs = 0;
         double type = 0;
        
         //tarief per koerier berekenen inclusief start kosten
@@ -44,24 +44,24 @@ public class Financien {
         
         //controleren welke koerier het goedkoopst is
         if (m < 1000) {
-            ret = 0.25;
+            prijs = 0.25;
             type = SjorsFietsKoeriers;
         } else {
             if (TS <= SF && TS <= JT) {
-                ret = TS;
+                prijs = TS;
                 type = TheoSnelenZonen;
             }if (SF <= TS && SF <= JT) {
-                ret = SF;
+                prijs = SF;
                 type = SjorsFietsKoeriers;
             }if (JT <= TS && JT <= SF) {
-                ret = JT;  
+                prijs = JT;  
                 type = JansenTransport;
             }              
         }
         
         
-        //na de vorige loop is in de return array gevuld in ret zit de prijs van de goedkoopste koerier in type welke koerier het goedkoopst is.
-        double[] result = {ret,type};
+        //na de vorige loop is in de return array gevuld in prijs zit de prijs van de goedkoopste koerier in type welke koerier het goedkoopst is.
+        double[] result = {prijs, type};
         
         //array returnen.
         return result;
