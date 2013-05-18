@@ -85,7 +85,7 @@ public class Login extends JPanel implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource() == btLogin){
+        if (ae.getSource() == btLogin) {
          DbConnect a = new DbConnect();
             try {
                 a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), false);

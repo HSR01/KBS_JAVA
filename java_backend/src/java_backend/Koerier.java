@@ -12,16 +12,16 @@ public class Koerier {
     private String Bedrijfsnaam;
     private String Bedrijfstelefoonnummer;
     
-    public Koerier(){
+    public Koerier() {
         this.Bedrijfsnaam = "";
         this.Bedrijfstelefoonnummer = "";
     }
-    public Koerier(String bn, String bt){
+    public Koerier(String bn, String bt) {
         this.Bedrijfsnaam = bn;
         this.Bedrijfstelefoonnummer = bt;
     }
     
-    public static Koerier getKoerierById(int id){
+    public static Koerier getKoerierById(int id) {
         Koerier k = new Koerier();
         k.setBedrijfsnaam("Bassies Diensten");
         k.setBedrijfstelefoonnummer("25846148415");

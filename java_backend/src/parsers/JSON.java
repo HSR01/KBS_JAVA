@@ -53,9 +53,9 @@ public class JSON {
         finder = new KeyFinder();
         finder.setMatchKey(key);
         result = "";
-        while(!finder.isEnd()){
+        while(!finder.isEnd()) {
             parser.parse(JSONResult, finder, true);
-            if(finder.isFound()){
+            if (finder.isFound()) {
                 finder.setFound(false);
                 result += finder.getValue();
             }
@@ -92,7 +92,7 @@ public class JSON {
         JSONObject jsonObject = (JSONObject) obj;
 
         Object found = jsonObject.get("found");
-        if(!found.equals((long)1) || found == null) {
+        if (!found.equals((long)1) || found == null) {
             throw new MultipleAdressesFoundException(url.getQuery());
         }
         // loop array

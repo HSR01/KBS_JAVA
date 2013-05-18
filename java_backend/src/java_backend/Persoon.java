@@ -15,7 +15,7 @@ public class Persoon {
   private Date Geboortedatum;
   private String Mobielnummer;
   
-  public Persoon(){
+  public Persoon() {
       this.persoonID = 0;
       this.rechten = 0;
       this.Voornaam = "";
@@ -26,7 +26,7 @@ public class Persoon {
       this.Geboortedatum = new Date();
       this.Mobielnummer = "";
   }
-  public Persoon(String v, String t, String a, String e, String w, Date g, String m){
+  public Persoon(String v, String t, String a, String e, String w, Date g, String m) {
       this.Voornaam = v;
       this.Tussenvoegsel = t;
       this.Achternaam = a;
@@ -36,7 +36,7 @@ public class Persoon {
       this.Mobielnummer = m;
   }
     @Override
-  public String toString(){
+  public String toString() {
       return this.getVoornaam() + " "+this.getTussenvoegsel()+ " "+this.getAchternaam();
   }
     /**

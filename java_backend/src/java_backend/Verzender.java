@@ -13,16 +13,16 @@ import java.util.Date;
 public class Verzender extends Persoon{
     private String Iban;
     
-    public Verzender(){
+    public Verzender() {
         super();
         this.Iban = "";
     }
-    public Verzender(String v, String t, String a, String e, String w, Date g, String m){
+    public Verzender(String v, String t, String a, String e, String w, Date g, String m) {
         super(v, t, a, e, w, g, m);
         this.Iban = "";
     }
     @Override
-    public String toString(){
+    public String toString() {
         return super.toString()+" "+this.getIban(); 
         
     }

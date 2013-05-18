@@ -15,7 +15,7 @@ public class Verzending {
     private Date Aflevertijd;
     private String Status;
     
-    public Verzending(){
+    public Verzending() {
      this.Aankomsttijd = new Date();
      this.Aflevertijd = new Date();
      this.Status = "";

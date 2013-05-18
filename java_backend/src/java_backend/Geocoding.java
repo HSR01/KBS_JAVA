@@ -25,7 +25,7 @@ public class Geocoding{
             } catch (ParseException ex) {
                 Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             System.out.println(e.getMessage());
         }
         return "";
@@ -47,7 +47,7 @@ public class Geocoding{
             } catch (ParseException ex) {
                 Logger.getLogger(Geocoding.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             System.out.println(e.getMessage());
         }
         return "";

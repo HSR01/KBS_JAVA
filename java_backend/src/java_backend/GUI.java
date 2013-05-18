@@ -135,7 +135,7 @@ public class GUI extends JFrame implements ActionListener {
         //Laad de database plugin
         DbConnect dbc = new DbConnect();
         //Controleer of een verbinding met de database gemaakt kan worden
-        if(dbc.checkConnection()){
+        if (dbc.checkConnection()) {
         //voeg kaarten toe aan kaartenhouder de string is voor naam om deze later aan te roepen.
         cardHolder.add(Card1, "login");
         cardHolder.add(Card2, "home");   
@@ -156,7 +156,7 @@ public class GUI extends JFrame implements ActionListener {
         this.add(cardHolder);
         
         
-        }else{
+        } else {
             //als er geen connectie is laad dan een scherm met foutmelding.
             JPanel error = new JPanel();
             error.setLayout(new FlowLayout());
@@ -180,11 +180,11 @@ public class GUI extends JFrame implements ActionListener {
 
     
         //Haal de afbeelding voor de header op
-        try{
+        try {
             BufferedImage img = ImageIO.read(new URL("http://www.tztpost.nl/user_login.png"));
             //nog even kijken naar logo bovenaan de pagina met laden afbeelding van internet.
             this.loginlogo.setIcon(new javax.swing.ImageIcon(img));
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         
@@ -271,33 +271,33 @@ public class GUI extends JFrame implements ActionListener {
         DbConnect a = new DbConnect();
         try {
             //controleer de gegevens. allebei niet leeg.
-            if(tfEmailadres.getText().equals("") || pfWachtwoord.getText().equals("")){
+            if (tfEmailadres.getText().equals("") || pfWachtwoord.getText().equals("")) {
                 //show message dialog met foutmelding.
                 JOptionPane.showMessageDialog(rootPane, "Niet alle verplichte velden zijn ingevuld.", "Waarschuwing", 2);
             } else {
                 //maak Persoon aan aan de hand van inloggegevens en methode in inlogdata
                 //dit is een attribuut zodat deze beschikbaar is in de gehele GUI.
                 this.persoon = a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), true);
-                if(this.persoon != null){
+                if (this.persoon != null) {
                     //succesvol ingelogd menu weergeven
-                    if(this.persoon.getRechten() == 0){
+                    if (this.persoon.getRechten() == 0) {
                        this.cl.show(this.cardHolder, "acbeheer");
-                    } else if(this.persoon.getRechten() == 1) {
+                    } else if (this.persoon.getRechten() == 1) {
                         this.setJMenuBar(menubar);
                         this.menubar.add(this.Bestand);
                         this.menubar.add(this.Verzending);           
-                    } else if(this.persoon.getRechten() == 2) {
+                    } else if (this.persoon.getRechten() == 2) {
                         this.setJMenuBar(menubar);
                         this.menubar.add(this.Bestand);
                         this.menubar.add(this.Verzending);      
                         this.menubar.add(this.Pakket);                
-                    } else if(this.persoon.getRechten() == 3) {
+                    } else if (this.persoon.getRechten() == 3) {
                         this.setJMenuBar(menubar);
                         this.menubar.add(this.Bestand);
                         this.menubar.add(this.Verzending);      
                         this.menubar.add(this.Pakket);
                         this.menubar.add(this.Accounts);                
-                    } else if(this.persoon.getRechten() == 4) {
+                    } else if (this.persoon.getRechten() == 4) {
                         this.setJMenuBar(menubar);
                         this.menubar.add(this.Bestand);
                         this.menubar.add(this.Verzending);      
@@ -308,7 +308,7 @@ public class GUI extends JFrame implements ActionListener {
                     //alleen bij succesvolle inlog mag iemand door naar de volgende card.
                     this.cl.show(this.cardHolder, "home");
                     return true;
-                } else{
+                } else {
                     //show error dialog, inloggen is niet gelukt, object is leeg (controle en afhandeling in methode getLoginData
                     JOptionPane.showMessageDialog(rootPane, "Het inloggen is niet gelukt!", "Waarschuwing", 2);
                     //zet het formulier weer op leeg om opnieuw in te kunnen loggen.
@@ -333,7 +333,7 @@ public class GUI extends JFrame implements ActionListener {
         } else if (ae.getSource() == Afsluiten) {
             //afsluiten button 
            System.exit(0);
-        }else if (ae.getSource() == Afmelden){
+        } else if (ae.getSource() == Afmelden) {
             //werk voor justin
             //Auteur Justin
             //JAAAAAAAAAAAA JUSTIN HEEFT EINDELIJK WAT AF IN JAVA JAAAAAAAA
@@ -342,27 +342,27 @@ public class GUI extends JFrame implements ActionListener {
             tfEmailadres.setText("");
             pfWachtwoord.setText("");
             this.setJMenuBar(null);
-        }else if(ae.getSource() == NieuweVerzending){
+        } else if (ae.getSource() == NieuweVerzending) {
             ChangeMenu("nieuweverzending");
-        }else if(ae.getSource() == StatusVerzending){
+        } else if (ae.getSource() == StatusVerzending) {
             ChangeMenu("statusverzending");
-        }else if(ae.getSource() == VerzendingAnnuleren){
+        } else if (ae.getSource() == VerzendingAnnuleren) {
             ChangeMenu("verzendingannuleren");
-        }else if(ae.getSource() == PakketStatus){
+        } else if (ae.getSource() == PakketStatus) {
              ChangeMenu("pakketstatus");           
-        }else if(ae.getSource() == PakketWijzigen){
+        } else if (ae.getSource() == PakketWijzigen) {
             ChangeMenu("pakketwijzigen");
-        }else if(ae.getSource() == AccountToevoegen){
+        } else if (ae.getSource() == AccountToevoegen) {
             ChangeMenu("accounttoevoegen");
-        }else if(ae.getSource() == AccountWijzigen){
+        } else if (ae.getSource() == AccountWijzigen) {
             ChangeMenu("accountwijzigen");
-        }else if(ae.getSource() == AccountBlokeren){
+        } else if (ae.getSource() == AccountBlokeren) {
             ChangeMenu("accountblokkeren");
-        }else if(ae.getSource() == GebruikStatistieken){
+        } else if (ae.getSource() == GebruikStatistieken) {
             ChangeMenu("gebruikstatistieken");
-        }else if(ae.getSource() == PakketStatistieken){
+        } else if (ae.getSource() == PakketStatistieken) {
             ChangeMenu("pakketstatistieken");
-        }else if(ae.getSource() == FinancieelOverzicht){
+        } else if (ae.getSource() == FinancieelOverzicht) {
             ChangeMenu("financieeloverzicht");
         }
         //EINDE MENU
@@ -380,12 +380,12 @@ public class GUI extends JFrame implements ActionListener {
      * @description Zorgt ervoor dat er gewijzijgd wordt naar een card die ingegeven wordt als string. Er wordt ook gecontroleerd of er al ingelogd is.
      * 
      */
-    public void ChangeMenu(String Card){
+    public void ChangeMenu(String Card) {
         //controleer inloggen
-            if(this.persoon != null){
+            if (this.persoon != null) {
                 //laad de card.
                 this.cl.show(this.cardHolder, Card);
-            }else{
+            } else {
                 //foutmelding niet ingelogd.
                 JOptionPane.showMessageDialog(rootPane, "Voor deze pagina moet je ingelogd zijn", "Waarschuwing", 2);
             }

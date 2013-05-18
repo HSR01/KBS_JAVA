@@ -60,12 +60,12 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
         //this.card1logo.setIcon(new javax.swing.ImageIcon("http://www.tztpost.nl/tztklein.png"));
         ////this.card1logo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jelle\\Pictures\\zoidberg.png"));
         //Laad profielfoto uit web omgeving
-        try{
+        try {
             URL url = new URL("http://tztpost.nl/images/Profielfotos/geenfoto.jpg");
             Image im = ImageIO.read(url);
             JLabel lblimage = new JLabel(new ImageIcon(im));
             this.logo.add(lblimage);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Profielfoto Error: " + e);
         }
 

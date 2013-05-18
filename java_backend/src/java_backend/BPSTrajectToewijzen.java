@@ -23,7 +23,7 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
     JButton jbVerwijder, jbSluit, jbWijzig;
     private int PersoonID;
     
-    public BPSTrajectToewijzen(String[] geselecteerdeWaardes, int persoonID){
+    public BPSTrajectToewijzen(String[] geselecteerdeWaardes, int persoonID) {
         this.persoonID = persoonID;
         this.setSize(250,150);
         this.geselecteerdeWaardes = geselecteerdeWaardes;
@@ -72,17 +72,17 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
         this.setVisible(true);   
     }
 
-    public void vulVelden(String[] geselecteerdeWaardes){
+    public void vulVelden(String[] geselecteerdeWaardes) {
         jtBegin.setText(geselecteerdeWaardes[5]);
         jtEind.setText(geselecteerdeWaardes[6]);
     }
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if( ae.getSource() == jbSluit){
+        if ( ae.getSource() == jbSluit) {
             this.setVisible(false);
         }
-        if( ae.getSource() == jbWijzig){
+        if ( ae.getSource() == jbWijzig) {
             String[] gewijzigd = new String[3];
             gewijzigd[0] = jtBegin.getText();
             gewijzigd[1] = jtEind.getText();
@@ -94,7 +94,7 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
             this.setVisible(false);
             
         }
-        if( ae.getSource() == jbVerwijder){
+        if ( ae.getSource() == jbVerwijder) {
             
         }
     }

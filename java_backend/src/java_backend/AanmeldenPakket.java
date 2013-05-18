@@ -96,10 +96,10 @@ class AanmeldenPakket extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
         DbConnect dbc = new DbConnect();
-       if(ae.getSource() == zoek){
+       if (ae.getSource() == zoek) {
            //zoek button
 
-           if(zoekveld.getText().equals("")){
+           if (zoekveld.getText().equals("")) {
                //er is niks ingevuld toon foutmelding
                //maak jdialog omdat joptionpane niet werk in jpanel.
               JDialog jd = new JDialog();
@@ -108,12 +108,12 @@ class AanmeldenPakket extends JPanel implements ActionListener{
               jd.add(new JLabel("U heeft geen zoekterm ingevuld."));
               jd.setVisible(true);
               
-           }else{
+           } else {
                //er is wat ingevuld voer query uit.
                
            }
            
-       }else if (ae.getSource() == submit){
+       } else if (ae.getSource() == submit) {
            //verstuur buttom
        }
     }

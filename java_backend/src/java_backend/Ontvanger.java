@@ -11,10 +11,10 @@ import java.util.Date;
  * @author Jelle
  */
 public class Ontvanger extends Persoon{
-    public Ontvanger(){
+    public Ontvanger() {
         super();
     }
-    public Ontvanger(String v, String t, String a, String e, String w, Date g, String m){
+    public Ontvanger(String v, String t, String a, String e, String w, Date g, String m) {
         super(v, t, a, e, w, g, m);
     }
 }

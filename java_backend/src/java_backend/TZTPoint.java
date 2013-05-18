@@ -11,11 +11,11 @@ package java_backend;
 public class TZTPoint extends Locatie{
     private boolean TZTPoint;
     
-    public TZTPoint(){
+    public TZTPoint() {
         super();
         this.TZTPoint = true;
     }
-    public TZTPoint(String po, String pl, String sr, int h, String to, String tl, boolean p){
+    public TZTPoint(String po, String pl, String sr, int h, String to, String tl, boolean p) {
         super(po, pl, sr, h, to, tl);
         this.TZTPoint = p;
     }

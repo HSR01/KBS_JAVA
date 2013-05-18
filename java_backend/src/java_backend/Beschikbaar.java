@@ -16,13 +16,13 @@ public class Beschikbaar {
     private Date Eind;
     private int Weekend;
     
-    public Beschikbaar(){
+    public Beschikbaar() {
         this.Begin = new Date();
         this.Beschikbaar = false;
         this.Eind = new Date();
         this.Weekend = 0;
     }
-    public Beschikbaar(boolean be, Date b, Date e, int w){
+    public Beschikbaar(boolean be, Date b, Date e, int w) {
         
     }
 

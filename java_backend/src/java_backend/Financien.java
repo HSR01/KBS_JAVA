@@ -2,7 +2,7 @@ package java_backend;
 
 public class Financien {
     
-    public Financien(){
+    public Financien() {
         
     }
     /**
@@ -31,7 +31,7 @@ public class Financien {
     private int JT_Startm = 400000;
     //------------------------->  
     
-    public double[] BerekenKoerier(int m){   
+    public double[] BerekenKoerier(int m) {   
         
         //variabelen waarin de waardes teruggegeven worden.
         double ret = 0;
@@ -43,17 +43,17 @@ public class Financien {
         double JT = m > JT_Startm ? JT_Perkm * ((m - JT_Startm) / 1000) + JT_Starttarief : JT_Starttarief;
         
         //controleren welke koerier het goedkoopst is
-        if(m < 1000){
+        if (m < 1000) {
             ret = 0.25;
             type = SjorsFietsKoeriers;
-        }else{
-            if(TS <= SF && TS <= JT){
+        } else {
+            if (TS <= SF && TS <= JT) {
                 ret = TS;
                 type = TheoSnelenZonen;
-            }if(SF <= TS && SF <= JT){
+            }if (SF <= TS && SF <= JT) {
                 ret = SF;
                 type = SjorsFietsKoeriers;
-            }if(JT <= TS && JT <= SF){
+            }if (JT <= TS && JT <= SF) {
                 ret = JT;  
                 type = JansenTransport;
             }              

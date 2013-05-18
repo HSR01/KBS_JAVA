@@ -17,14 +17,14 @@ public class Pakket {
     private Date Datum;
     
     
-    public Pakket(){
+    public Pakket() {
         this.Gewicht = 0.0;
         this.Prijs = 0.0;
         this.Omschrijving = "";
         this.Datum = new Date();
    }
     
-    public Pakket(Double g, Double p, String o, Date d){
+    public Pakket(Double g, Double p, String o, Date d) {
         Gewicht = g;
         Prijs = p;
         Omschrijving = o;

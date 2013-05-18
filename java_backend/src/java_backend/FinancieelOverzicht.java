@@ -32,11 +32,11 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
 
         DefaultComboBoxModel jaren = new DefaultComboBoxModel();
         jaren.addElement("Kies een jaar.");
-        if(this.now.get(Calendar.YEAR) > 2013){
-            for(int h = 2013; h < (this.now.get(Calendar.YEAR) + 1); h++){
+        if (this.now.get(Calendar.YEAR) > 2013) {
+            for (int h = 2013; h < (this.now.get(Calendar.YEAR) + 1); h++) {
                 jaren.addElement(h);
             }
-        }else{
+        } else {
             jaren.addElement("2013");
         }
         //instancieer combobox
@@ -55,10 +55,10 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
         //selectie button geladen.
-        if(ae.getSource() == selectie){
+        if (ae.getSource() == selectie) {
             //jaar geselecteerd.
             String jaar = this.selectie.getSelectedItem().toString();
-            if(!jaar.equals("Kies een jaar.")){
+            if (!jaar.equals("Kies een jaar.")) {
                 //een waarde heeft een jaar. Ga door voor query om de boel op te halen en alles.
                 DbConnect dbc = new DbConnect();
                 

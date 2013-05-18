@@ -25,11 +25,11 @@ class Home extends JPanel {
         contenttext = new JLabel();
         startimg = new JLabel();
         
-        try{
+        try {
             BufferedImage start = ImageIO.read(new URL("http://www.tztpost.nl/start.png"));
             //nog even kijken naar logo bovenaan de pagina met laden afbeelding van internet.
             this.startimg.setIcon(new javax.swing.ImageIcon(start));
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 

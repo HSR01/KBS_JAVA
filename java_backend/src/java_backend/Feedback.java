@@ -13,14 +13,14 @@ public class Feedback {
     private String Omschrijving;
     private int Ontvangststatus;
     
-    public Feedback(){
+    public Feedback() {
         this.Waardering = 0;
         this.Omschrijving = "";
         this.Ontvangststatus = 0;
         
     }
     
-    public Feedback(int w, String om, int o){
+    public Feedback(int w, String om, int o) {
         Waardering = w;
         Omschrijving = om;
         Ontvangststatus = o;

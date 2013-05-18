@@ -36,7 +36,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
     private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
     private JButton btSluiten, btOpslaan, btTraject, btPlaceholder, btWijzig;
 
-    public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie){
+    public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie) {
         super();
         this.setLayout(new BorderLayout());
 
@@ -50,12 +50,12 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         this.jBtnsOnderFoto = new JPanel();
         
         //Laad profielfoto uit web omgeving
-        try{
+        try {
             URL url = new URL("http://tztpost.nl/images/Profielfotos/geenfoto.jpg");
             Image im = ImageIO.read(url);
             JLabel lblimage = new JLabel(new ImageIcon(im));
             jProfielfoto.add(lblimage, BorderLayout.NORTH);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Profielfoto Error: " + e);
         }
         
@@ -103,7 +103,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         JComboBox recht = new JComboBox(rechten);
         
         DefaultComboBoxModel dagen = new DefaultComboBoxModel();
-        for(int dag = 1; dag < 32; dag++){
+        for (int dag = 1; dag < 32; dag++) {
             dagen.addElement(dag);
         }
         JComboBox dag = new JComboBox(dagen);
@@ -124,7 +124,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         JComboBox maand = new JComboBox(maanden);
         
         DefaultComboBoxModel jaren = new DefaultComboBoxModel();
-        for(int jaar = 2013; jaar > 1899; jaar --){
+        for (int jaar = 2013; jaar > 1899; jaar --) {
             jaren.addElement(jaar);
         }
         JComboBox jaar = new JComboBox(jaren);
@@ -223,7 +223,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         this.setVisible(true);       
     }
     
-    public WijzigPersoon(){
+    public WijzigPersoon() {
         super();
         
         // Aanmaken Panels
@@ -281,7 +281,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         JComboBox recht = new JComboBox(rechten);
         
         DefaultComboBoxModel dagen = new DefaultComboBoxModel();
-        for(int dag = 1; dag < 32; dag++){
+        for (int dag = 1; dag < 32; dag++) {
             dagen.addElement(dag);
         }
         JComboBox dag = new JComboBox(dagen);
@@ -302,7 +302,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         JComboBox maand = new JComboBox(maanden);
         
         DefaultComboBoxModel jaren = new DefaultComboBoxModel();
-        for(int jaar = 2013; jaar > 1899; jaar --){
+        for (int jaar = 2013; jaar > 1899; jaar --) {
             jaren.addElement(jaar);
         }
         JComboBox jaar = new JComboBox(jaren);
@@ -395,16 +395,16 @@ public class WijzigPersoon extends JPanel implements ActionListener{
             
             // Voornaam
             
-            if (pfWachtwoord.getText().equals("")){ 
+            if (pfWachtwoord.getText().equals("")) { 
                 JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
-            }else{
+            } else {
                 //Hash het wachtwoord naar MD5
                 String wachtwoord = pfWachtwoord.getText();
-                try{
+                try {
                     MessageDigest md = MessageDigest.getInstance("MD5");
                     md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
                     wachtwoord = new BigInteger(1, md.digest()).toString(16);
-                }catch(Exception o){
+                } catch (Exception o) {
                     System.out.println("Hash Error:" + o);
                 }
                 //Sla de gegevens op in de database
@@ -429,13 +429,13 @@ public class WijzigPersoon extends JPanel implements ActionListener{
 	}
         
         // Account wijzigen
-        if (ae.getSource() == btTraject){
+        if (ae.getSource() == btTraject) {
             System.out.println("Traject");
             PersonenOverzicht personenOverzicht = new PersonenOverzicht(Integer.parseInt(tfId.getText()));
         }   
     }
     
-    public String[] getTekstvelden(){
+    public String[] getTekstvelden() {
         String[] waardes = new String[11];
         
         ArrayList foutLijst = new ArrayList();
@@ -444,21 +444,21 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         boolean valid = true;
         
         // Check Voornaam
-            if(tfVoornaam.getText().length() == 0){
+            if (tfVoornaam.getText().length() == 0) {
                 valid = false;
                 foutLijst.add("Het veld \"Voornaam\" moet ingevuld zijn. Bv.: Harry.");
             }
-            else{
+            else {
                 waardes[1] = this.tfVoornaam.getText();
             }
         // Check Tussenvoegsel
         waardes[2] = this.tfTussenvoegsel.getText();
         // Check Achternaam
-            if(tfAchternaam.getText().length() == 0){
+            if (tfAchternaam.getText().length() == 0) {
                 valid = false;
                 foutLijst.add("Het veld \"Achternaam\" moet ingevuld zijn. Bv.: Versloten.");
             }
-            else{
+            else {
                 waardes[3] = this.tfAchternaam.getText();
             }
         // Check Geboortedatum        
@@ -475,16 +475,16 @@ public class WijzigPersoon extends JPanel implements ActionListener{
 //        waardes[9] = this.tfProfielfoto.getText();
         // Check Rechten
 //        waardes[10] = this.tfRechten.getText();
-        if(!valid){
+        if (!valid) {
             lijstAantal = foutLijst.size();
-            for(lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++){
+            for (lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++) {
                 System.out.println("Account number:" + foutLijst.get(lijstScroller)); 
             }
         }
         return waardes;
     }
     
-    public void vulTekstvelden(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie){
+    public void vulTekstvelden(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie) {
         this.tfId.setText(specifiekePersoonGegevens[0]);
         this.tfVoornaam.setText(specifiekePersoonGegevens[1]);
         this.tfTussenvoegsel.setText(specifiekePersoonGegevens[2]);

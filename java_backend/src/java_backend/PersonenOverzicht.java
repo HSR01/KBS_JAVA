@@ -75,11 +75,11 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
         System.out.print(aTable);
         
         aTable.addMouseListener(
-            new MouseAdapter(){
+            new MouseAdapter() {
                 
                 @Override
-                public void mouseClicked(MouseEvent e){
-                    if (e.getClickCount() == 2){
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
                         BPSTrajectToewijzen trajectwijzigen = new BPSTrajectToewijzen(geselecteerdeWaardes, geselecteerdeWaarde);
                         
                         final String[] tabelinhoud = {"PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "TrajectID", "Begin", "Eind"};
@@ -102,25 +102,25 @@ public class PersonenOverzicht extends JFrame implements ListSelectionListener {
         
         TableModel tm = aTable.getModel();
         int[] selRows = aTable.getSelectedRows();
-        if(selRows.length == 0){
+        if (selRows.length == 0) {
             return;
         }
         String[] geselecteerdeWaardes = new String[500];
-        for(int i = 0; i<7; i++){
+        for (int i = 0; i<7; i++) {
             geselecteerdeWaardes[i] = (String) tm.getValueAt(selRows[0],i);
         }
         getSelecteerdeWaardes(geselecteerdeWaardes);
     }
     
-    public void getSelecteerdeWaardes(String[] string){
+    public void getSelecteerdeWaardes(String[] string) {
         this.geselecteerdeWaardes = string;
     }     
     
-    public void getSelecteerdeWaarde(int string){
+    public void getSelecteerdeWaarde(int string) {
         this.geselecteerdeWaarde = string;
     }
     
-    public static  void VerVerstabel(int persoonID){
+    public static  void VerVerstabel(int persoonID) {
         
         DbConnect dbc = new DbConnect();
         final String[] tabelinhoud = {"PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "TrajectID", "Begin", "Eind"};

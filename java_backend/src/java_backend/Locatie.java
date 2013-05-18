@@ -17,7 +17,7 @@ public class Locatie {
     private String Telefoonnummer;
     private Coordinaten Coordinaten;
     
-    public Locatie(){
+    public Locatie() {
         this.Postcode = "";
         this.Plaatsnaam = "";
         this.Straatnaam = "";
@@ -25,7 +25,7 @@ public class Locatie {
         this.Toevoeging = "";
         this.Telefoonnummer = "";
     }
-    public Locatie(String po, String pl, String sr, int h, String to, String tl){
+    public Locatie(String po, String pl, String sr, int h, String to, String tl) {
         this.Postcode = po;
         this.Plaatsnaam = pl;
         this.Straatnaam = sr;
@@ -33,7 +33,7 @@ public class Locatie {
         this.Toevoeging = to;
         this.Telefoonnummer = tl;        
     }
-    public Locatie(String po, String pl, String sr, int h, String to, String tl, Coordinaten coordinaten){
+    public Locatie(String po, String pl, String sr, int h, String to, String tl, Coordinaten coordinaten) {
         this.Postcode = po;
         this.Plaatsnaam = pl;
         this.Straatnaam = sr;

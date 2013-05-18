@@ -59,10 +59,10 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         
          
         aTable.addMouseListener(
-            new MouseAdapter(){
+            new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e){
-                    if (e.getClickCount() == 2){
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
                         DbConnect dbc = new DbConnect();
                         final String[] specifiekeGebruikerGegevens = dbc.getSpecifiekeGebruikerGegevens(geselecteerdeWaarde);
                         System.out.println(specifiekeGebruikerGegevens);
@@ -84,7 +84,7 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
     
      
     
-    public void getSelecteerdeWaarde(Object string){
+    public void getSelecteerdeWaarde(Object string) {
         this.geselecteerdeWaarde = string;
     }
 }

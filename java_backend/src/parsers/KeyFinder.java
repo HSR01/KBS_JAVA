@@ -15,23 +15,23 @@ class KeyFinder implements ContentHandler {
   private String key;
   private String matchKey;
         
-  public void setMatchKey(String matchKey){
+  public void setMatchKey(String matchKey) {
     this.matchKey = matchKey;
   }
         
-  public Object getValue(){
+  public Object getValue() {
     return value;
   }
         
-  public boolean isEnd(){
+  public boolean isEnd() {
     return end;
   }
         
-  public void setFound(boolean found){
+  public void setFound(boolean found) {
     this.found = found;
   }
         
-  public boolean isFound(){
+  public boolean isFound() {
     return found;
   }
         
@@ -48,8 +48,8 @@ class KeyFinder implements ContentHandler {
 
     @Override
   public boolean primitive(Object value) throws ParseException, IOException {
-    if(key != null){
-      if(key.equals(matchKey)){
+    if (key != null) {
+      if (key.equals(matchKey)) {
         found = true;
         this.value = value;
         key = null;
@@ -71,7 +71,7 @@ class KeyFinder implements ContentHandler {
   }
 
     @Override
-  public boolean startObjectEntry(String key) throws ParseException, IOException {
+  public boolean startObjectEntry (String key) throws ParseException, IOException {
     this.key = key;
     return true;
   }
@@ -87,7 +87,7 @@ class KeyFinder implements ContentHandler {
   }
 
     @Override
-  public boolean endObjectEntry() throws ParseException, IOException {
+  public boolean endObjectEntry () throws ParseException, IOException {
     return true;
   }
 }
