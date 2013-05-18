@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
 import java.awt.*;
@@ -11,13 +7,12 @@ import javax.swing.*;
 
 /**
  *
- * @author Jelle
+ * @author Jelle (pre 18-5) & Leon Huzen
  */
 class AanmeldenPakket extends JPanel implements ActionListener{
     private JLabel zoeklabel, adres, postcode, huisnr, plaats, telefoonnummer, naam;
     private JTextField zoekveld, tadres, tpostcode, thuisnr, tplaats, ttelefoonnummer, tnaam;
     private JButton zoek, submit;
-    
     
     public AanmeldenPakket() {
         //standaard instellingen
@@ -56,6 +51,8 @@ class AanmeldenPakket extends JPanel implements ActionListener{
         tnaam = new JTextField();
         
         //voeg de velden toe aan het panel.
+        midpanel.add(naam);
+        midpanel.add(tnaam);
         midpanel.add(adres);
         midpanel.add(tadres);
         midpanel.add(postcode);
@@ -66,8 +63,6 @@ class AanmeldenPakket extends JPanel implements ActionListener{
         midpanel.add(tplaats);
         midpanel.add(telefoonnummer);
         midpanel.add(ttelefoonnummer);
-        midpanel.add(naam);
-        midpanel.add(tnaam);
         
         //instancieer botompanel
         JPanel bottompanel = new JPanel();
