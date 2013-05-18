@@ -7,7 +7,6 @@ package java_backend;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.sql.SQLException;
@@ -15,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.DefaultEditorKit;
 
 /**
  * @author Jelle
@@ -42,7 +40,7 @@ public class GUI extends JFrame implements ActionListener {
         this.setTitle("TZT Post");
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setResizable(false);
+        //this.setResizable(false);
         this.setSize(800, 600);  
         
         //Centreren in venster

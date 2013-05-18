@@ -421,10 +421,9 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         }
         
         if (ae.getSource() == btWijzig) {
-             DbConnect a = new DbConnect();
+             DbConnect dbc = new DbConnect();
              String[] waardes = this.getTekstvelden();
-             System.out.println(waardes[1]);
-             a.updateGebruikerAccount(waardes);
+             dbc.updateGebruikerAccount(waardes);
              this.setVisible(false);
 	}
         
@@ -441,11 +440,11 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         ArrayList foutLijst = new ArrayList();
         int lijstAantal = 0;
         int lijstScroller = 0;
-        boolean valid = true;
+        boolean valide = true;
         
         // Check Voornaam
             if (tfVoornaam.getText().length() == 0) {
-                valid = false;
+                valide = false;
                 foutLijst.add("Het veld \"Voornaam\" moet ingevuld zijn. Bv.: Harry.");
             }
             else {
@@ -455,7 +454,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         waardes[2] = this.tfTussenvoegsel.getText();
         // Check Achternaam
             if (tfAchternaam.getText().length() == 0) {
-                valid = false;
+                valide = false;
                 foutLijst.add("Het veld \"Achternaam\" moet ingevuld zijn. Bv.: Versloten.");
             }
             else {
@@ -475,7 +474,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
 //        waardes[9] = this.tfProfielfoto.getText();
         // Check Rechten
 //        waardes[10] = this.tfRechten.getText();
-        if (!valid) {
+        if (!valide) {
             lijstAantal = foutLijst.size();
             for (lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++) {
                 System.out.println("Account number:" + foutLijst.get(lijstScroller)); 

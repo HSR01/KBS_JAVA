@@ -83,8 +83,7 @@ class AanmeldenPakket extends JPanel implements ActionListener{
         this.add(midpanel, BorderLayout.CENTER);
         this.add(bottompanel, BorderLayout.SOUTH);
         
-
-        
+        // Nog even zichtbaar
         this.setVisible(true);
     }
 

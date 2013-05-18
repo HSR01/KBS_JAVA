@@ -1,16 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -42,8 +34,6 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
 
     public PakketOverzicht() {
         super();
-
-
 
         this.setSize(800, 600);
         this.setLayout(new BorderLayout());
@@ -99,9 +89,6 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
 
         Eind = new JComboBox(Einde);
 
-
-
-
         aTable = new JTable(dataModel);
         aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         aTable.getColumnModel().getColumn(0).setPreferredWidth(70);
@@ -124,8 +111,6 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
 
         this.add(new JScrollPane(aTable));
 
-
-
         ListSelectionModel listModel = aTable.getSelectionModel();
         listModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listModel.addListSelectionListener(this);
@@ -137,9 +122,6 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
         Start.addActionListener(this);
 
         this.setVisible(true);
-
-
-
     }
 
     public TableModel VerVerstabel() {
@@ -192,11 +174,6 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
             DbConnect dbc = new DbConnect();
             PakketOverzicht.aTable.setModel(VerVerstabel()); //Ververst tabel, maakt hem leeg
             PakketOverzicht.aTable.repaint();
-             
-
-            
-            
-
         }
     }
 

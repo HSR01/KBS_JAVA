@@ -55,7 +55,6 @@ public class DbConnect {
             System.out.println("Onbekende error");
         }
         System.out.println(st);
-
     }
 
     /**
@@ -249,12 +248,11 @@ public class DbConnect {
             return returnval;
         } catch (Exception e) {
             System.out.println("error : " + e.getClass());
-
         }
         return null;
     }
 
-    public Boolean updateGebruikerAccount(String[] data) {
+    public void updateGebruikerAccount(String[] data) {
         String wachtwoord = data[6];
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -276,13 +274,52 @@ public class DbConnect {
                     + "IBAN = \"" + data[9] + "\", "
                     + "Rechten = \"" + data[10] + "\" "
                     + "WHERE PersoonID = \"" + data[0] + "\"";
-            System.out.println(query);
             st.executeUpdate(query);
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
-
         }
-        return null;
+    }
+    
+    /**
+     * Nieuwe verzending opslaan.
+     * @param data meegeven data (9 values) is volgorde:
+     * <OL start="0">
+     *  <LI>voornaam</LI>
+     *  <LI>tussenvoegsel</LI>
+     *  <LI>achternaam</LI>
+     *  <LI>straatnaam</LI>
+     *  <LI>huisnr</LI>
+     *  <LI>toevoeging</LI>
+     *  <LI>postcode</LI>
+     *  <LI>plaats</LI>
+     *  <LI>telefoonnummer</LI>
+     * </OL>
+     * @return 
+     */
+    public Boolean newVerzending(String[] data) throws MultipleAdressesFoundException {
+        Geocoding geo = new Geocoding();;
+        int LocatieId;
+        Coordinaten coordinatenToLocatie;
+        coordinatenToLocatie = geo.QueryAndGetCoordinates(data[7], data[3], Integer.parseInt(data[4]), data[5]);
+        try {
+            query = "INSERT INTO Locatie "
+                    + "(LocatieID, Latitude, Longitude, Plaatsnaam, Straatnaam, Huisnummer, Toevoeging, Postcode, Telefoonnummer, TZTPoint) "
+                    + "VALUES (0, "
+                    + "'" + coordinatenToLocatie.Latitude.toString() + "',"
+                    + "'" + coordinatenToLocatie.Latitude.toString() + "',"
+                    + "'" + data[7] + "', "
+                    + "'" + data[3] + "', "
+                    + "'" + data[4] + "', "
+                    + "'" + data[5] + "', "
+                    + "'" + data[6] + "', "
+                    + "'" + data[7] + "', "
+                    + "'0')";
+            LocatieId = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error : " + e.getMessage());
+        }
+        return false;
     }
 
     /**
