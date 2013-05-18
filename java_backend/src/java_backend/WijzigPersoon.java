@@ -441,11 +441,11 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         ArrayList foutLijst = new ArrayList();
         int lijstAantal = 0;
         int lijstScroller = 0;
-        boolean fout = true;
+        boolean valid = true;
         
         // Check Voornaam
             if(tfVoornaam.getText().length() == 0){
-                fout = false;
+                valid = false;
                 foutLijst.add("Het veld \"Voornaam\" moet ingevuld zijn. Bv.: Harry.");
             }
             else{
@@ -455,7 +455,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         waardes[2] = this.tfTussenvoegsel.getText();
         // Check Achternaam
             if(tfAchternaam.getText().length() == 0){
-                fout = false;
+                valid = false;
                 foutLijst.add("Het veld \"Achternaam\" moet ingevuld zijn. Bv.: Versloten.");
             }
             else{
@@ -475,7 +475,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
 //        waardes[9] = this.tfProfielfoto.getText();
         // Check Rechten
 //        waardes[10] = this.tfRechten.getText();
-        if(fout == false){
+        if(!valid){
             lijstAantal = foutLijst.size();
             for(lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++){
                 System.out.println("Account number:" + foutLijst.get(lijstScroller)); 

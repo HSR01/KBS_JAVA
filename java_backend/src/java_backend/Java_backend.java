@@ -2,7 +2,6 @@ package java_backend;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.UIManager;
 
 public class Java_backend {
     public static void main(String[] args) {
