@@ -6,17 +6,21 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 public class AccountsBeherenTabel extends JPanel implements ListSelectionListener {
+    // naamgeven JTable
     JTable aTable;
-    
+    // Dit word gevuld als je iets selecteerd in de tabel
     private Object geselecteerdeWaarde;
-    // private String tableinhoud[] = {"ID", "Naam"};
     
     public AccountsBeherenTabel() {
+        // Hoe heten de kolommen?
         final String[] tabelinhoud = {"ID", "Voornaam", "Tussenvoegsel", "Achternaam", "Emailadres", "Wachtwoord", "Geboortedatum", "Mobiel", "Foto", "IBAN", "Rechten"};
+        // Database connectie
         DbConnect dbc = new DbConnect();
+        // De data voor de tabel oproepem door middel van een sql functie
         final Object[][] data = dbc.getUsers();
         
         TableModel dataModel = new AbstractTableModel() {
+            // Met de volgende functies word het tablemodel gemaakt, niets wijzigen
             @Override
             public int getColumnCount() { return tabelinhoud.length; }
             @Override
@@ -35,7 +39,9 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
             }
         };
 
+        // Maakt de tabel aan
         aTable = new JTable(dataModel);
+        // Komende stuk bepaalt de wijdte van de kolommen
         aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         aTable.getColumnModel().getColumn(0).setPreferredWidth(25);
         aTable.getColumnModel().getColumn(1).setPreferredWidth(70);
@@ -49,24 +55,30 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         aTable.getColumnModel().getColumn(10).setPreferredWidth(25);
         
         
-
+        // Voegt de tabel toe aan het panel in een scrollpane
         this.add(new JScrollPane(aTable));
       
-        
+        // Dit is de list selecetioner, die kijkt of je iets selecteert
         ListSelectionModel listMod = aTable.getSelectionModel();
+        // Hierdoor kan je maar 1 regel selecteren
         listMod.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // Voegt de listener toe aan het frame
         listMod.addListSelectionListener( this );
         
-         
+        // Voegt een mouselistener toe aan het frame
         aTable.addMouseListener(
             new MouseAdapter() {
                 @Override
+                // Deze word geactiveerd als je klikt
                 public void mouseClicked(MouseEvent e) {
+                    // Zodra je 2x achter elkaar snel klikt word deze code uitgevoerd
                     if (e.getClickCount() == 2) {
+                        // Database functie
                         DbConnect dbc = new DbConnect();
+                        // Haalt specifieke data op uit de databse
                         final String[] specifiekeGebruikerGegevens = dbc.getSpecifiekeGebruikerGegevens(geselecteerdeWaarde);
-                        System.out.println(specifiekeGebruikerGegevens);
                         final String[] specifiekeGebruikerLocatie = dbc.getSpecifiekeGebruikerLocatie(geselecteerdeWaarde);
+                        // Voert de update query uit.
                         WijzigPersoon wijzigData = new WijzigPersoon(specifiekeGebruikerGegevens, specifiekeGebruikerLocatie);
                     }
                 }
@@ -76,14 +88,17 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
+        // Pakt de tablemodel van aTable
         TableModel tm = aTable.getModel();
+        // Bepaalt de geselecteerde rij en vult een array met alle waardes
         int[] selRows = aTable.getSelectedRows();
+        // Dit vult geselecteerdeWaarde
         Object geselecteerdeWaarde = tm.getValueAt(selRows[0],0);
+        // maakt de geselcteerde waarde openbaar
         getSelecteerdeWaarde(geselecteerdeWaarde);
     }
     
-     
-    
+    // Set de geselecteerde waarde
     public void getSelecteerdeWaarde(Object string) {
         this.geselecteerdeWaarde = string;
     }
