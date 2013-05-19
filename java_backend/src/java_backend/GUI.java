@@ -176,7 +176,10 @@ public class GUI extends JFrame implements ActionListener {
         //Initialiseer header
         this.loginlogo = new JLabel(); 
 
-    
+
+          
+        loginlogo.setHorizontalTextPosition(JLabel.CENTER);
+        loginlogo.setVerticalTextPosition(JLabel.CENTER);
         //Haal de afbeelding voor de header op
         try {
             BufferedImage img = ImageIO.read(new URL("http://www.tztpost.nl/user_login.png"));
@@ -185,14 +188,18 @@ public class GUI extends JFrame implements ActionListener {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+        loginlogo.setHorizontalTextPosition(JLabel.LEFT);
         //loginscherm voor card1
         this.login = new JPanel();
         this.loginholder = new JPanel();
         
+        loginlogo.setMaximumSize(new Dimension(50,50));
+        loginlogo.setMinimumSize(new Dimension (50,50));
+        loginlogo.setPreferredSize(new Dimension(50,50));
+        loginlogo.setBorder(BorderFactory.createLineBorder(Color.black)); 
         //kies borderlayout
         this.login.setLayout(new FlowLayout());
-      
+   
         this.loginholder.setLayout(new GridLayout(0,2,2,6)); 
 
         //instancieer buttons en velden.
