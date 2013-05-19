@@ -182,6 +182,8 @@ class NieuweVerzending extends JPanel implements ActionListener {
                 data[6] = tpostcode.getText().toString();
                 data[7] = tplaats.getText().toString();
                 data[8] = ttelefoonnummer.getText().toString();
+                data[9] = tgewicht.getText().toString();
+                data[10] = tomschrijving.getText().toString();
                 
                 try {
                     Geocoding geo = new Geocoding();

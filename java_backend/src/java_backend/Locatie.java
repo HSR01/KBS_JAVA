@@ -154,6 +154,6 @@ public class Locatie {
     }
 
     public int getId() {
-        return this.getId();
+        return this.Id;
     }
 }

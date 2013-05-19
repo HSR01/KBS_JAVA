@@ -285,7 +285,7 @@ public class DbConnect {
     /**
      * Nieuwe verzending opslaan.
      * @param persoonsLocatie locatie van de verzender
-     * @param data meegeven data (10 values) is volgorde:
+     * @param data meegeven data (11 values) is volgorde:
      * <OL start="0">
      *  <LI>voornaam</LI>
      *  <LI>tussenvoegsel</LI>
@@ -295,12 +295,15 @@ public class DbConnect {
      *  <LI>toevoeging</LI>
      *  <LI>postcode</LI>
      *  <LI>plaats</LI>
+     *  <LI>telefoonnummer</LI>
      *  <LI>gewicht</LI>
      *  <LI>omschrijving</LI>
      * </OL>
      * @return 
      */
     public Boolean newVerzending(Locatie persoonsLocatie, String[] data) throws MultipleAdressesFoundException {
+        String voornaam = data[0], tussenvoegsel = data[1], achternaam = data[2], straatnaam = data[3], huisnummer = data[4], toevoeging = data[5],
+                postcode = data[6], plaats = data[7], telefoonnummer = data[8], gewicht = data[9], omschrijving = data[10];
         Geocoding geo = new Geocoding();
         int locatieId = -1, persoonId = -1, pakketId = -1, verzendingId = -1, trajectId1 = -1, trajectId2 = -1, trajectId3 = -1;
         Coordinaten coordinatenToLocatie;
@@ -312,12 +315,12 @@ public class DbConnect {
                     + "VALUES (0, "
                     + "'" + coordinatenToLocatie.Latitude.toString() + "',"
                     + "'" + coordinatenToLocatie.Latitude.toString() + "',"
-                    + "'" + data[7] + "', "
-                    + "'" + data[3] + "', "
-                    + "'" + data[4] + "', "
-                    + "'" + data[5] + "', "
-                    + "'" + data[6] + "', "
-                    + "'" + data[7] + "', "
+                    + "'" + plaats + "', "
+                    + "'" + straatnaam + "', "
+                    + "'" + huisnummer + "', "
+                    + "'" + toevoeging + "', "
+                    + "'" + postcode + "', "
+                    + "'" + telefoonnummer + "', "
                     + "'0')";            
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -335,9 +338,9 @@ public class DbConnect {
                     + "(PersoonID, LocatieID, Voornaam, Tussenvoegsel, Achternaam) "
                     + "VALUES (0, "
                     + "'" + locatieId + "',"
-                    + "'" + data[0] + "',"
-                    + "'" + data[1] + "', "
-                    + "'" + data[2] + "')";            
+                    + "'" + voornaam + "',"
+                    + "'" + tussenvoegsel + "', "
+                    + "'" + achternaam + "')";            
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
@@ -354,10 +357,9 @@ public class DbConnect {
             query = "INSERT INTO Pakket "
                     + "(PakketID, Gewicht, Prijs, Omschrijving, Datum) "
                     + "VALUES (0, "
-                    + "'" + locatieId + "',"
-                    + "'" + data[8] + "',"
+                    + "'" + gewicht + "',"
                     + "'0', " // TODO prijsberekening
-                    + "'" + data[9] + "', "
+                    + "'" + omschrijving + "', "
                     + "'" + timeStamp + "')";            
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -374,9 +376,9 @@ public class DbConnect {
             query = "INSERT INTO Verzending "
                     + "(VerzendingID, PakketID, Aankomsttijd, Aflevertijd, Status) "
                     + "VALUES (0, "
-                    + "'" + pakketId + "',"
-                    + "'-',"
-                    + "'-', "
+                    + pakketId + ", "
+                    + "null, " //todo
+                    + "null, " //todo
                     + "'0')";            
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -412,10 +414,13 @@ public class DbConnect {
                 double[] koerier;
                 Traject1 = geo.GetRouteFrom(from, fromToTZT);
                 koerier = financien.BerekenKoerier(Traject1.Meters);
+                // 1e gedeelte
                 stop1 = getLocatieId(fromToTZT, true);
-                stop2 = getLocatieId(TZTToTo, true);
                 insertTraject(verzendingId, persoonsLocatie.getId(), stop1, "2:00", Traject1.Meters, 0, (int)Math.round(koerier[1]));
+                // 2e gedeelte
+                stop2 = getLocatieId(TZTToTo, true);
                 insertTraject(verzendingId, stop1, stop2, "1:00", 333, 0, 0);
+                // 3e gedeelte
                 Traject3 = geo.GetRouteFrom(TZTToTo, to);
                 koerier = financien.BerekenKoerier(Traject3.Meters);
                 insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, (int)Math.round(koerier[1]));
@@ -430,22 +435,23 @@ public class DbConnect {
     
     public int getLocatieId (Coordinaten coordinaten, boolean isTZT) {
         try {
-            query = "SELECT LocatieID"
-                    + "FROM Locatie"
-                    + "WHERE Latitude = " + coordinaten.Latitude.toString() 
-                    + "AND Longitude = " + coordinaten.Longitude.toString()
+            query = "SELECT LocatieID "
+                    + "FROM Locatie "
+                    + "WHERE Latitude = '" + coordinaten.Latitude.toString() + "' "
+                    + "AND Longitude = '" + coordinaten.Longitude.toString() + "' "
                     + "AND TZTPoint ";
             if (isTZT) { 
                 query += "= 1"; 
             } else { 
                 query += "!= 0"; 
             }
+            System.out.println(query);
             rs = st.executeQuery(query);
             while (rs.next()) {
                 return rs.getInt("LocatieID");
             }
         } catch (Exception e) {
-            System.out.println("(DbConnect.java) @ insertTraject - Error: " + e.getMessage());
+            System.out.println("(DbConnect.java) @ getLocatieId - Error: " + e.getMessage());
         }
         return 0;
     }
@@ -459,14 +465,14 @@ public class DbConnect {
             query = "INSERT INTO Traject "
                     + "(TrajectID, VerzendingID, Begin, Eind, Reistijd, Kilometers, BPS, KoerierID) "
                     + "VALUES (0, "
-                    + "'" + verzendingID + "',"
+                    + verzendingID + ","
                     + "'" + begin + "',"
                     + "'" + eind + "', "
                     + "'" + reistijd + "', "  
                     + "'" + kilometers + "', "  
                     + "'" + bps + "', "  
                     + "'" + koerierId + "')";          
-            st.executeQuery(query);
+            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
 
