@@ -662,27 +662,38 @@ public class DbConnect {
     public Object[][] getPakket() {
         try {
             //LAURENS
-            //get aantal personen.
-            rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.VerzendingID JOIN Traject T ON V.VerzendingID = T.VerzendingID");
+            //pakt alle pakketen.
+            query = "SELECT Count(*) AS aantalPakketten "
+                    + "FROM Pakket A "
+                    + "JOIN Verzending B ON A.PakketID = B.PakketID "
+                    + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
+                    + "JOIN Locatie D ON C.Eind = D.LocatieID "
+                    + "JOIN Locatie E ON C.Begin = E.LocatieID";
+            rs = st.executeQuery(query);
             int aantal = 0;
             while (rs.next()) {
-                aantal = rs.getInt("Count(*)");
+                aantal = rs.getInt("aantalPakketten");
             }
-            //haal alles op.
-            Object[][] returnval = new Object[aantal][9];
-            query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID";
+
+           
+            Object[][] returnval = new Object[aantal][8];
+            query = "SELECT A.PakketID, B.VerzendingID, C.TrajectID, A.Omschrijving, C.Eind, C.Begin, D.Plaatsnaam AS BeginPlaats, E.Plaatsnaam AS EindPlaats "
+                    + "FROM Pakket A "
+                    + "JOIN Verzending B ON A.PakketID = B.PakketID "
+                    + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
+                    + "JOIN Locatie D ON C.Eind = D.LocatieID "
+                    + "JOIN Locatie E ON C.Begin = E.LocatieID";
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
-                returnval[i][0] = rs.getString("PakketID");
-                returnval[i][1] = rs.getString("Gewicht");
-                returnval[i][2] = rs.getString("Prijs");
+               returnval[i][0] = rs.getString("PakketID");
+                returnval[i][1] = rs.getString("VerzendingID");
+                returnval[i][2] = rs.getString("TrajectID");
                 returnval[i][3] = rs.getString("Omschrijving");
-                returnval[i][4] = rs.getString("Datum");
-                returnval[i][5] = rs.getString("VerzendingID");
-                returnval[i][6] = rs.getString("TrajectID");
-                returnval[i][7] = rs.getString("Begin");
-                returnval[i][8] = rs.getString("Eind");
+                 returnval[i][4] = rs.getString("Begin");
+                returnval[i][5] = rs.getString("Eind");
+                returnval[i][6] = rs.getString("BeginPlaats");
+                returnval[i][7] = rs.getString("Eindplaats");
                 i++;
             }
             return returnval;
@@ -699,7 +710,7 @@ public class DbConnect {
             String[] returnval = new String[26];
             //haal alles op.
 
-            query = "SELECT Plaatsnaam FROM Locatie";
+            query = "SELECT Plaatsnaam FROM Locatie WHERE TZTPoint = '1'";
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
@@ -734,37 +745,44 @@ public class DbConnect {
         return null;
     }
 
-    public Object[][] getSpecifiekPakket(String begin, String eind) {
+   public Object[][] getSpecifiekPakket(String begin, String eind) {
         try {
             //LAURENS
-            //get aantal personen.
-            rs = st.executeQuery("SELECT Count(*) FROM Pakket P JOIN Verzending V ON P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '" + eind + "'");
+            //get specifiekpakket.
+            rs = st.executeQuery("SELECT COUNT(*) AS aantalPakketten "
+                    + "FROM Pakket A "
+                    + "JOIN Verzending B ON A.PakketID = B.PakketID "
+                    + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
+                    + "JOIN Locatie D ON C.Eind = D.LocatieID "
+                    + "JOIN Locatie E ON C.Begin = E.LocatieID");
             int aantal = 0;
             while (rs.next()) {
-                aantal = rs.getInt("Count(*)");
+                aantal = rs.getInt("aantalPakketten");
             }
             //haal alles op.
 
 
-            Object[][] returnval = new Object[aantal][9];
-            query = "SELECT P.PakketID, P.Gewicht, P.Prijs, P.Omschrijving, P.Datum, V.VerzendingID, T.TrajectID, T.Begin, T.Eind FROM Pakket P JOIN Verzending V ON "
-                    + "P.PakketID = V.PakketID JOIN Traject T ON V.VerzendingID = T.VerzendingID WHERE T.Begin ='" + begin + "'AND T.Eind = '" + eind + "'";
+            Object[][] returnval = new Object[aantal][8];
+            query = "SELECT A.PakketID, B.VerzendingID, C.TrajectID, A.Omschrijving, C.Eind, C.Begin, D.Plaatsnaam AS BeginPlaats, E.Plaatsnaam AS EindPlaats "
+                    + "FROM Pakket A "
+                    + "JOIN Verzending B ON A.PakketID = B.PakketID "
+                    + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
+                    + "JOIN Locatie D ON C.Eind = D.LocatieID "
+                    + "JOIN Locatie E ON C.Begin = E.LocatieID "
+                    + "WHERE D.Plaatsnaam = '" + begin + "' AND E.Plaatsnaam = '" + eind +"'";
             int i = 0;
             rs = st.executeQuery(query);
             while (rs.next()) {
 
                 returnval[i][0] = rs.getString("PakketID");
-                returnval[i][1] = rs.getString("Gewicht");
-                returnval[i][2] = rs.getString("Prijs");
+                returnval[i][1] = rs.getString("VerzendingID");
+                returnval[i][2] = rs.getString("TrajectID");
                 returnval[i][3] = rs.getString("Omschrijving");
-                returnval[i][4] = rs.getString("Datum");
-                returnval[i][5] = rs.getString("VerzendingID");
-                returnval[i][6] = rs.getString("TrajectID");
-                returnval[i][7] = rs.getString("Begin");
-                returnval[i][8] = rs.getString("Eind");
+                 returnval[i][4] = rs.getString("Begin");
+                returnval[i][5] = rs.getString("Eind");
+                returnval[i][6] = rs.getString("BeginPlaats");
+                returnval[i][7] = rs.getString("EindPlaats");
                 i++;
-
-
             }
             return returnval;
         } catch (Exception e) {

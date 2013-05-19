@@ -1,8 +1,16 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package java_backend;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,7 +29,7 @@ import javax.swing.table.TableModel;
  *
  * @author Laurens
  */
-public class PakketOverzicht extends JFrame implements ListSelectionListener, ActionListener {
+public class PakketOverzicht extends JPanel implements ListSelectionListener, ActionListener {
 
     private Object geselecteerdeWaarde;
     static JTable aTable;
@@ -35,10 +43,12 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
     public PakketOverzicht() {
         super();
 
+
+
         this.setSize(800, 600);
         this.setLayout(new BorderLayout());
 
-        final String[] tabelinhoud = {"PakketID", "Gewicht", "Prijs", "Omschrijving", "Datum", "VerzendingID", "TrajectID", "Begin", "Eind"};
+        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving","Begin", "Eind", "BeginPlaats", "EindPlaats"};
         DbConnect dbc = new DbConnect();
         final Object[][] data = dbc.getPakket();
         final Object[] stad = dbc.getLocatie();
@@ -89,13 +99,19 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
 
         Eind = new JComboBox(Einde);
 
+
+
+
         aTable = new JTable(dataModel);
         aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        aTable.getColumnModel().getColumn(0).setPreferredWidth(70);
-        aTable.getColumnModel().getColumn(1).setPreferredWidth(70);
-        aTable.getColumnModel().getColumn(2).setPreferredWidth(40);
-        aTable.getColumnModel().getColumn(3).setPreferredWidth(70);
-        aTable.getColumnModel().getColumn(4).setPreferredWidth(150);
+        aTable.getColumnModel().getColumn(0).setPreferredWidth(60);
+        aTable.getColumnModel().getColumn(1).setPreferredWidth(80);
+        aTable.getColumnModel().getColumn(2).setPreferredWidth(60);
+        aTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+        aTable.getColumnModel().getColumn(4).setPreferredWidth(50);
+        aTable.getColumnModel().getColumn(5).setPreferredWidth(50);
+        aTable.getColumnModel().getColumn(6).setPreferredWidth(125);
+        aTable.getColumnModel().getColumn(7).setPreferredWidth(125);
 
         this.North = new JPanel();
         this.South = new JPanel();
@@ -111,6 +127,8 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
 
         this.add(new JScrollPane(aTable));
 
+
+
         ListSelectionModel listModel = aTable.getSelectionModel();
         listModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listModel.addListSelectionListener(this);
@@ -122,16 +140,18 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
         Start.addActionListener(this);
 
         this.setVisible(true);
+
+
+
     }
 
     public TableModel VerVerstabel() {
 
         DbConnect dbc = new DbConnect();
-        final String[] tabelinhoud = {"PakketID", "Gewicht", "Prijs", "Omschrijving", "Datum", "VerzendingID", "TrajectID", "Begin", "Eind"};
+        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving","Begin", "Eind", "BeginPlaats", "EindPlaats"};
         begin = (String) Begin.getSelectedItem();
         eind = (String) Eind.getSelectedItem();
-        System.out.println(begin);
-        System.out.println(eind);
+        
         final Object[][] data = dbc.getSpecifiekPakket(begin, eind);
         
         TableModel dataModel = new AbstractTableModel() {
@@ -172,8 +192,15 @@ public class PakketOverzicht extends JFrame implements ListSelectionListener, Ac
         if (ae.getSource() == Start) { //Aantal pakketen op een traject
             //this.hide();
             DbConnect dbc = new DbConnect();
+            System.out.println(begin);
+            System.out.println(eind);
             PakketOverzicht.aTable.setModel(VerVerstabel()); //Ververst tabel, maakt hem leeg
             PakketOverzicht.aTable.repaint();
+             
+
+            
+            
+
         }
     }
 

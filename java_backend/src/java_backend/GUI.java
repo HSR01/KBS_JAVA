@@ -125,7 +125,7 @@ public class GUI extends JFrame implements ActionListener {
         JPanel Card9 = new AccountWijzigen();
         JPanel Card10 = new AccountBlokkeren();
         JPanel Card11 = new GebruikStatistieken();
-        JPanel Card12 = new PakketStatistieken();
+        JPanel Card12 = new PakketOverzicht();
         JPanel Card13 = new FinancieelOverzicht();
         JPanel Card14 = new PakketStatus();
         JPanel Card15 = new AccountToevoegen();
