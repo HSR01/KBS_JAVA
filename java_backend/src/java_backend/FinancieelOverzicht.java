@@ -34,14 +34,14 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
         
 
         //instancieer JTable met datamodel van hierboven.
-        this.info = new JTable(dataModel);
+        this.info = new JTable(FillTabel(0));
         //Set de breedte van elke colom.
         this.info.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         this.info.getColumnModel().getColumn(0).setPreferredWidth(100);
         this.info.getColumnModel().getColumn(1).setPreferredWidth(100);
-        this.info.getColumnModel().getColumn(2).setPreferredWidth(100);
-        this.info.getColumnModel().getColumn(3).setPreferredWidth(75);
-        this.info.getColumnModel().getColumn(4).setPreferredWidth(75);
+        this.info.getColumnModel().getColumn(2).setPreferredWidth(150);
+        this.info.getColumnModel().getColumn(3).setPreferredWidth(50);
+        this.info.getColumnModel().getColumn(4).setPreferredWidth(50);
 
 
         //maak combobox voor jaren selecteren.
@@ -90,68 +90,25 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
                 //parse year naar een integer.
                 this.year = Integer.parseInt(inputcombo);
                 //set een nieuwe model om data op te halen en geef jaar mee.
-                this.info.setModel(VerVersTabel(year));
+                this.info.setModel(FillTabel(year));
                 //repaint de tabel om het opnieuw weer te geven.
                 this.info.repaint();
                 //set breedte van kolommen.
                 this.info.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
                 this.info.getColumnModel().getColumn(0).setPreferredWidth(100);
                 this.info.getColumnModel().getColumn(1).setPreferredWidth(100);
-                this.info.getColumnModel().getColumn(2).setPreferredWidth(100);
-                this.info.getColumnModel().getColumn(3).setPreferredWidth(75);
-                this.info.getColumnModel().getColumn(4).setPreferredWidth(75);
+                this.info.getColumnModel().getColumn(2).setPreferredWidth(150);
+                this.info.getColumnModel().getColumn(3).setPreferredWidth(50);
+                this.info.getColumnModel().getColumn(4).setPreferredWidth(50);
                 
             }
         }
     }
-         
-    
-
-    /**
-     * @author Jelle
-     * @description Gebruikt om de JTabel mee te vullen.
-     */
-    TableModel dataModel = new AbstractTableModel() {
-        //instancieer columnnamen
-        final String[] tabelinhoud = {"Aantal pakken", "Aantal keer BPS", "Aantal keer koerier", "omzet", "winst"};
-
-          /*
-           * @autor Jelle
-           * @description Return the number of columns needed for the JTable
-           */
-          public int getColumnCount() { return 5; }
-
-          /*
-           * @autor Jelle
-           * @description Return the number of rows needed for the JTable
-           */
-          public int getRowCount() { return 1;}
-          
-          /*
-           * @author Jelle
-           * @description fill the JTable with values.
-           */
-            public Object getValueAt(int row, int col) {
-                DbConnect dbc = new DbConnect();
-                //bij eerste instanciering waarde moet leeg zijn.
-                int[][] returnval = dbc.getFinance(0);
-                return returnval[0][col];
-                //return new Integer(row*col);
-            }
-          //set kolom namen
-            /*
-             * @autor Jelle
-             * @description set the column names with the data from tabelinhoud string.
-             */
-            public String getColumnName(int column){
-            return tabelinhoud[column];
-            };
-        };
     /**
      * @author Jelle
      * @description gebruikt om de tabel te verversen.
      */
-        public TableModel VerVersTabel(final int selectyear){
+        public TableModel FillTabel(final int selectyear){
             
          TableModel dataModel = new AbstractTableModel() {
                     //instancieer columnnamen
