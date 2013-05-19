@@ -78,7 +78,7 @@ public class GUI extends JFrame implements ActionListener {
         //instancieer menu onderdelen voor accounts 
         this.AccountToevoegen = new JMenuItem("Account toevoegen");        
         this.AccountWijzigen = new JMenuItem("Account wijzigen");  
-        this.AccountBlokeren = new JMenuItem("Account blokeren");
+        //this.AccountBlokeren = new JMenuItem("Account blokeren");
         
         //instancieer menu onderdelen voor statistieken
         this.GebruikStatistieken = new JMenuItem("Gebruik statistieken");
@@ -101,7 +101,7 @@ public class GUI extends JFrame implements ActionListener {
         //voeg onderdelen aan pakket accounts
         this.Accounts.add(AccountToevoegen);
         this.Accounts.add(AccountWijzigen);
-        this.Accounts.add(AccountBlokeren);
+        //this.Accounts.add(AccountBlokeren);
         
         //voeg onderdelen aan statistieken menu toe
         this.Statistieken.add(GebruikStatistieken);
@@ -255,7 +255,7 @@ public class GUI extends JFrame implements ActionListener {
         //Actionlistener voor account
         AccountToevoegen.addActionListener(this);
         AccountWijzigen.addActionListener(this);
-        AccountBlokeren.addActionListener(this);
+        //AccountBlokeren.addActionListener(this);
         
         //Actionlistener voor statistieken
         GebruikStatistieken.addActionListener(this);
