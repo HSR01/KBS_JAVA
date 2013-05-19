@@ -851,20 +851,33 @@ public class DbConnect {
         //return de array
         return returnval;
     }
-    
+   
 public Object[][] getPakketWijzigen(int pakketID) {
         try {
             //get aantal personen.
-            rs = st.executeQuery("SELECT COUNT(*)FROM Traject WHERE VerzendingID IN(SELECT VerzendingID	FROM Verzending WHERE PakketID = " + pakketID + ");");
+            rs = st.executeQuery("SELECT COUNT(*)"
+                    + "FROM Pakket A "
+                    + "JOIN Verzending B "
+                    + "ON A.PakketID = B.PakketID "
+                    + "JOIN Traject C "
+                    + "ON B.VerzendingID = C.VerzendingID "
+                    + "JOIN Locatie D "
+                    + "ON C.Begin = D.LocatieID "
+                    + "JOIN Locatie E "
+                    + "On C.Eind = E.LocatieID "
+                    + "WHERE A.PakketID = " + pakketID + ";");
+            
             int aantal = 0;
             while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
+
             }
+             System.out.println("getelde rijen = " + aantal); 
             Object[][] returnval = new Object[aantal][6];
 
 
             //Select query
-            query = "SELECT C.TrajectID, C.BPS, C.KoerierID, D.Plaatsnaam AS begin, E.Plaatsnaam AS eind, B.Status "
+            query = "SELECT C.TrajectID AS traj, C.BPS AS bp, C.KoerierID AS k, D.Plaatsnaam AS begin, E.Plaatsnaam AS eind, B.Status AS s "
                     + "FROM Pakket A "
                     + "JOIN Verzending B "
                     + "ON A.PakketID = B.PakketID "
@@ -884,14 +897,16 @@ public Object[][] getPakketWijzigen(int pakketID) {
             //Loop door de query data heen
             int i = 0;
             while (rs.next()) {
-                returnval[i][0] = rs.getString("TrajectID");
-                returnval[i][1] = rs.getString("BPS");
-                returnval[i][2] = rs.getString("KoerierID");
+
+                returnval[i][0] = rs.getString("traj");
+                returnval[i][1] = rs.getString("bp");
+                returnval[i][2] = rs.getString("k");
                 returnval[i][3] = rs.getString("begin");
                 returnval[i][4] = rs.getString("eind");
-                returnval[i][5] = rs.getString("Status");
+                returnval[i][5] = rs.getString("s");
                 i++;
             }
+
             //Afvangen fouten voor getdata
             return returnval;
         } catch (Exception ea) {
