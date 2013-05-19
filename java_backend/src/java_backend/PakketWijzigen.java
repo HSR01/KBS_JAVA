@@ -66,13 +66,12 @@ class PakketWijzigen extends JPanel implements ActionListener{
                 public void mouseClicked(MouseEvent e) {
                     // Zodra je 2x achter elkaar snel klikt word deze code uitgevoerd
                     if (e.getClickCount() == 2) {
-                        // Database functie
-                        DbConnect dbc = new DbConnect();
-                        // Haalt specifieke data op uit de databse
-                        final String[] specifiekeGebruikerGegevens = dbc.getSpecifiekeGebruikerGegevens(geselecteerdeWaarde);
-                        final String[] specifiekeGebruikerLocatie = dbc.getSpecifiekeGebruikerLocatie(geselecteerdeWaarde);
-                        // Voert de update query uit.
-                        WijzigPersoon wijzigData = new WijzigPersoon(specifiekeGebruikerGegevens, specifiekeGebruikerLocatie);
+                        /*
+                         * 
+                         * Voeg hier je code in om de popup te openen
+                         * 
+                         * 
+                         */
                     }
                 }
             }
@@ -94,31 +93,20 @@ class PakketWijzigen extends JPanel implements ActionListener{
 
     public TableModel FillTabel(final int pakketID){
             
-         TableModel dataModel = new AbstractTableModel() {
-                    //instancieer columnnamen
-        final String[] tabelinhoud = {"Pakket ID", "Type", "Vervoerder", "Van", "Naar", "Status"};
-                DbConnect dbc = new DbConnect();       
-                final Object[][] data = dbc.getPakketWijzigen(pakketID);
+        TableModel dataModel = new AbstractTableModel() {
+            //instancieer columnnamen
+            final String[] tabelinhoud = {"Pakket ID", "Type", "Vervoerder", "Van", "Naar", "Status"};
+            DbConnect dbc = new DbConnect();       
+            final Object[][] data = dbc.getPakketWijzigen(pakketID);
 
             public int getColumnCount() { return tabelinhoud.length; }
 
             public int getRowCount() { return data.length;}
-          
-
-            public Object getValueAt(int row, int col) {
-
-                Object[][] returnval = dbc.getPakketWijzigen(pakketID);
-                return returnval[row][col];
-            }
             
-            public String getColumnName(int column){
-            return tabelinhoud[column];
+            public Object getValueAt(int row, int col) { return data[row][col]; }
             
-            };
-            
-            
+            public String getColumnName(int column){ return tabelinhoud[column]; };
         };
-         
         return dataModel;
    };  
     
@@ -134,7 +122,6 @@ class PakketWijzigen extends JPanel implements ActionListener{
     }
     
     public void getSelecteerdeWaarde(Object string) {
-    this.geselecteerdeWaarde = string;
-        System.out.println(geselecteerdeWaarde);
+        this.geselecteerdeWaarde = string;
     }
 }
