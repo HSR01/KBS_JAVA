@@ -813,15 +813,24 @@ public class DbConnect {
      */
     public int[][] getFinance(int year){
         //make query still to do.
-        
+        //instancieer returnval
         int[][] returnval = new int[1][5];
-        
-        returnval[0][0] = 100;
-        returnval[0][1] = 75;
-        returnval[0][2] = 25;
-        returnval[0][3] = 1000;
-        returnval[0][4] = 100;
-        
+        if(year == 0){
+            //als jaar 0 is toon dan alle waarden op 0 voor eeste invul van jtable. // lelijke fix
+            returnval[0][0] = 0;
+            returnval[0][1] = 0;
+            returnval[0][2] = 0;
+            returnval[0][3] = 0;
+            returnval[0][4] = 0;
+        }else{
+        //maak query en vul returnval;
+            returnval[0][0] = year;
+            returnval[0][1] = 75;
+            returnval[0][2] = 25;
+            returnval[0][3] = 1000;
+            returnval[0][4] = 100;
+        }
+        //return de array
         return returnval;
     }
 }
