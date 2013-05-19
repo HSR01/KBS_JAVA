@@ -804,4 +804,24 @@ public class DbConnect {
         }
         return null;
     }
+    
+    /**
+     * @autor Jelle
+     * @param int year, year is the year you want the finance information from. 
+     * @description gets finance information from database with 
+     * @return returnval array with integer information about finance.
+     */
+    public int[][] getFinance(int year){
+        //make query still to do.
+        
+        int[][] returnval = new int[1][5];
+        
+        returnval[0][0] = 100;
+        returnval[0][1] = 75;
+        returnval[0][2] = 25;
+        returnval[0][3] = 1000;
+        returnval[0][4] = 100;
+        
+        return returnval;
+    }
 }

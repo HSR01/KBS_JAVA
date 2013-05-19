@@ -12,6 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -25,6 +26,7 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
     private JLabel jaar;
     private Calendar now;
     private JTable info;
+    private int year;
             
     public FinancieelOverzicht() {
         //instancieer velden;
@@ -57,7 +59,7 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
         top.add(this.selectie);
         //voeg layout toe aan Jpanel mid
         JPanel mid = new JPanel();
-        mid.add(this.info);
+        mid.add(new JScrollPane(this.info));
         //voeg uiteindelijk alles toe aan het centrale geheel.
         this.add(top, BorderLayout.NORTH);
         this.add(mid, BorderLayout.CENTER);
@@ -74,12 +76,13 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
         //selectie button geladen.
         if (ae.getSource() == selectie) {
             //jaar geselecteerd.
-            String jaar = this.selectie.getSelectedItem().toString();
-            if (!jaar.equals("Kies een jaar.")) {
+            String inputcombo = this.selectie.getSelectedItem().toString();
+            if (!inputcombo.equals("Kies een jaar.")) {
                 //een waarde heeft een jaar. Ga door voor query om de boel op te halen en alles.
                 DbConnect dbc = new DbConnect();
-                
-                
+                System.out.println(jaar);
+                this.year = Integer.parseInt(inputcombo);
+                //dbc.getFinance(this.year);
                 
             }
         }
@@ -89,12 +92,39 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
      * @description Gebruikt om de JTabel mee te vullen.
      */
     TableModel dataModel = new AbstractTableModel() {
-          //geef aantal kolomen terug
-          public int getColumnCount() { return 10; }
-          //geef aantal rijen terug.
-          public int getRowCount() { return 10;}
-          //geef waarde terug om rij mee te vullen
-            public Object getValueAt(int row, int col) { return new Integer(row*col); }
+        //instancieer columnnamen
+        final String[] tabelinhoud = {"Aantal pakken", "Aantal keer BPS", "Aantal keer koerier", "omzet", "winst"};
+
+          /*
+           * @autor Jelle
+           * @description Return the number of columns needed for the JTable
+           */
+          public int getColumnCount() { return 5; }
+
+          /*
+           * @autor Jelle
+           * @description Return the number of rows needed for the JTable
+           */
+          public int getRowCount() { return 1;}
+          
+          /*
+           * @author Jelle
+           * @description fill the JTable with values.
+           */
+            public Object getValueAt(int row, int col) {
+                DbConnect dbc = new DbConnect();
+                int[][] returnval = dbc.getFinance(2013);
+                return returnval[0][col];
+                //return new Integer(row*col);
+            }
+          //set kolom namen
+            /*
+             * @autor Jelle
+             * @description set the column names with the data from tabelinhoud string.
+             */
+            public String getColumnName(int column){
+            return tabelinhoud[column];
+            };
         };
     
 }
