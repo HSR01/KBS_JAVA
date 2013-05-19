@@ -101,5 +101,6 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
     // Set de geselecteerde waarde
     public void getSelecteerdeWaarde(Object string) {
         this.geselecteerdeWaarde = string;
+        System.out.println(geselecteerdeWaarde);
     }
 }

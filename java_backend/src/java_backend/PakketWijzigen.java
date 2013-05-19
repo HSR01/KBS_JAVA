@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -24,10 +25,11 @@ import javax.swing.table.TableModel;
  * @author Daniel
  */
 class PakketWijzigen extends JPanel implements ActionListener{
-        private JLabel zoeklabel;
-        private JTextField zoekveld;
-        private JButton zoek;  
-        private JTable info; 
+    private Object geselecteerdeWaarde; 
+    private JLabel zoeklabel;
+    private JTextField zoekveld;
+    private JButton zoek;  
+    private JTable info; 
             
     public PakketWijzigen() {
         zoeklabel = new JLabel("Pakket ID :");
@@ -56,6 +58,25 @@ class PakketWijzigen extends JPanel implements ActionListener{
         
         //tonen maar
         this.setVisible(true);
+        
+        info.addMouseListener(
+            new MouseAdapter() {
+                @Override
+                // Deze word geactiveerd als je klikt
+                public void mouseClicked(MouseEvent e) {
+                    // Zodra je 2x achter elkaar snel klikt word deze code uitgevoerd
+                    if (e.getClickCount() == 2) {
+                        // Database functie
+                        DbConnect dbc = new DbConnect();
+                        // Haalt specifieke data op uit de databse
+                        final String[] specifiekeGebruikerGegevens = dbc.getSpecifiekeGebruikerGegevens(geselecteerdeWaarde);
+                        final String[] specifiekeGebruikerLocatie = dbc.getSpecifiekeGebruikerLocatie(geselecteerdeWaarde);
+                        // Voert de update query uit.
+                        WijzigPersoon wijzigData = new WijzigPersoon(specifiekeGebruikerGegevens, specifiekeGebruikerLocatie);
+                    }
+                }
+            }
+        );
     }
 
     @Override
@@ -87,13 +108,33 @@ class PakketWijzigen extends JPanel implements ActionListener{
             public Object getValueAt(int row, int col) {
 
                 Object[][] returnval = dbc.getPakketWijzigen(pakketID);
-                return returnval[0][col];
+                return returnval[row][col];
             }
-
+            
             public String getColumnName(int column){
             return tabelinhoud[column];
+            
             };
+            
+            
         };
+         
         return dataModel;
    };  
+    
+    public void valueChanged(ListSelectionEvent e) {
+        // Pakt de tablemodel van aTable
+        TableModel tm = info.getModel();
+        // Bepaalt de geselecteerde rij en vult een array met alle waardes
+        int[] selRows = info.getSelectedRows();
+        // Dit vult geselecteerdeWaarde
+        Object geselecteerdeWaarde = tm.getValueAt(selRows[0],0);
+        // maakt de geselcteerde waarde openbaar
+        getSelecteerdeWaarde(geselecteerdeWaarde);
+    }
+    
+    public void getSelecteerdeWaarde(Object string) {
+    this.geselecteerdeWaarde = string;
+        System.out.println(geselecteerdeWaarde);
+    }
 }

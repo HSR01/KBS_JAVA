@@ -872,7 +872,7 @@ public Object[][] getPakketWijzigen(int pakketID) {
                 aantal = rs.getInt("Count(*)");
 
             }
-             System.out.println("getelde rijen = " + aantal); 
+
             Object[][] returnval = new Object[aantal][6];
 
 
