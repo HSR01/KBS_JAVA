@@ -851,4 +851,55 @@ public class DbConnect {
         //return de array
         return returnval;
     }
+    
+public Object[][] getPakketWijzigen(int pakketID) {
+        try {
+            //get aantal personen.
+            rs = st.executeQuery("SELECT COUNT(*)FROM Traject WHERE VerzendingID IN(SELECT VerzendingID	FROM Verzending WHERE PakketID = " + pakketID + ");");
+            int aantal = 0;
+            while (rs.next()) {
+                aantal = rs.getInt("Count(*)");
+            }
+            Object[][] returnval = new Object[aantal][6];
+
+
+            //Select query
+            query = "SELECT C.TrajectID, C.BPS, C.KoerierID, D.Plaatsnaam AS begin, E.Plaatsnaam AS eind, B.Status "
+                    + "FROM Pakket A "
+                    + "JOIN Verzending B "
+                    + "ON A.PakketID = B.PakketID "
+                    + "JOIN Traject C "
+                    + "ON B.VerzendingID = C.VerzendingID "
+                    + "JOIN Locatie D "
+                    + "ON C.Begin = D.LocatieID "
+                    + "JOIN Locatie E "
+                    + "On C.Eind = E.LocatieID "
+                    + "WHERE A.PakketID = " + pakketID + ";";
+            
+
+
+            //Query uitvoeren
+            rs = st.executeQuery(query);
+
+            //Loop door de query data heen
+            int i = 0;
+            while (rs.next()) {
+                returnval[i][0] = rs.getString("TrajectID");
+                returnval[i][1] = rs.getString("BPS");
+                returnval[i][2] = rs.getString("KoerierID");
+                returnval[i][3] = rs.getString("begin");
+                returnval[i][4] = rs.getString("eind");
+                returnval[i][5] = rs.getString("Status");
+                i++;
+            }
+            //Afvangen fouten voor getdata
+            return returnval;
+        } catch (Exception ea) {
+            System.out.println("Query lees ERROR: " + ea);
+        }
+          return null;
+    }
+
 }
+
+
