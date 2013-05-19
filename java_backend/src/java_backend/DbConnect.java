@@ -445,7 +445,6 @@ public class DbConnect {
             } else { 
                 query += "!= 0"; 
             }
-            System.out.println(query);
             rs = st.executeQuery(query);
             while (rs.next()) {
                 return rs.getInt("LocatieID");
