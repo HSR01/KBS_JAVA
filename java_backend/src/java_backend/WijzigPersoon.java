@@ -29,12 +29,12 @@ import javax.swing.JTextField;
 public class WijzigPersoon extends JPanel implements ActionListener{
     private JTextField tfId, tfVoornaam, tfTussenvoegsel, tfAchternaam, tfEmailadres, tfGeboortedatum, tfMobielnummer, tfProfielfoto, tfIBANnummer, tfRechten;
     private JPasswordField pfWachtwoord;
-    private JLabel logo, lId, lVoornaam, lTussenvoegsel, lAchternaam, lEmailadres, lWachtwoord, lGeboortedatum, lMobielnummer, lProfielfoto, lIBANnummer, lRechten, lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam;
+    private JLabel logo, lId, lVoornaam, lTussenvoegsel, lAchternaam, lEmailadres, lWachtwoord, lGeboortedatum, lMobielnummer, lProfielfoto, lIBANnummer, lRechten, lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam, lTztpoint;
     private JPanel jInputfields, jrecht, jFieldPanel, jBtnsOnderFoto, jLogo, jProfielfoto, jButtons, jDatums;        
     private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
     private JButton btSluiten, btOpslaan, btTraject, btPlaceholder, btWijzig;
     private String datumDag, datumMaand, datumJaar, datDag, datMaand, datum, rechten, latitude, longitude;
-    private JComboBox maand, dag, jaar, recht;
+    private JComboBox maand, dag, jaar, recht, tztpoint;
     private Coordinaten cords;
 
     public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie) {
@@ -271,7 +271,14 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         this.lIBANnummer        = new JLabel("IBAN-nummer");
         this.lMobielnummer      = new JLabel("Mobielnummer");
         this.lId                = new JLabel("Persoons ID");
-        this.lRechten           = new JLabel ("Rechten");
+        this.lRechten           = new JLabel("Rechten");
+        this.lTztpoint          = new JLabel("TZT Punt");
+        
+        // De dropdown voor tzt point
+        DefaultComboBoxModel tzt = new DefaultComboBoxModel();
+        tzt.addElement("Nee");
+        tzt.addElement("Ja");
+        this.tztpoint = new JComboBox(tzt);
         
         // De Dropdown box voor rechten
         DefaultComboBoxModel rechten = new DefaultComboBoxModel();
@@ -332,11 +339,11 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         
         this.jFieldPanel.add(lPlaatsnaam);
         this.jFieldPanel.add(lPostcode);
-        this.jFieldPanel.add(new JLabel(""));    
+        this.jFieldPanel.add(lTztpoint);
         
         this.jFieldPanel.add(tfPlaatsnaam);
         this.jFieldPanel.add(tfPostcode);
-        this.jFieldPanel.add(new JLabel(""));        
+        this.jFieldPanel.add(tztpoint);        
         
         this.jFieldPanel.add(lStraatnaam);
         this.jFieldPanel.add(lHuisnummer);
@@ -395,7 +402,18 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         if (ae.getSource() == btOpslaan) {
             //Controleer of de verplichte velden zijn ingevuld
             
-            if (pfWachtwoord.getText().equals("")) { 
+            if (pfWachtwoord.getText().equals("")   ||
+                tfVoornaam.getText().equals("")     ||
+                tfAchternaam.getText().equals("")   ||
+                tfPlaatsnaam.getText().equals("")   ||
+                tfPostcode.getText().equals("")     ||
+                tfStraatnaam.getText().equals("")   ||
+                tfHuisnummer.getText().equals("")   ||
+                tfIBANnummer.getText().equals("")   ||                    
+                tfMobielnummer.getText().equals("") ||
+                tfEmailadres.getText().equals("")   ||
+                tfAchternaam.getText().equals("")   ||
+                tfMobielnummer.getText().equals("")){ 
                 JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
             } else {
                 //Hash het wachtwoord naar MD5
