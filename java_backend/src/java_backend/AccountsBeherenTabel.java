@@ -79,7 +79,7 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
                         final String[] specifiekeGebruikerGegevens = dbc.getSpecifiekeGebruikerGegevens(geselecteerdeWaarde);
                         final String[] specifiekeGebruikerLocatie = dbc.getSpecifiekeGebruikerLocatie(geselecteerdeWaarde);
                         // Voert de update query uit.
-                        WijzigPersoon wijzigData = new WijzigPersoon(specifiekeGebruikerGegevens, specifiekeGebruikerLocatie);
+                        PersoonWijzigen wijzigData = new PersoonWijzigen(specifiekeGebruikerGegevens, specifiekeGebruikerLocatie);
                     }
                 }
             }

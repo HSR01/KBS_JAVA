@@ -14,6 +14,6 @@ import javax.swing.JPanel;
 class AccountToevoegen extends JPanel {
 
     public AccountToevoegen() {
-       this.add(new WijzigPersoon());
+       this.add(new PersoonNieuw());
     }
 }
