@@ -915,14 +915,14 @@ public Object[][] getPakketWijzigen(int pakketID) {
           return null;
     }
 
-    public String getLocatieID(String query) {
+    public int getLocatieID(String query) {
         // Dominque
         System.out.println(query);
-        String locatieID = "";
+        int locatieID = 0;
         try{
             rs = st.executeQuery(query);
             while (rs.next()) {
-                locatieID = rs.getString("LocatieID");
+                locatieID = Integer.parseInt(rs.getString("LocatieID"));
             }
             return locatieID;
         } catch (Exception e) {

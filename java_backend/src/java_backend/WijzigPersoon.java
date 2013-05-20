@@ -11,6 +11,8 @@ import java.security.MessageDigest;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -35,8 +37,9 @@ public class WijzigPersoon extends JPanel implements ActionListener{
     private JPanel jInputfields, jrecht, jFieldPanel, jBtnsOnderFoto, jLogo, jProfielfoto, jButtons, jDatums;        
     private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
     private JButton btSluiten, btOpslaan, btTraject, btPlaceholder, btWijzig;
-    private String datumDag, datumMaand, datumJaar, datDag, datMaand, datum, rechten;
+    private String datumDag, datumMaand, datumJaar, datDag, datMaand, datum, rechten, latitude, longitude;
     private JComboBox maand, dag, jaar, recht;
+    private Coordinaten cords;
 
     public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie) {
         super();
@@ -443,10 +446,18 @@ public class WijzigPersoon extends JPanel implements ActionListener{
                 if( rechten.equals("Hoofdkantoor")                      ){ gebruikerniveau = 4; }
                 
                 //Sla de gegevens op in de database
+                Geocoding geo = new Geocoding();
+                try {
+                    Coordinaten cords = geo.QueryAndGetCoordinates(tfPlaatsnaam.getText(), tfStraatnaam.getText(), Integer.parseInt(tfHuisnummer.getText()));
+                    this.latitude = "" + cords.Latitude;
+                    this.longitude = "" + cords.Longitude;
+                } catch (MultipleAdressesFoundException ex) {
+                    Logger.getLogger(WijzigPersoon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 DbConnect a = new DbConnect();
-                a.insertData("Locatie","00000", "00000" ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
-                String locatieIDs = a.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
-                int locatieID = Integer.parseInt(locatieIDs);
+                a.insertData("Locatie", this.latitude, this.longitude ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
+                int locatieID = a.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
                 a.nieuweGebruiker("INSERT INTO `Persoon` (`PersoonID`, `LocatieID`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Emailadres`, `Wachtwoord`, `Geboortedatum`, `Mobielnummer`, `Profielfoto`, `IBAN`, `Rechten`) VALUES ( '0','" + locatieID + "','" + tfVoornaam.getText() + "','" + tfTussenvoegsel.getText() + "','" + tfAchternaam.getText() + "','" + tfEmailadres.getText() + "','" + wachtwoord + "','" + datum + "','" + tfMobielnummer.getText() + "','" + null + "','" + tfIBANnummer.getText() + "','" + gebruikerniveau + "')");
                 int persoonID = a.getPersoonID("SELECT PersoonID FROM `Persoon`  Where Emailadres = '" + tfEmailadres.getText() + "'");
                 a.nieuweGebruiker("INSERT INTO `Persoon_Locatie` (LocatieID, PersoonID) VALUES (" + locatieID + "," + persoonID + ")");
