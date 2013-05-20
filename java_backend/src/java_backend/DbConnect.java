@@ -958,5 +958,48 @@ public Object[][] getPakketWijzigen(int pakketID) {
             System.out.println("Query schrijf ERROR: " + ea);
         }
 
-    }   
+    }
+    
+    public Object[][] getPakketStatus() {
+        try {
+            //LAURENS
+            //get status.
+           
+            rs = st.executeQuery("SELECT COUNT(*) FROM Traject t JOIN Verzending v ON t.VerzendingID = v.VerzendingID JOIN Pakket p ON p.PakketID = v.VerzendingID JOIN Koerier k ON k.KoerierID = t.KoerierID JOIN Locatie D ON t.Eind = D.LocatieID JOIN Locatie E ON t.Begin = E.LocatieID");
+            int aantal = 0;
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+            //haal alles op.
+            
+
+            Object[][] returnval = new Object[aantal][12];
+            query = "SELECT t.TrajectID as TrajectID, t.VerzendingID as VerzendingID, v.PakketID as PakketID, t.KoerierID as KoerierID, k.Bedrijfsnaam as Bedrijfsnaam, t.Begin as Begin, t.Eind as Eind, D.Plaatsnaam as Beginplaats, E.Plaatsnaam as Eindplaats, v.Aankomsttijd as Aankomsttijd, v.Aflevertijd as Aflevertijd, v.Status as Status FROM Traject t JOIN Verzending v ON t.VerzendingID = v.VerzendingID JOIN Pakket p ON p.PakketID = v.VerzendingID JOIN Koerier k ON k.KoerierID = t.KoerierID JOIN Locatie D ON t.Eind = D.LocatieID JOIN Locatie E ON t.Begin = E.LocatieID";
+            int i = 0;
+            
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+
+                returnval[i][0] = rs.getString("TrajectID");
+                returnval[i][1] = rs.getString("VerzendingID");
+                returnval[i][2] = rs.getString("PakketID");
+                returnval[i][3] = rs.getString("KoerierID");
+                returnval[i][4] = rs.getString("Bedrijfsnaam");
+                returnval[i][5] = rs.getString("Begin");
+                returnval[i][6] = rs.getString("Eind");
+                returnval[i][7] = rs.getString("Beginplaats");
+                returnval[i][8] = rs.getString("Eindplaats");
+                returnval[i][9] = rs.getString("Aankomsttijd");
+                returnval[i][10] = rs.getString("Aflevertijd");
+                returnval[i][11] = rs.getString("Status");
+                i++;
+            }
+            return returnval;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+
+        }
+        
+        return null;
+    }
 }
