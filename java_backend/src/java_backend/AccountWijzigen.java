@@ -14,8 +14,7 @@ import javax.swing.JPanel;
 class AccountWijzigen extends JPanel {
 
     public AccountWijzigen() {
-                this.add(new AccountsBeherenTabel());
-        this.setVisible(true);
+        this.add(new AccountsBeherenTabel());
     }
     
 }

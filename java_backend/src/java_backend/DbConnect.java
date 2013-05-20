@@ -916,6 +916,7 @@ public Object[][] getPakketWijzigen(int pakketID) {
     }
 
     public String getLocatieID(String query) {
+        // Dominque
         System.out.println(query);
         String locatieID = "";
         try{
@@ -930,14 +931,31 @@ public Object[][] getPakketWijzigen(int pakketID) {
         return locatieID;
     }
     
+    public int getPersoonID(String query) {
+        // Dominque
+        System.out.println(query);
+        int persoonID = 0;
+        try{
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                persoonID = Integer.parseInt(rs.getString("PersoonID"));
+            }
+            return persoonID;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+        }
+        return persoonID;
+    }    
+    
     public void nieuweGebruiker(String query) {
+        // Dominique
+        System.out.println(query);
         try {
             //Query uitvoeren
             st.executeUpdate(query);
 
         } catch (Exception ea) {
             System.out.println("Query schrijf ERROR: " + ea);
-
         }
 
     }   
