@@ -2,19 +2,13 @@
 package java_backend;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -29,7 +24,7 @@ import javax.swing.table.TableModel;
  *
  * @author Daniel
  */
-class PakketWijzigen extends JPanel implements ActionListener{
+class PakketWijzigen extends JPanel implements ActionListener, ListSelectionListener{
     private Object geselecteerdeWaarde; 
     private JLabel zoeklabel;
     private JTextField zoekveld;
@@ -77,6 +72,13 @@ class PakketWijzigen extends JPanel implements ActionListener{
                 }
             }
         );
+        
+        // Dit is de list selecetioner, die kijkt of je iets selecteert
+        ListSelectionModel listMod = info.getSelectionModel();
+        // Hierdoor kan je maar 1 regel selecteren
+        listMod.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // Voegt de listener toe aan het frame
+        listMod.addListSelectionListener( this );        
     }
 
     @Override
