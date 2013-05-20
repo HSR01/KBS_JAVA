@@ -35,6 +35,8 @@ public class WijzigPersoon extends JPanel implements ActionListener{
     private JPanel jInputfields, jFieldPanel, jBtnsOnderFoto, jLogo, jProfielfoto, jButtons, jDatums;        
     private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
     private JButton btSluiten, btOpslaan, btTraject, btPlaceholder, btWijzig;
+    private String datumDag, datumMaand, datumJaar, datDag, datMaand;
+    private JComboBox maand, dag, jaar;
 
     public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie) {
         super();
@@ -284,7 +286,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         for (int dag = 1; dag < 32; dag++) {
             dagen.addElement(dag);
         }
-        JComboBox dag = new JComboBox(dagen);
+        this.dag = new JComboBox(dagen);
         
         DefaultComboBoxModel maanden = new DefaultComboBoxModel();
         maanden.addElement("Januari");
@@ -299,13 +301,13 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         maanden.addElement("Oktober");
         maanden.addElement("November");
         maanden.addElement("December");
-        JComboBox maand = new JComboBox(maanden);
+        this.maand = new JComboBox(maanden);
         
         DefaultComboBoxModel jaren = new DefaultComboBoxModel();
         for (int jaar = 2013; jaar > 1899; jaar --) {
             jaren.addElement(jaar);
         }
-        JComboBox jaar = new JComboBox(jaren);
+        this.jaar = new JComboBox(jaren);
         jDatums.add(dag);
         jDatums.add(maand);
         jDatums.add(jaar);
@@ -393,8 +395,6 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         if (ae.getSource() == btOpslaan) {
             //Controleer of de verplichte velden zijn ingevuld
             
-            // Voornaam
-            
             if (pfWachtwoord.getText().equals("")) { 
                 JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
             } else {
@@ -407,16 +407,37 @@ public class WijzigPersoon extends JPanel implements ActionListener{
                 } catch (Exception o) {
                     System.out.println("Hash Error:" + o);
                 }
+				
+		// Datum maken
+                datDag = "" + this.dag.getSelectedItem();
+                if(datDag.length() < 2){ datumDag = (String) "0" + dag.getSelectedItem();}
+                else{ datumDag = (String) "" + dag.getSelectedItem(); }
+                
+		datMaand = (String) maand.getSelectedItem();
+                     if( datMaand.equals("Januari")		){ datumMaand = "01"; }
+		else if( datMaand.equals("Februari")            ){ datumMaand = "02"; }
+		else if( datMaand.equals("Maart")		){ datumMaand = "03"; }
+		else if( datMaand.equals("April")		){ datumMaand = "04"; }
+		else if( datMaand.equals("Mei")			){ datumMaand = "05"; }
+		else if( datMaand.equals("Juni")		){ datumMaand = "06"; }
+		else if( datMaand.equals("Juli")		){ datumMaand = "07"; }
+		else if( datMaand.equals("Augustus")            ){ datumMaand = "08"; }
+		else if( datMaand.equals("September")           ){ datumMaand = "09"; }
+		else if( datMaand.equals("Oktober")		){ datumMaand = "10"; }
+		else if( datMaand.equals("November")            ){ datumMaand = "11"; }
+		else 						 { datumMaand = "12"; }
+                     
+                datumJaar = "" + jaar.getSelectedItem();
+                
+		String datum = datumDag + "-" + datumMaand + "-" + datumJaar;
+                System.out.println(datum);
                 //Sla de gegevens op in de database
                 DbConnect a = new DbConnect();
-                a.insertData("Persoon",tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), wachtwoord, tfGeboortedatum.getText(), tfMobielnummer.getText(), tfIBANnummer.getText(), "aaaaa");   
                 a.insertData("Locatie","00000", "00000" ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
-                //a.insertData("Persoon_Locatie",,2);
-                
-                //a.executeQuery("SELECT Lname FROM Customers WHERE Snum = 2001");
-                
-
-//a.insertData("Persoon_Locatie","",)
+                String locatieIDs = a.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
+                int locatieID = Integer.parseInt(locatieIDs);
+                a.nieuweGebruiker("INSERT INTO `Persoon` (`PersoonID`, `LocatieID`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Emailadres`, `Wachtwoord`, `Geboortedatum`, `Mobielnummer`, `Profielfoto`, `IBAN`, `Rechten`) VALUES ( '0','" + locatieID + "','" + tfVoornaam.getText() + "','" + tfTussenvoegsel.getText() + "','" + tfAchternaam.getText() + "','" + tfEmailadres.getText() + "','" + wachtwoord + "','" + datum + "','" + tfMobielnummer.getText() + "','" + null + "','" + tfIBANnummer.getText() + "', '0')");
+                        //"Persoon", Integer.parseInt(locatieID), tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), wachtwoord, datum, tfMobielnummer.getText(), tfIBANnummer.getText(), "aaaaa");   
             }
         }
         

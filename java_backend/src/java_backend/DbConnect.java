@@ -915,6 +915,30 @@ public Object[][] getPakketWijzigen(int pakketID) {
           return null;
     }
 
+    public String getLocatieID(String query) {
+        System.out.println(query);
+        String locatieID = "";
+        try{
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                locatieID = rs.getString("LocatieID");
+            }
+            return locatieID;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+        }
+        return locatieID;
+    }
+    
+    public void nieuweGebruiker(String query) {
+        try {
+            //Query uitvoeren
+            st.executeUpdate(query);
+
+        } catch (Exception ea) {
+            System.out.println("Query schrijf ERROR: " + ea);
+
+        }
+
+    }   
 }
-
-
