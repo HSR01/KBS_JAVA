@@ -16,7 +16,7 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         final String[] tabelinhoud = {"ID", "Voornaam", "Tussenvoegsel", "Achternaam", "Emailadres", "Wachtwoord", "Geboortedatum", "Mobiel", "Foto", "IBAN", "Rechten"};
         // Database connectie
         DbConnect dbc = new DbConnect();
-        // De data voor de tabel oproepem door middel van een sql functie
+        // De data voor de tabel oproepen door middel van een sql query in de getUsers() methode
         final Object[][] data = dbc.getUsers();
         
         TableModel dataModel = new AbstractTableModel() {
