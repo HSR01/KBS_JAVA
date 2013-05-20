@@ -193,10 +193,8 @@ public class GUI extends JFrame implements ActionListener {
         this.login = new JPanel();
         this.loginholder = new JPanel();
         
-        loginlogo.setMaximumSize(new Dimension(50,50));
-        loginlogo.setMinimumSize(new Dimension (50,50));
-        loginlogo.setPreferredSize(new Dimension(50,50));
-        loginlogo.setBorder(BorderFactory.createLineBorder(Color.black)); 
+
+
         //kies borderlayout
         this.login.setLayout(new FlowLayout());
    

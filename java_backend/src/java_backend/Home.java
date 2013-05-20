@@ -33,10 +33,11 @@ class Home extends JPanel {
             System.out.println(e.getMessage());
         }
 
-        contenttext.setText("Welkom bij TZT Postaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.");
+        homelogo.add(startimg);
+        contenttext.setText("<html>Welkom bij TZT Post. <br><br>Dit is het backoffice systeem van TZT Post.<br> Maak een keuze uit een van de bovenstaande items.<br><br> Voor meer informatie ga naar <a href='www.tztpost.nl'>TZTPost.nl</a><br><br><br><br><br><br><br><br><br><br>Software v1.0<br>Door: Jelle, Laurens, Justin, Leon, Dominique en Daniel</html>");
         homecontent.add(contenttext);
         homelogo.add(startimg);
-        this.add(this.startimg, BorderLayout.WEST);
+        this.add(this.homelogo, BorderLayout.WEST);
         this.add(this.homecontent, BorderLayout.CENTER);
 
         this.setVisible(true);

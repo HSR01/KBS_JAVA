@@ -2,6 +2,8 @@
 package java_backend;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -10,12 +12,15 @@ import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -28,7 +33,7 @@ class PakketWijzigen extends JPanel implements ActionListener{
     private Object geselecteerdeWaarde; 
     private JLabel zoeklabel;
     private JTextField zoekveld;
-    private JButton zoek;  
+    private JButton zoek, opslaan;  
     private JTable info; 
             
     public PakketWijzigen() {
@@ -58,7 +63,7 @@ class PakketWijzigen extends JPanel implements ActionListener{
         
         //tonen maar
         this.setVisible(true);
-        
+        final Frame frame = (Frame)SwingUtilities.getAncestorOfClass(Frame.class, this);
         info.addMouseListener(
             new MouseAdapter() {
                 @Override
@@ -66,12 +71,8 @@ class PakketWijzigen extends JPanel implements ActionListener{
                 public void mouseClicked(MouseEvent e) {
                     // Zodra je 2x achter elkaar snel klikt word deze code uitgevoerd
                     if (e.getClickCount() == 2) {
-                        /*
-                         * 
-                         * Voeg hier je code in om de popup te openen
-                         * 
-                         * 
-                         */
+                        PakketWijzigenPopUp wijzig = new PakketWijzigenPopUp(geselecteerdeWaarde);                        
+
                     }
                 }
             }

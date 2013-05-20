@@ -9,6 +9,8 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -28,11 +30,12 @@ public class WijzigPersoon extends JPanel implements ActionListener{
     private JTextField tfId, tfVoornaam, tfTussenvoegsel, tfAchternaam, tfEmailadres, tfGeboortedatum, tfMobielnummer, tfProfielfoto, tfIBANnummer, tfRechten;
     private JPasswordField pfWachtwoord;
     private JLabel logo, lId, lVoornaam, lTussenvoegsel, lAchternaam, lEmailadres, lWachtwoord, lGeboortedatum, lMobielnummer, lProfielfoto, lIBANnummer, lRechten, lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam;
-    private JPanel jInputfields, jFieldPanel, jBtnsOnderFoto, jLogo, jProfielfoto, jButtons, jDatums;        
+    private JPanel jInputfields, jrecht, jFieldPanel, jBtnsOnderFoto, jLogo, jProfielfoto, jButtons, jDatums;        
     private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
     private JButton btSluiten, btOpslaan, btTraject, btPlaceholder, btWijzig;
-    private String datumDag, datumMaand, datumJaar, datDag, datMaand;
-    private JComboBox maand, dag, jaar;
+    private String datumDag, datumMaand, datumJaar, datDag, datMaand, datum, rechten, latitude, longitude;
+    private JComboBox maand, dag, jaar, recht;
+    private Coordinaten cords;
 
     public WijzigPersoon(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie) {
         super();
@@ -185,7 +188,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         this.jFieldPanel.add(new JLabel(""));
         
         this.jFieldPanel.add(tfId);
-        this.jFieldPanel.add(recht);
+        this.jFieldPanel.add((JComboBox) recht);
         this.jFieldPanel.add(new JLabel(""));
         
         this.jInputfields.add(jFieldPanel);
@@ -272,11 +275,12 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         
         // De Dropdown box voor rechten
         DefaultComboBoxModel rechten = new DefaultComboBoxModel();
-        rechten.addElement("BPS Koerier");
-        rechten.addElement("Koeriersdienst");
-        rechten.addElement("Kantoor");
-        rechten.addElement("Service Desk");
-        JComboBox recht = new JComboBox(rechten);
+        rechten.addElement("Geblokkeerd");
+        rechten.addElement("Verzender / Ontvanger / Klanten");
+        rechten.addElement("TZT Point / BPS'er");
+        rechten.addElement("TZT Medewerker");
+        rechten.addElement("Hoofdkantoor");
+        this.recht = new JComboBox(rechten);
         
         DefaultComboBoxModel dagen = new DefaultComboBoxModel();
         for (int dag = 1; dag < 32; dag++) {
@@ -363,7 +367,7 @@ public class WijzigPersoon extends JPanel implements ActionListener{
         this.jFieldPanel.add(new JLabel(""));
         
         this.jFieldPanel.add(tfId);
-        this.jFieldPanel.add(recht);
+        this.jFieldPanel.add((JComboBox) recht);
         this.jFieldPanel.add(new JLabel(""));
         
         this.jInputfields.add(jFieldPanel);
@@ -425,15 +429,35 @@ public class WijzigPersoon extends JPanel implements ActionListener{
                      
                 datumJaar = "" + jaar.getSelectedItem();
                 
-		String datum = datumDag + "-" + datumMaand + "-" + datumJaar;
-                System.out.println(datum);
+		datum = datumDag + "-" + datumMaand + "-" + datumJaar;
+                
+                // Rechten
+                
+                rechten = (String) recht.getSelectedItem();
+                int gebruikerniveau = 0;
+                if( rechten.equals("Geblokkeerd")                       ){ gebruikerniveau = 0; }
+                if( rechten.equals("Verzender / Ontvanger / Klanten")   ){ gebruikerniveau = 1; }
+                if( rechten.equals("TZT Point / BPS'er")                ){ gebruikerniveau = 2; }
+                if( rechten.equals("TZT Medewerker")                    ){ gebruikerniveau = 3; }
+                if( rechten.equals("Hoofdkantoor")                      ){ gebruikerniveau = 4; }
+                
                 //Sla de gegevens op in de database
+                Geocoding geo = new Geocoding();
+                try {
+                    Coordinaten cords = geo.QueryAndGetCoordinates(tfPlaatsnaam.getText(), tfStraatnaam.getText(), Integer.parseInt(tfHuisnummer.getText()));
+                    this.latitude = "" + cords.Latitude;
+                    this.longitude = "" + cords.Longitude;
+                } catch (MultipleAdressesFoundException ex) {
+                    Logger.getLogger(WijzigPersoon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 DbConnect a = new DbConnect();
-                a.insertData("Locatie","00000", "00000" ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
-                String locatieIDs = a.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
-                int locatieID = Integer.parseInt(locatieIDs);
-                a.nieuweGebruiker("INSERT INTO `Persoon` (`PersoonID`, `LocatieID`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Emailadres`, `Wachtwoord`, `Geboortedatum`, `Mobielnummer`, `Profielfoto`, `IBAN`, `Rechten`) VALUES ( '0','" + locatieID + "','" + tfVoornaam.getText() + "','" + tfTussenvoegsel.getText() + "','" + tfAchternaam.getText() + "','" + tfEmailadres.getText() + "','" + wachtwoord + "','" + datum + "','" + tfMobielnummer.getText() + "','" + null + "','" + tfIBANnummer.getText() + "', '0')");
-                        //"Persoon", Integer.parseInt(locatieID), tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), wachtwoord, datum, tfMobielnummer.getText(), tfIBANnummer.getText(), "aaaaa");   
+                a.insertData("Locatie", this.latitude, this.longitude ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
+                int locatieID = a.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
+                a.nieuweGebruiker("INSERT INTO `Persoon` (`PersoonID`, `LocatieID`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Emailadres`, `Wachtwoord`, `Geboortedatum`, `Mobielnummer`, `Profielfoto`, `IBAN`, `Rechten`) VALUES ( '0','" + locatieID + "','" + tfVoornaam.getText() + "','" + tfTussenvoegsel.getText() + "','" + tfAchternaam.getText() + "','" + tfEmailadres.getText() + "','" + wachtwoord + "','" + datum + "','" + tfMobielnummer.getText() + "','" + null + "','" + tfIBANnummer.getText() + "','" + gebruikerniveau + "')");
+                int persoonID = a.getPersoonID("SELECT PersoonID FROM `Persoon`  Where Emailadres = '" + tfEmailadres.getText() + "'");
+                a.nieuweGebruiker("INSERT INTO `Persoon_Locatie` (LocatieID, PersoonID) VALUES (" + locatieID + "," + persoonID + ")");
+            
             }
         }
         
