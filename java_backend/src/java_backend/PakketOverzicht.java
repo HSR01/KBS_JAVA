@@ -83,7 +83,7 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
                 data[row][column] = aValue;
             }
         };
-        
+        /**
         //voegt Steden toe aan het dropdown menu
         DefaultComboBoxModel Beginn = new DefaultComboBoxModel();
         for (int i = 0; i < 26; i++) {
@@ -98,7 +98,7 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
         }
 
         Eind = new JComboBox(Einde);
-
+        */
 
 
 
@@ -120,9 +120,9 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
         this.Start = new JButton("Start");
 
         South.add(van);
-        South.add(Begin);
+        //South.add(Begin);
         South.add(naar);
-        South.add(Eind);
+        //South.add(Eind);
         South.add(Start);
 
         this.add(new JScrollPane(aTable));

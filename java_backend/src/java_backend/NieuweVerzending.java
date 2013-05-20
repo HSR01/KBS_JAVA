@@ -1,5 +1,6 @@
 package java_backend;
 
+import GUI_helpers.CustomJTable;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -36,7 +37,7 @@ class NieuweVerzending extends JPanel implements ActionListener {
         //instacnier alle velden voor top panel
         zoeklabel = new JLabel("Zoek Afzender");
         zoekveld = new JTextField(10);
-        zoek = new JButton("Zoek");
+        zoek = new JButton("Filter op achternaam");
         
         //voeg onderdelen toe aan toppanel
         toppanel.add(zoeklabel);
@@ -130,20 +131,26 @@ class NieuweVerzending extends JPanel implements ActionListener {
         DbConnect dbc = new DbConnect();
        if (ae.getSource() == zoek) {
            //zoek button
-           if (zoekveld.getText().equals("")) {
-               //er is niks ingevuld toon foutmelding
-               //maak jdialog omdat joptionpane niet werk in jpanel.
-              JDialog jd = new JDialog();
-              jd.setSize(200,175);
-              jd.setTitle("Foutmelding");
-              jd.add(new JLabel("U heeft geen zoekterm ingevuld."));
-              jd.setVisible(true);
-           } else {
-               //er is wat ingevuld voer query uit.
-           }
+            if (zoekveld.getText().equals("")) {
+                //er is niks ingevuld toon foutmelding
+                //maak jdialog omdat joptionpane niet werk in jpanel.
+                JDialog jd = new JDialog();
+                jd.setSize(200,175);
+                jd.setTitle("Foutmelding");
+                jd.add(new JLabel("U heeft geen zoekterm ingevuld."));
+                jd.setVisible(true);
+            } else {
+                Object[][] data = dbc.getPersonenWithCoordinates(zoekveld.getText().toString());
+                String[] columnnames = { "PersoonID", "Voornaam", "Tussenvoegel", "Achternaam", "Postcode", "Huisnummer", "IBAN" };
+                int[] columnsizes = { 20, 70, 50, 90, 50, 30, 50 };
+                
+                this.add(new CustomJTable(columnnames, columnsizes, data));
+                this.setVisible(true);
+            }
         } else if (ae.getSource() == submit) {
             //verstuur button
-            if (tvoornaam.getText().equals("") 
+            if (
+                    tvoornaam.getText().equals("") 
                     || tachternaam.getText().equals("")
                     || tstraatnaam.getText().equals("")
                     || thuisnr.getText().equals("")
@@ -167,7 +174,7 @@ class NieuweVerzending extends JPanel implements ActionListener {
                 errors += "</html>";
                 JDialog jd = new JDialog();
                 jd.setSize(400,175);
-                jd.setTitle("Foutmelding - Verplichte velden niet ingevuld.");
+                jd.setTitle("Foutmelding - Verplichte velden niet ingevuld");
                 jd.add(new JLabel(errors));
                 jd.setVisible(true);
             } else {
