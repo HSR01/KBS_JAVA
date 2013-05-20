@@ -228,7 +228,7 @@ public class DbConnect {
     public String[] getSpecifiekeGebruikerLocatie(Object ID) {
         // Auteur Dominique
         try {
-            String[] returnval = new String[5];
+            String[] returnval = new String[6];
 
             // Haalt het bijbehorende LocatieID object op.
             query = "SELECT LocatieID from Persoon_Locatie Where PersoonID = " + ID;
@@ -246,6 +246,7 @@ public class DbConnect {
                 returnval[2] = rs.getString("Huisnummer");
                 returnval[3] = rs.getString("Toevoeging");
                 returnval[4] = rs.getString("Postcode");
+                returnval[5] = rs.getString("TZTPoint");
             }
             return returnval;
         } catch (Exception e) {
@@ -795,14 +796,24 @@ public class DbConnect {
     public Object[][] getGebruikStatistiek() {
         try {
             //get aantal personen.
-            rs = st.executeQuery(" SELECT Count(*) FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID");
+                rs = st.executeQuery("SELECT COUNT(*) "
+                        + "FROM Persoon P "
+                        + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
+                        + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
+                        + "JOIN Locatie LocB on T.Begin = LocB.LocatieID "
+                        + "JOIN Locatie LocE on T.Eind = LocE.LocatieID");
             int aantal = 0;
             while (rs.next()) {
-                aantal = rs.getInt("Count(*)");
+                aantal = rs.getInt("COUNT(*)");
             }
             //haal alles op.
             Object[][] returnval = new Object[aantal][7];
-            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID";
+            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, T.TrajectID, LocB.Plaatsnaam AS Beginplaats, LocE.Plaatsnaam AS Eindplaats "
+                    + "FROM Persoon P "
+                    + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
+                    + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
+                    + "JOIN Locatie LocB on T.Begin = LocB.LocatieID JOIN "
+                    + "Locatie LocE on T.Eind = LocE.LocatieID";
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
@@ -811,8 +822,8 @@ public class DbConnect {
                 returnval[i][2] = rs.getString("Tussenvoegsel");
                 returnval[i][3] = rs.getString("Achternaam");
                 returnval[i][4] = rs.getString("TrajectID");
-                returnval[i][5] = rs.getString("Begin");
-                returnval[i][6] = rs.getString("Eind");
+                returnval[i][5] = rs.getString("Beginplaats");
+                returnval[i][6] = rs.getString("Eindplaats");
                 i++;
             }
             return returnval;
@@ -822,6 +833,49 @@ public class DbConnect {
         }
         return null;
     }
+    
+       public Object[][] getSpecifiekGebruikStatistiek(String begin, String eind) {
+        try {
+           rs = st.executeQuery("SELECT COUNT(*) "
+                    + "FROM Persoon P "
+                    + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
+                    + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
+                    + "JOIN Locatie LocB on T.Begin = LocB.LocatieID "
+                    + "JOIN Locatie LocE on T.Eind = LocE.LocatieID");
+            int aantal = 0;
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+
+
+            Object[][] returnval = new Object[aantal][7];
+            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, T.TrajectID, LocB.Plaatsnaam AS Beginplaats, LocE.Plaatsnaam AS Eindplaats "
+                    + "FROM Persoon P "
+                    + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
+                    + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
+                    + "JOIN Locatie LocB on T.Begin = LocB.LocatieID JOIN "
+                    + "Locatie LocE on T.Eind = LocE.LocatieID "
+                    + "WHERE LocB.Plaatsnaam = '" + begin + "' AND LocE.Plaatsnaam = '" + eind +"'";
+            int i = 0;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                returnval[i][2] = rs.getString("Tussenvoegsel");
+                returnval[i][3] = rs.getString("Achternaam");
+                returnval[i][4] = rs.getString("TrajectID");
+                returnval[i][5] = rs.getString("Beginplaats");
+                returnval[i][6] = rs.getString("Eindplaats");
+                i++;
+            }
+            return returnval;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
+    
     
     /**
      * @autor Jelle
