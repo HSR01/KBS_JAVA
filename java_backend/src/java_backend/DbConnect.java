@@ -1193,7 +1193,7 @@ public Object[][] getPakketWijzigen(int pakketID) {
             //haal alles op.
             
 
-            Object[][] returnval = new Object[aantal][4];
+            Object[][] returnval = new Object[aantal][5];
             query = "SELECT FeedbackID, PakketID, Waardering, Omschrijving, Ontvangstatus FROM Feedback WHERE PakketID = " + PakketID + ";";
             int i = 0;
             
@@ -1215,5 +1215,18 @@ public Object[][] getPakketWijzigen(int pakketID) {
         }
         
         return null;
+    }
+    public void updateStatus(Object trajectID, int status) {
+        try {
+            query = "UPDATE Traject "
+                    + "SET Status = " + status + " WHERE TrajectID = '" + trajectID + "'";
+            
+            System.out.println(query);
+            st.executeUpdate(query);
+            
+            
+        } catch (Exception e) {
+            System.out.println("error : " + e.getMessage());
+        }
     }
 }

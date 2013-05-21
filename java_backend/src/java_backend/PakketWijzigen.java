@@ -98,7 +98,7 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
             
         TableModel dataModel = new AbstractTableModel() {
             //instancieer columnnamen
-            final String[] tabelinhoud = {"Pakket ID", "Type", "Vervoerder", "Van", "Naar", "Status"};
+            final String[] tabelinhoud = {"Traject ID", "Type", "Vervoerderder ID", "Van", "Naar", "Status"};
             DbConnect dbc = new DbConnect();       
             final Object[][] data = dbc.getPakketWijzigen(pakketID);
 

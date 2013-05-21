@@ -22,11 +22,12 @@ import javax.swing.JPanel;
  * @author Daniel
  */
 public class PakketWijzigenPopUp extends JFrame implements ActionListener{
-    public JButton zoek;
+    private JButton zoek;
+    private Object trajectID;
+    private JComboBox statussen;
     
-    public PakketWijzigenPopUp(Object pakketID){
-        
-        super();  
+    public PakketWijzigenPopUp(Object trajectID){
+        this.trajectID = trajectID;
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
@@ -41,12 +42,14 @@ public class PakketWijzigenPopUp extends JFrame implements ActionListener{
         this.setLayout(new BorderLayout());
   
         zoek = new JButton("Opslaan");
-        
-        String[] statussen = {"Aangemeld", "Onderweg", "Verwacht", "Afgeleverd", "Onbekend"};
+
+        String[] statusincombo = {"Aangemeld", "Onderweg", "Verwacht", "Afgeleverd", "Onbekend"};
         JPanel diacontent = new JPanel();
-        diacontent.add(new JLabel("Pakket " + pakketID + " - Status "));
+        statussen = new JComboBox(statusincombo);
+        
+        diacontent.add(new JLabel("Traject " + trajectID + " - Status "));
         diacontent.setLayout(new FlowLayout());        
- 	diacontent.add(new JComboBox(statussen));
+ 	diacontent.add(statussen);
         diacontent.add(zoek);
         
         this.zoek.addActionListener(this);
@@ -61,8 +64,23 @@ public class PakketWijzigenPopUp extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         //selectie button geladen.
         if (ae.getSource() == zoek) {
+            int status =4;
+            String x = String.valueOf(statussen.getSelectedItem());
+            if(x.equals("Aangemeld")){
+                status = 0;
+            }else if(x.equals("Onderweg")){
+                status = 1;
+            }else if(x.equals("Verwacht")){
+                status = 2;
+            }else if(x.equals("Afgeleverd")){
+                status = 3;
+            }else{
+                status = 4;
+            }                
+
             //jaar geselecteerd.          
-              
+            DbConnect dbc = new DbConnect();
+            dbc.updateStatus(trajectID, status);
             //repaint de tabel om het opnieuw weer te geven.
             PakketWijzigen.info.repaint();
                 
