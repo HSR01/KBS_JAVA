@@ -133,6 +133,63 @@ public class DbConnect {
         }
         return null;
     }
+    
+    /**
+     * Haal de personen op die een locatie hebben met coordinaten
+     * @param Achternaam Filter op achternaam
+     * @return Object met personen
+     * <UL>
+     *  <LI>PersoonID</LI>
+     *  <LI>Voornaam</LI>
+     *  <LI>Tussenvoegel</LI>
+     *  <LI>Achternaam</LI>
+     *  <LI>Postcode</LI>
+     *  <LI>Huisnummer</LI>
+     *  <LI>IBAN</LI>
+     * </UL>
+     */
+    public Object[][] getPersonenWithCoordinates(String Achternaam) {
+        try {
+            //get aantal personen.
+            String query = "Select COUNT(*) from Persoon p "
+                     + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
+                     + "WHERE l.Latitude IS NOT NULL "
+                     + "AND l.Longitude IS NOT NULL ";
+            if(Achternaam.equals(""))
+                query += "AND p.Achternaam = " + Achternaam;
+            rs = st.executeQuery(query);
+            int aantal = 0;
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+            //haal alles op.
+            Object[][] returnval = new Object[aantal][7];
+            query = "SELECT p.PersoonID, p.Voornaam, p.Tussenvoegsel, p.Achternaam, l.Postcode, l.Huisnummer, p.IBAN "
+                     + "FROM Persoon p "
+                     + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
+                     + "WHERE l.Latitude IS NOT NULL "
+                     + "AND l.Longitude IS NOT NULL ";
+            if(Achternaam.equals(""))
+                query += "AND p.Achternaam = " + Achternaam;
+            rs = st.executeQuery(query);
+            int i = 0;
+            while (rs.next()) {
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                returnval[i][2] = rs.getString("Tussenvoegsel");
+                returnval[i][3] = rs.getString("Achternaam");
+                returnval[i][4] = rs.getString("Postcode");
+                returnval[i][5] = rs.getString("Huisnummer");
+                returnval[i][6] = rs.getString("IBAN");
+                i++;
+            }
+            return returnval;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
 
     public Object[][] getPakketPersoon(int ID) {
         try {
