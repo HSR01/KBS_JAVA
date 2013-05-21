@@ -22,6 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -155,7 +157,7 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
         this.btSluiten = new JButton("Sluiten");
         this.btWijzig = new JButton("Wijzig");
         btTraject = new JButton("Trajecten");
-        btVerwijder  = new JButton("Placeholder");
+        btVerwijder  = new JButton("Verwijder");
         
         // Action listeners aan de buttons
         btSluiten.addActionListener(this);
@@ -230,66 +232,120 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         
         if (ae.getSource() == btWijzig) {
-             DbConnect dbc = new DbConnect();
-             String[] waardes = this.getTekstvelden();
-             dbc.updateGebruikerAccount(waardes);
-             this.setVisible(false);
-	}
+            //Controleer of de verplichte velden zijn ingevuld            
+            if (tfVoornaam.getText().equals("")     ||
+                tfAchternaam.getText().equals("")   ||
+                tfPlaatsnaam.getText().equals("")   ||
+                tfPostcode.getText().equals("")     ||
+                tfStraatnaam.getText().equals("")   ||
+                tfHuisnummer.getText().equals("")   ||
+                tfIBANnummer.getText().equals("")   ||                    
+                tfMobielnummer.getText().equals("") ||
+                tfEmailadres.getText().equals("")   ||
+                tfAchternaam.getText().equals("")   ||
+                tfMobielnummer.getText().equals("")){ 
+                JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
+            } else {
+                //Hash het wachtwoord naar MD5
+                String wachtwoord = pfWachtwoord.getText();
+                try {
+                    MessageDigest md = MessageDigest.getInstance("MD5");
+                    md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
+                    wachtwoord = new BigInteger(1, md.digest()).toString(16);
+                } catch (Exception o) {
+                    System.out.println("Hash Error:" + o);
+                }
+				
+		// Datum maken
+                datDag = "" + this.dag.getSelectedItem();
+                if(datDag.length() < 2){ datumDag = (String) "0" + dag.getSelectedItem();}
+                else{ datumDag = (String) "" + dag.getSelectedItem(); }
+                
+		datMaand = (String) maand.getSelectedItem();
+                     if( datMaand.equals("Januari")		){ datumMaand = "01"; }
+		else if( datMaand.equals("Februari")            ){ datumMaand = "02"; }
+		else if( datMaand.equals("Maart")		){ datumMaand = "03"; }
+		else if( datMaand.equals("April")		){ datumMaand = "04"; }
+		else if( datMaand.equals("Mei")			){ datumMaand = "05"; }
+		else if( datMaand.equals("Juni")		){ datumMaand = "06"; }
+		else if( datMaand.equals("Juli")		){ datumMaand = "07"; }
+		else if( datMaand.equals("Augustus")            ){ datumMaand = "08"; }
+		else if( datMaand.equals("September")           ){ datumMaand = "09"; }
+		else if( datMaand.equals("Oktober")		){ datumMaand = "10"; }
+		else if( datMaand.equals("November")            ){ datumMaand = "11"; }
+		else 						 { datumMaand = "12"; }
+                     
+                datumJaar = "" + jaar.getSelectedItem();
+                
+		datum = datumDag + "-" + datumMaand + "-" + datumJaar;
+                
+                // Rechten
+                
+                rechten = (String) recht.getSelectedItem();
+                String gebruikerniveau = "0";
+                if( rechten.equals("Geblokkeerd")                       ){ gebruikerniveau = "0"; }
+                if( rechten.equals("Verzender / Ontvanger / Klanten")   ){ gebruikerniveau = "1"; }
+                if( rechten.equals("TZT Point / BPS'er")                ){ gebruikerniveau = "2"; }
+                if( rechten.equals("TZT Medewerker")                    ){ gebruikerniveau = "3"; }
+                if( rechten.equals("Hoofdkantoor")                      ){ gebruikerniveau = "4"; }
+                
+                //Sla de gegevens op in de database
+                Geocoding geo = new Geocoding();
+                try {
+                    cords = geo.QueryAndGetCoordinates(tfPlaatsnaam.getText(), tfStraatnaam.getText(), Integer.parseInt(tfHuisnummer.getText()));
+                    this.latitude = "" + cords.Latitude;
+                    this.longitude = "" + cords.Longitude;
+                } catch (MultipleAdressesFoundException ex) {
+                    Logger.getLogger(PersoonNieuw.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                                    
+                String Persoongegevens[] = new String[18];
+                Persoongegevens[0] = tfId.getText();
+                Persoongegevens[1] = tfVoornaam.getText();
+                Persoongegevens[2] = tfTussenvoegsel.getText();
+                Persoongegevens[3] = tfAchternaam.getText();
+                Persoongegevens[4] = wachtwoord;
+                Persoongegevens[5] = tfEmailadres.getText();
+                Persoongegevens[6] = datum;
+                Persoongegevens[7] = gebruikerniveau;
+                Persoongegevens[8] = tfMobielnummer.getText();
+                Persoongegevens[9] = tfIBANnummer.getText();
+                
+                Persoongegevens[10] = tfHuisnummer.getText();
+                Persoongegevens[11] = tfPlaatsnaam.getText();
+                Persoongegevens[12] = tfStraatnaam.getText();
+                Persoongegevens[13] = tfToevoeging.getText();
+                Persoongegevens[14] = (String) tztpoint.getSelectedItem();
+                Persoongegevens[15] = tfPostcode.getText();
+                Persoongegevens[16] = latitude;
+                Persoongegevens[17] = longitude;
+                
+                // alle queries
+                // Connectie aanmaken
+                DbConnect a = new DbConnect();
+                if (pfWachtwoord.getText().equals("")){ a.updateGebruikerAccount2(Persoongegevens); }
+                else { a.updateGebruikerAccount(Persoongegevens); }
+                
+                AccountsBeherenTabel.aTable.setModel(AccountsBeherenTabel.FillTabel());
+                AccountsBeherenTabel.aTable.repaint();
+                this.setVisible(false);
+            }
+        }
         
         // Trajecten wijzigen
         if (ae.getSource() == btTraject) {
             System.out.println("Traject");
-            PersonenOverzicht personenOverzicht = new PersonenOverzicht(Integer.parseInt(tfId.getText()));
-        }   
-    }
-    
-    public String[] getTekstvelden() {
-        String[] waardes = new String[11];
-        
-        ArrayList foutLijst = new ArrayList();
-        int lijstAantal = 0;
-        int lijstScroller = 0;
-        boolean valide = true;
-        
-        // Check Voornaam
-            if (tfVoornaam.getText().length() == 0) {
-                valide = false;
-                foutLijst.add("Het veld \"Voornaam\" moet ingevuld zijn. Bv.: Harry.");
-            }
-            else {
-                waardes[1] = this.tfVoornaam.getText();
-            }
-        // Check Tussenvoegsel
-        waardes[2] = this.tfTussenvoegsel.getText();
-        // Check Achternaam
-            if (tfAchternaam.getText().length() == 0) {
-                valide = false;
-                foutLijst.add("Het veld \"Achternaam\" moet ingevuld zijn. Bv.: Versloten.");
-            }
-            else {
-                waardes[3] = this.tfAchternaam.getText();
-            }
-        // Check Geboortedatum        
-  //      waardes[4] = this.tfGeboortedatum.getText();
-        // Check Emailadres
-        waardes[5] = this.tfEmailadres.getText();
-        // Check Wachtwoord
-        waardes[6] = this.pfWachtwoord.getText();
-        // Check IBANnummer
-        waardes[7] = this.tfIBANnummer.getText();
-        // Check Mobielnummer
-        waardes[8] = this.tfMobielnummer.getText();
-        // Check Profielfoto
-//        waardes[9] = this.tfProfielfoto.getText();
-        // Check Rechten
-//        waardes[10] = this.tfRechten.getText();
-        if (!valide) {
-            lijstAantal = foutLijst.size();
-            for (lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++) {
-                System.out.println("Account number:" + foutLijst.get(lijstScroller)); 
-            }
+            PersoonTraject personenOverzicht = new PersoonTraject(Integer.parseInt(tfId.getText()));
         }
-        return waardes;
+        if (ae.getSource() == btVerwijder){
+            DbConnect dbc = new DbConnect();
+            
+            dbc.verwijderPersoon("DELETE FROM Persoon WHERE PersoonID = " + tfId.getText());
+            this.setVisible(false);
+        }
+        if (ae.getSource() == btSluiten){
+            this.setVisible(false);
+        }
     }
     
     public void vulTekstvelden(String[] specifiekePersoonGegevens, String[] specifiekePersoonLocatie) {
@@ -298,8 +354,6 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
         this.tfTussenvoegsel.setText(specifiekePersoonGegevens[2]);
         this.tfAchternaam.setText(specifiekePersoonGegevens[3]);
         this.tfEmailadres.setText(specifiekePersoonGegevens[4]);
-        // Wachtwoord bewust niet laden
-        //this.tfWachtwoord.setText(specifiekePersoon[4]);
         
         String Datum = specifiekePersoonGegevens[6];
         
@@ -318,39 +372,62 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
         String DatumDag = dataChars[0] + dataChars[1];
         String DatumMaand = dataChars[3] + dataChars[4];
         String DatumJaar = dataChars[6] + dataChars[7] + dataChars[8] + dataChars[9];
-        
-        System.out.println(DatumDag + DatumMaand + DatumJaar);
-        
-        
-        this.dag.setSelectedItem(DatumDag);
-        this.maand.setSelectedItem(DatumMaand);
-        this.jaar.setSelectedItem(DatumJaar);
+       
         setSelectedValue(dag, DatumDag);
-        setSelectedValue(maand, DatumMaand);
+        setSelectedValueMaand(maand, DatumMaand);
         setSelectedValue(jaar, DatumJaar);
-        
         
         this.tfIBANnummer.setText(specifiekePersoonGegevens[7]);
         this.tfMobielnummer.setText(specifiekePersoonGegevens[8]);
-        // Word anders geregeld
-        //this.tfProfielfoto.setText(specifiekePersoon[9]);
-        //this.tfRechten.setText(specifiekePersoonGegevens[10]);
+        
+        String dropdownRechten = specifiekePersoonGegevens[10];
+        setSelectedValueRecht(recht, dropdownRechten);
         
         this.tfPlaatsnaam.setText(specifiekePersoonLocatie[0]);
         this.tfStraatnaam.setText(specifiekePersoonLocatie[1]);
         this.tfHuisnummer.setText(specifiekePersoonLocatie[2]);
         this.tfToevoeging.setText(specifiekePersoonLocatie[3]);
         this.tfPostcode.setText(specifiekePersoonLocatie[4]);
+        setSelectedValueTZT(tztpoint, specifiekePersoonLocatie[5]);
     }
     
     public void setSelectedValue(JComboBox comboBox, String value){
         String item;
         for (int i = 0; i < comboBox.getItemCount(); i++){
             item = "" + comboBox.getItemAt(i);
+            if( item.length() < 2){ item = "0" + item;}
             if (item.equals(value)){
                 comboBox.setSelectedIndex(i);
                 break;
             }
         }
-    }    
+    }
+    
+    public void setSelectedValueMaand(JComboBox comboBox, String value){
+        if( value.equals("01")){ comboBox.setSelectedIndex(0); }
+        if( value.equals("02")){ comboBox.setSelectedIndex(1); }
+        if( value.equals("03")){ comboBox.setSelectedIndex(2); }
+        if( value.equals("04")){ comboBox.setSelectedIndex(3); }
+        if( value.equals("05")){ comboBox.setSelectedIndex(4); }
+        if( value.equals("06")){ comboBox.setSelectedIndex(5); }
+        if( value.equals("07")){ comboBox.setSelectedIndex(6); }
+        if( value.equals("08")){ comboBox.setSelectedIndex(7); }
+        if( value.equals("09")){ comboBox.setSelectedIndex(8); }
+        if( value.equals("10")){ comboBox.setSelectedIndex(9); }
+        if( value.equals("11")){ comboBox.setSelectedIndex(10); }
+        if( value.equals("12")){ comboBox.setSelectedIndex(11); }
+    }
+    
+    public void setSelectedValueTZT(JComboBox comboBox, String value){
+        if( value.equals("0")){ comboBox.setSelectedIndex(0); }
+        else { comboBox.setSelectedIndex(1); }
+    }
+    
+    public void setSelectedValueRecht(JComboBox comboBox, String value){
+        if( value.equals("0")){ comboBox.setSelectedIndex(0); }
+        if( value.equals("1")){ comboBox.setSelectedIndex(1); }
+        if( value.equals("2")){ comboBox.setSelectedIndex(2); }
+        if( value.equals("3")){ comboBox.setSelectedIndex(3); }
+        if( value.equals("4")){ comboBox.setSelectedIndex(4); }
+    }     
 }

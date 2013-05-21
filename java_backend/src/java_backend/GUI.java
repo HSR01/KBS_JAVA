@@ -369,9 +369,9 @@ public class GUI extends JFrame implements ActionListener {
             ChangeMenu("financieeloverzicht");
         }
         //EINDE MENU
-        if (ae.getSource() == btNieuwBPS) {
-            WijzigPersoon p = new WijzigPersoon();   
-        }
+        //if (ae.getSource() == btNieuwBPS) {
+        //    WijzigPersoon p = new WijzigPersoon();   
+        //}
 
         if (ae.getSource() == btSluiten) {
             this.setVisible(false);

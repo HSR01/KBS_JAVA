@@ -7,7 +7,7 @@ import javax.swing.table.*;
 
 public class AccountsBeherenTabel extends JPanel implements ListSelectionListener {
     // naamgeven JTable
-    JTable aTable;
+    static JTable aTable;
     // Dit word gevuld als je iets selecteerd in de tabel
     private Object geselecteerdeWaarde;
     
@@ -38,7 +38,8 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
                 data[row][column] = aValue;
             }
         };
-
+        
+        
         // Maakt de tabel aan
         aTable = new JTable(dataModel);
         // Komende stuk bepaalt de wijdte van de kolommen
@@ -84,6 +85,10 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
                 }
             }
         );
+        
+        AccountsBeherenTabel.aTable.setModel(AccountsBeherenTabel.FillTabel());
+        AccountsBeherenTabel.aTable.repaint();
+                
     }
 
     @Override
@@ -92,6 +97,8 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         TableModel tm = aTable.getModel();
         // Bepaalt de geselecteerde rij en vult een array met alle waardes
         int[] selRows = aTable.getSelectedRows();
+        
+        if(selRows.length == 0){ return; }
         // Dit vult geselecteerdeWaarde
         Object geselecteerdeWaarde = tm.getValueAt(selRows[0],0);
         // maakt de geselcteerde waarde openbaar
@@ -103,4 +110,23 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         this.geselecteerdeWaarde = string;
         System.out.println(geselecteerdeWaarde);
     }
+    
+     public static TableModel FillTabel(){
+            
+        TableModel dataModel = new AbstractTableModel() {
+            //instancieer columnnamen
+            final String[] tabelinhoud = {"ID", "Voornaam", "Tussenvoegsel", "Achternaam", "Emailadres", "Wachtwoord", "Geboortedatum", "Mobiel", "Foto", "IBAN", "Rechten"};
+            DbConnect dbc = new DbConnect();       
+            final Object[][] data = dbc.getUsers();
+
+            public int getColumnCount() { return tabelinhoud.length; }
+
+            public int getRowCount() { return data.length;}
+            
+            public Object getValueAt(int row, int col) { return data[row][col]; }
+            
+            public String getColumnName(int column){ return tabelinhoud[column]; };
+        };
+        return dataModel;
+   };  
 }

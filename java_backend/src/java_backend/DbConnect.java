@@ -168,24 +168,20 @@ public class DbConnect {
     public Object[][] getPersonen(int ID) {
         try {
             //get aantal personen.
-            rs = st.executeQuery("Select count(*) from Persoon");
+            rs = st.executeQuery("SELECT Count(*) FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID WHERE P.PersoonID = " + ID);
             int aantal = 0;
             while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
             }
             //haal alles op.
-            Object[][] returnval = new Object[aantal][7];
-            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID";
+            Object[][] returnval = new Object[aantal][3];
+            query = "SELECT Tr.TrajectID, Tr.Begin, Tr.Eind FROM Persoon P JOIN Traject_BPS T ON P.PersoonID = T.PersoonID JOIN Traject Tr ON T.TrajectID = Tr.TrajectID WHERE P.PersoonID = " + ID;
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
-                returnval[i][0] = rs.getString("PersoonID");
-                returnval[i][1] = rs.getString("Voornaam");
-                returnval[i][2] = rs.getString("Tussenvoegsel");
-                returnval[i][3] = rs.getString("Achternaam");
-                returnval[i][4] = rs.getString("TrajectID");
-                returnval[i][5] = rs.getString("Begin");
-                returnval[i][6] = rs.getString("Eind");
+                returnval[i][0] = rs.getString("TrajectID");
+                returnval[i][1] = rs.getString("Begin");
+                returnval[i][2] = rs.getString("Eind");
                 i++;
             }
             return returnval;
@@ -256,32 +252,72 @@ public class DbConnect {
     }
 
     public void updateGebruikerAccount(String[] data) {
-        String wachtwoord = data[6];
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(wachtwoord.getBytes(), 0, wachtwoord.length());
-            wachtwoord = new BigInteger(1, md.digest()).toString(16);
-        } catch (Exception o) {
-            System.out.println("Hash Error:" + o);
-        }
         try {
             query = "UPDATE Persoon "
-                    + "SET Voornaam = \"" + data[1] + "\", "
-                    + "Tussenvoegsel = \"" + data[2] + "\", "
-                    + "Achternaam = \"" + data[3] + "\", "
-                    + "Emailadres = \"" + data[5] + "\", "
-                    + "Wachtwoord = \"" + wachtwoord + "\", "
-                    + "Geboortedatum = \"" + data[4] + "\", "
-                    + "Mobielnummer = \"" + data[7] + "\", "
-                    + "Profielfoto = \"" + data[8] + "\", "
-                    + "IBAN = \"" + data[9] + "\", "
-                    + "Rechten = \"" + data[10] + "\" "
-                    + "WHERE PersoonID = \"" + data[0] + "\"";
+                    + "SET Voornaam = " + data[1] + ","
+                    + "Tussenvoegsel = " + data[2] + ","
+                    + "Achternaam = " + data[3] + ","
+                    + "Wachtwoord = " + data[4] + ",aal"
+                    + "Emailadres = " + data[5] + ","
+                    + "Geboortedatum = " + data[6] + ","
+                    + "Rechten = " + data[7] + ","
+                    + "Mobielnummer = " + data[8] + ","
+                    + "IBAN = " + data[9] + " "
+                    + "WHERE PersoonID = '" + data[0] + "'";
+            System.out.println(query);
             st.executeUpdate(query);
+            
+            DbConnect dbc = new DbConnect();
+            int LocatieID = dbc.getLocatieID("SELECT LocatieID From Persoon where PersoonID = " + data[0]);
+            
+            query = "UPDATE Locatie "
+                    + "SET Huisnummer= \"" + data[10] + "\", "
+                    + "Plaatsnaam= \"" + data[11] + "\", "
+                    + "Straatnaam = \"" + data[12] + "\", "
+                    + "Toevoeging = \"" + data[13] + "\", "
+                    + "TZTPoint = \"" + data[14] + "\", "
+                    + "Postcode = \"" + data[15] + "\", "
+                    + "Latitude = \"" + data[16] + "\", "
+                    + "Longitud = \"" + data[17] + "\" "
+                    + "WHERE LocatieID = \"" + LocatieID + "\"";
+            st.executeUpdate(query);            
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
         }
     }
+    
+    public void updateGebruikerAccount2(String[] data) {
+        try {
+            query = "UPDATE Persoon "
+                    + "SET Voornaam = " + data[1] + ","
+                    + "Tussenvoegsel = " + data[2] + ","
+                    + "Achternaam = " + data[3] + ","
+                    + "Emailadres = " + data[5] + ","
+                    + "Geboortedatum = " + data[6] + ","
+                    + "Rechten = " + data[7] + ","
+                    + "Mobielnummer = " + data[8] + ","
+                    + "IBAN = " + data[9]
+                    + "WHERE PersoonID = " + data[0];
+            st.executeUpdate(query);
+            
+            DbConnect dbc = new DbConnect();
+            int LocatieID = dbc.getLocatieID("SELECT LocatieID From Persoon where PersoonID = " + data[0]);
+            
+            query = "UPDATE Locatie "
+                    + "SET Huisnummer= \"" + data[10] + "\", "
+                    + "Plaatsnaam= \"" + data[11] + "\", "
+                    + "Straatnaam = \"" + data[12] + "\", "
+                    + "Toevoeging = \"" + data[13] + "\", "
+                    + "TZTPoint = \"" + data[14] + "\", "
+                    + "Postcode = \"" + data[15] + "\", "
+                    + "Latitude = \"" + data[16] + "\", "
+                    + "Longitud = \"" + data[17] + "\" "
+                    + "WHERE LocatieID = \"" + LocatieID + "\"";
+            st.executeUpdate(query);            
+        } catch (Exception e) {
+            System.out.println("error : " + e.getMessage());
+        }
+    }    
     
     /**
      * Nieuwe verzending opslaan.
@@ -742,6 +778,16 @@ public class DbConnect {
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
 
+        }
+        return null;
+    }
+    
+    public Boolean verwijderPersoon(String query){
+        // Auteur Dominique
+        try {
+            st.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println("error : " + e.getMessage());
         }
         return null;
     }

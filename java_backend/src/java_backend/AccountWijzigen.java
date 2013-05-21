@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 class AccountWijzigen extends JPanel {
 
     public AccountWijzigen() {
+        
         this.add(new AccountsBeherenTabel());
     /*    DbConnect dbc = new DbConnect();
         

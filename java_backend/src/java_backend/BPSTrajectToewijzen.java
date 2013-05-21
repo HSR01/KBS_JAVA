@@ -67,14 +67,14 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
         jpHoofd.add( jpCenter, BorderLayout.WEST );
         jpHoofd.add( jpKnoppen, BorderLayout.SOUTH );
         
-        vulVelden(geselecteerdeWaardes);
+        vulVelden(this.geselecteerdeWaardes);
         this.add(jpHoofd);
         this.setVisible(true);   
     }
 
     public void vulVelden(String[] geselecteerdeWaardes) {
-        jtBegin.setText(geselecteerdeWaardes[5]);
-        jtEind.setText(geselecteerdeWaardes[6]);
+        jtBegin.setText(geselecteerdeWaardes[1]);
+        jtEind.setText(geselecteerdeWaardes[2]);
     }
     
     @Override
@@ -86,11 +86,12 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener{
             String[] gewijzigd = new String[3];
             gewijzigd[0] = jtBegin.getText();
             gewijzigd[1] = jtEind.getText();
-            gewijzigd[2] = geselecteerdeWaardes[4];
+            gewijzigd[2] = geselecteerdeWaardes[0];
             DbConnect dbc = new DbConnect();
             dbc.bpsTrajectUpdate(gewijzigd);
             
-            PersonenOverzicht.VerVerstabel(persoonID);
+            PersoonTraject.aTable.setModel(PersoonTraject.VerVerstabel(persoonID));
+            PersoonTraject.aTable.repaint();            
             this.setVisible(false);
             
         }
