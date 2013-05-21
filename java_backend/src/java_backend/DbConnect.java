@@ -133,31 +133,25 @@ public class DbConnect {
         }
         return null;
     }
-    
+
     /**
      * Haal de personen op die een locatie hebben met coordinaten
+     *
      * @param Achternaam Filter op achternaam
-     * @return Object met personen
-     * <UL>
-     *  <LI>PersoonID</LI>
-     *  <LI>Voornaam</LI>
-     *  <LI>Tussenvoegel</LI>
-     *  <LI>Achternaam</LI>
-     *  <LI>Postcode</LI>
-     *  <LI>Huisnummer</LI>
-     *  <LI>Toevoeging</LI>
-     *  <LI>IBAN</LI>
-     * </UL>
+     * @return Object met personen <UL> <LI>PersoonID</LI> <LI>Voornaam</LI>
+     * <LI>Tussenvoegel</LI> <LI>Achternaam</LI> <LI>Postcode</LI>
+     * <LI>Huisnummer</LI> <LI>IBAN</LI> </UL>
      */
     public Object[][] getPersonenWithCoordinates(String Achternaam) {
         try {
             //get aantal personen.
             String query = "SELECT COUNT(*) from Persoon p "
-                     + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
-                     + "WHERE l.Latitude IS NOT NULL "
-                     + "AND l.Longitude IS NOT NULL ";
-            if(Achternaam.equals(""))
+                    + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
+                    + "WHERE l.Latitude IS NOT NULL "
+                    + "AND l.Longitude IS NOT NULL ";
+            if (Achternaam.equals("")) {
                 query += "AND p.Achternaam = " + Achternaam;
+            }
             rs = st.executeQuery(query);
             int aantal = 0;
             while (rs.next()) {
@@ -166,12 +160,13 @@ public class DbConnect {
             //haal alles op.
             Object[][] returnval = new Object[aantal][7];
             query = "SELECT p.PersoonID, p.Voornaam, p.Tussenvoegsel, p.Achternaam, l.Postcode, l.Huisnummer, l.Toevoeging, p.IBAN "
-                     + "FROM Persoon p "
-                     + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
-                     + "WHERE l.Latitude IS NOT NULL "
-                     + "AND l.Longitude IS NOT NULL ";
-            if(Achternaam.equals(""))
+                    + "FROM Persoon p "
+                    + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
+                    + "WHERE l.Latitude IS NOT NULL "
+                    + "AND l.Longitude IS NOT NULL ";
+            if (Achternaam.equals("")) {
                 query += "AND p.Achternaam = " + Achternaam;
+            }
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
@@ -324,10 +319,10 @@ public class DbConnect {
                     + "WHERE PersoonID = '" + data[0] + "'";
             System.out.println(query);
             st.executeUpdate(query);
-            
+
             DbConnect dbc = new DbConnect();
             int LocatieID = dbc.getLocatieID("SELECT LocatieID From Persoon where PersoonID = " + data[0]);
-            
+
             query = "UPDATE Locatie "
                     + "SET Huisnummer= \"" + data[10] + "\", "
                     + "Plaatsnaam= \"" + data[11] + "\", "
@@ -336,14 +331,14 @@ public class DbConnect {
                     + "TZTPoint = \"" + data[14] + "\", "
                     + "Postcode = \"" + data[15] + "\", "
                     + "Latitude = \"" + data[16] + "\", "
-                    + "Longitud = \"" + data[17] + "\" "
+                    + "Longitude = \"" + data[17] + "\" "
                     + "WHERE LocatieID = \"" + LocatieID + "\"";
-            st.executeUpdate(query);            
+            st.executeUpdate(query);
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
         }
     }
-    
+
     public void updateGebruikerAccount2(String[] data) {
         try {
             query = "UPDATE Persoon "
@@ -357,10 +352,10 @@ public class DbConnect {
                     + "IBAN = " + data[9]
                     + "WHERE PersoonID = " + data[0];
             st.executeUpdate(query);
-            
+
             DbConnect dbc = new DbConnect();
             int LocatieID = dbc.getLocatieID("SELECT LocatieID From Persoon where PersoonID = " + data[0]);
-            
+
             query = "UPDATE Locatie "
                     + "SET Huisnummer= \"" + data[10] + "\", "
                     + "Plaatsnaam= \"" + data[11] + "\", "
@@ -371,52 +366,48 @@ public class DbConnect {
                     + "Latitude = \"" + data[16] + "\", "
                     + "Longitud = \"" + data[17] + "\" "
                     + "WHERE LocatieID = \"" + LocatieID + "\"";
-            st.executeUpdate(query);            
+            st.executeUpdate(query);
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
         }
-    }    
-    
+    }
+
     /**
      * Nieuwe verzending opslaan.
+     *
      * @param persoonsLocatie locatie van de verzender
-     * @param data meegeven data (11 values) is volgorde:
-     * <OL start="0">
-     *  <LI>voornaam</LI>
-     *  <LI>tussenvoegsel</LI>
-     *  <LI>achternaam</LI>
-     *  <LI>straatnaam</LI>
-     *  <LI>huisnr</LI>
-     *  <LI>toevoeging</LI>
-     *  <LI>postcode</LI>
-     *  <LI>plaats</LI>
-     *  <LI>telefoonnummer</LI>
-     *  <LI>gewicht</LI>
-     *  <LI>omschrijving</LI>
-     * </OL>
-     * @return 
+     * @param data meegeven data (11 values) is volgorde: <OL start="0">
+     * <LI>voornaam</LI> <LI>tussenvoegsel</LI> <LI>achternaam</LI>
+     * <LI>straatnaam</LI> <LI>huisnr</LI> <LI>toevoeging</LI> <LI>postcode</LI>
+     * <LI>plaats</LI> <LI>telefoonnummer</LI> <LI>gewicht</LI>
+     * <LI>omschrijving</LI> </OL>
+     * @return
      */
     public Boolean newVerzending(Locatie persoonsLocatie, String[] data) throws MultipleAdressesFoundException {
         String voornaam = data[0], tussenvoegsel = data[1], achternaam = data[2], straatnaam = data[3], huisnummer = data[4], toevoeging = data[5],
                 postcode = data[6], plaats = data[7], telefoonnummer = data[8], gewicht = data[9], omschrijving = data[10];
+        if (plaats.substring(0, 3).matches("'s ")) {
+            plaats = "Hertogenbosch";
+        }
+
         Geocoding geo = new Geocoding();
         int locatieId = -1, persoonId = -1, pakketId = -1, verzendingId = -1, trajectId1 = -1, trajectId2 = -1, trajectId3 = -1;
         Coordinaten coordinatenToLocatie;
-        coordinatenToLocatie = geo.QueryAndGetCoordinates(data[7], data[3], Integer.parseInt(data[4]), data[5]);
+        coordinatenToLocatie = geo.QueryAndGetCoordinates(plaats, straatnaam, Integer.parseInt(huisnummer), toevoeging);
         try {
             // INSERT LOCATIE, get LocatieID
             query = "INSERT INTO Locatie "
                     + "(LocatieID, Latitude, Longitude, Plaatsnaam, Straatnaam, Huisnummer, Toevoeging, Postcode, Telefoonnummer, TZTPoint) "
                     + "VALUES (0, "
                     + "'" + coordinatenToLocatie.Latitude.toString() + "',"
-                    + "'" + coordinatenToLocatie.Latitude.toString() + "',"
+                    + "'" + coordinatenToLocatie.Longitude.toString() + "',"
                     + "'" + plaats + "', "
                     + "'" + straatnaam + "', "
                     + "'" + huisnummer + "', "
                     + "'" + toevoeging + "', "
                     + "'" + postcode + "', "
                     + "'" + telefoonnummer + "', "
-                    + "'0')";            
+                    + "'0')";
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
@@ -427,7 +418,7 @@ public class DbConnect {
             }
             rs.close();
             rs = null;
-            
+
             // INSERT PERSOON, get PersoonID
             query = "INSERT INTO Persoon "
                     + "(PersoonID, LocatieID, Voornaam, Tussenvoegsel, Achternaam) "
@@ -435,7 +426,7 @@ public class DbConnect {
                     + "'" + locatieId + "',"
                     + "'" + voornaam + "',"
                     + "'" + tussenvoegsel + "', "
-                    + "'" + achternaam + "')";            
+                    + "'" + achternaam + "')";
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
@@ -446,8 +437,8 @@ public class DbConnect {
             }
             rs.close();
             rs = null;
-            
-             // INSERT Pakket, get PakketID
+
+            // INSERT Pakket, get PakketID
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
             query = "INSERT INTO Pakket "
                     + "(PakketID, Gewicht, Prijs, Omschrijving, Datum) "
@@ -455,7 +446,7 @@ public class DbConnect {
                     + "'" + gewicht + "',"
                     + "'0', " // TODO prijsberekening
                     + "'" + omschrijving + "', "
-                    + "'" + timeStamp + "')";            
+                    + "'" + timeStamp + "')";
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
@@ -466,7 +457,7 @@ public class DbConnect {
             }
             rs.close();
             rs = null;
-            
+
             // INSERT Verzending, get VerzendingID
             query = "INSERT INTO Verzending "
                     + "(VerzendingID, PakketID, Aankomsttijd, Aflevertijd, Status) "
@@ -474,7 +465,7 @@ public class DbConnect {
                     + pakketId + ", "
                     + "null, " //todo
                     + "null, " //todo
-                    + "'0')";            
+                    + "'0')";
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
@@ -485,14 +476,15 @@ public class DbConnect {
             }
             rs.close();
             rs = null;
-            
-            
+
+
             Coordinaten from = null, to = coordinatenToLocatie;
-            if (persoonsLocatie.hasCoordinaten())
+            if (persoonsLocatie.hasCoordinaten()) {
                 from = persoonsLocatie.getCoordinaten();
-            else
+            } else {
                 from = geo.QueryAndGetCoordinates(persoonsLocatie);
-            
+            }
+
             Traject compleetTraject;
             compleetTraject = geo.GetRouteFrom(from, to);
             if (compleetTraject.Meters < 20000) {
@@ -502,7 +494,7 @@ public class DbConnect {
                 Coordinaten fromToTZT, TZTToTo;
                 fromToTZT = geo.GetNearestTZTPoint(from).getCoordinaten();
                 TZTToTo = geo.GetNearestTZTPoint(to).getCoordinaten();
-                
+
                 Traject Traject1, Traject3;
                 int stop1, stop2;
                 Financien financien = new Financien();
@@ -511,34 +503,34 @@ public class DbConnect {
                 koerier = financien.BerekenKoerier(Traject1.Meters);
                 // 1e gedeelte
                 stop1 = getLocatieId(fromToTZT, true);
-                insertTraject(verzendingId, persoonsLocatie.getId(), stop1, "2:00", Traject1.Meters, 0, (int)Math.round(koerier[1]));
+                insertTraject(verzendingId, persoonsLocatie.getId(), stop1, "2:00", Traject1.Meters, 0, (int) Math.round(koerier[1]));
                 // 2e gedeelte
                 stop2 = getLocatieId(TZTToTo, true);
                 insertTraject(verzendingId, stop1, stop2, "1:00", 333, 0, 0);
                 // 3e gedeelte
                 Traject3 = geo.GetRouteFrom(TZTToTo, to);
                 koerier = financien.BerekenKoerier(Traject3.Meters);
-                insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, (int)Math.round(koerier[1]));
+                insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, (int) Math.round(koerier[1]));
             }
-            
+
             return true;
         } catch (Exception e) {
             System.out.println("(DbConnect.java) @ newVerzending - Error : " + e.getMessage());
         }
         return false;
     }
-    
-    public int getLocatieId (Coordinaten coordinaten, boolean isTZT) {
+
+    public int getLocatieId(Coordinaten coordinaten, boolean isTZT) {
         try {
             query = "SELECT LocatieID "
                     + "FROM Locatie "
                     + "WHERE Latitude = '" + coordinaten.Latitude.toString() + "' "
                     + "AND Longitude = '" + coordinaten.Longitude.toString() + "' "
                     + "AND TZTPoint ";
-            if (isTZT) { 
-                query += "= 1"; 
-            } else { 
-                query += "!= 0"; 
+            if (isTZT) {
+                query += "= 1";
+            } else {
+                query += "!= 0";
             }
             rs = st.executeQuery(query);
             while (rs.next()) {
@@ -552,9 +544,10 @@ public class DbConnect {
 
     /**
      * INSERT Traject in database
+     *
      * @return TrajectID
      */
-    public int insertTraject (int verzendingID, int begin, int eind, String reistijd, int kilometers, int bps, int koerierId) {
+    public int insertTraject(int verzendingID, int begin, int eind, String reistijd, int kilometers, int bps, int koerierId) {
         try {
             query = "INSERT INTO Traject "
                     + "(TrajectID, VerzendingID, Begin, Eind, Reistijd, Kilometers, BPS, KoerierID) "
@@ -562,10 +555,10 @@ public class DbConnect {
                     + verzendingID + ","
                     + "'" + begin + "',"
                     + "'" + eind + "', "
-                    + "'" + reistijd + "', "  
-                    + "'" + kilometers + "', "  
-                    + "'" + bps + "', "  
-                    + "'" + koerierId + "')";          
+                    + "'" + reistijd + "', "
+                    + "'" + kilometers + "', "
+                    + "'" + bps + "', "
+                    + "'" + koerierId + "')";
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
@@ -581,7 +574,7 @@ public class DbConnect {
         }
         return 0;
     }
-    
+
     /**
      * @author Laurens
      * @autorv2 Jelle
@@ -770,7 +763,7 @@ public class DbConnect {
                 aantal = rs.getInt("aantalPakketten");
             }
 
-           
+
             Object[][] returnval = new Object[aantal][8];
             query = "SELECT A.PakketID, B.VerzendingID, C.TrajectID, A.Omschrijving, C.Eind, C.Begin, D.Plaatsnaam AS BeginPlaats, E.Plaatsnaam AS EindPlaats "
                     + "FROM Pakket A "
@@ -781,11 +774,11 @@ public class DbConnect {
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
-               returnval[i][0] = rs.getString("PakketID");
+                returnval[i][0] = rs.getString("PakketID");
                 returnval[i][1] = rs.getString("VerzendingID");
                 returnval[i][2] = rs.getString("TrajectID");
                 returnval[i][3] = rs.getString("Omschrijving");
-                 returnval[i][4] = rs.getString("Begin");
+                returnval[i][4] = rs.getString("Begin");
                 returnval[i][5] = rs.getString("Eind");
                 returnval[i][6] = rs.getString("BeginPlaats");
                 returnval[i][7] = rs.getString("Eindplaats");
@@ -839,8 +832,8 @@ public class DbConnect {
         }
         return null;
     }
-    
-    public Boolean verwijderPersoon(String query){
+
+    public Boolean verwijderPersoon(String query) {
         // Auteur Dominique
         try {
             st.executeUpdate(query);
@@ -850,7 +843,7 @@ public class DbConnect {
         return null;
     }
 
-   public Object[][] getSpecifiekPakket(String begin, String eind) {
+    public Object[][] getSpecifiekPakket(String begin, String eind) {
         try {
             //LAURENS
             //get specifiekpakket.
@@ -874,7 +867,7 @@ public class DbConnect {
                     + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
                     + "JOIN Locatie D ON C.Eind = D.LocatieID "
                     + "JOIN Locatie E ON C.Begin = E.LocatieID "
-                    + "WHERE D.Plaatsnaam = '" + begin + "' AND E.Plaatsnaam = '" + eind +"'";
+                    + "WHERE D.Plaatsnaam = '" + begin + "' AND E.Plaatsnaam = '" + eind + "'";
             int i = 0;
             rs = st.executeQuery(query);
             while (rs.next()) {
@@ -883,7 +876,7 @@ public class DbConnect {
                 returnval[i][1] = rs.getString("VerzendingID");
                 returnval[i][2] = rs.getString("TrajectID");
                 returnval[i][3] = rs.getString("Omschrijving");
-                 returnval[i][4] = rs.getString("Begin");
+                returnval[i][4] = rs.getString("Begin");
                 returnval[i][5] = rs.getString("Eind");
                 returnval[i][6] = rs.getString("BeginPlaats");
                 returnval[i][7] = rs.getString("EindPlaats");
@@ -900,12 +893,12 @@ public class DbConnect {
     public Object[][] getGebruikStatistiek() {
         try {
             //get aantal personen.
-                rs = st.executeQuery("SELECT COUNT(*) "
-                        + "FROM Persoon P "
-                        + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
-                        + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
-                        + "JOIN Locatie LocB on T.Begin = LocB.LocatieID "
-                        + "JOIN Locatie LocE on T.Eind = LocE.LocatieID");
+            rs = st.executeQuery("SELECT COUNT(*) "
+                    + "FROM Persoon P "
+                    + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
+                    + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
+                    + "JOIN Locatie LocB on T.Begin = LocB.LocatieID "
+                    + "JOIN Locatie LocE on T.Eind = LocE.LocatieID");
             int aantal = 0;
             while (rs.next()) {
                 aantal = rs.getInt("COUNT(*)");
@@ -937,15 +930,26 @@ public class DbConnect {
         }
         return null;
     }
-    
-       public Object[][] getSpecifiekGebruikStatistiek(String begin, String eind) {
+
+    public Object[][] getSpecifiekGebruikStatistiek(String begin, String eind) {
         try {
-           rs = st.executeQuery("SELECT COUNT(*) "
+            query = "SELECT COUNT(*) "
                     + "FROM Persoon P "
                     + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
                     + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
                     + "JOIN Locatie LocB on T.Begin = LocB.LocatieID "
-                    + "JOIN Locatie LocE on T.Eind = LocE.LocatieID");
+                    + "JOIN Locatie LocE on T.Eind = LocE.LocatieID ";
+            if (begin.equals("'s Hertogenbosch")) {
+                query += "WHERE LocB.Plaatsnaam = '\\" + begin + "' ";
+            } else {
+                query += "WHERE LocB.Plaatsnaam = '" + begin + "' ";
+            }
+            if (eind.equals("'s Hertogenbosch")) {
+                query += "AND LocE.Plaatsnaam = '\\" + eind + "' ";
+            } else {
+                query += "AND LocE.Plaatsnaam = '" + eind + "'";
+            }
+            rs = st.executeQuery(query);
             int aantal = 0;
             while (rs.next()) {
                 aantal = rs.getInt("COUNT(*)");
@@ -958,8 +962,17 @@ public class DbConnect {
                     + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
                     + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
                     + "JOIN Locatie LocB on T.Begin = LocB.LocatieID JOIN "
-                    + "Locatie LocE on T.Eind = LocE.LocatieID "
-                    + "WHERE LocB.Plaatsnaam = '" + begin + "' AND LocE.Plaatsnaam = '" + eind +"'";
+                    + "Locatie LocE on T.Eind = LocE.LocatieID ";
+            if (begin.equals("'s Hertogenbosch")) {
+                query += "WHERE LocB.Plaatsnaam = '\\" + begin + "' ";
+            } else {
+                query += "WHERE LocB.Plaatsnaam = '" + begin + "' ";
+            }
+            if (eind.equals("'s Hertogenbosch")) {
+                query += "AND LocE.Plaatsnaam = '\\" + eind + "' ";
+            } else {
+                query += "AND LocE.Plaatsnaam = '" + eind + "' ";
+            }
             int i = 0;
             rs = st.executeQuery(query);
             while (rs.next()) {
@@ -979,27 +992,26 @@ public class DbConnect {
         }
         return null;
     }
-    
-    
+
     /**
      * @autor Jelle
-     * @param int year, year is the year you want the finance information from. 
-     * @description gets finance information from database with 
+     * @param int year, year is the year you want the finance information from.
+     * @description gets finance information from database with
      * @return returnval array with integer information about finance.
      */
-    public int[][] getFinance(int year){
+    public int[][] getFinance(int year) {
         //make query still to do.
         //instancieer returnval
         int[][] returnval = new int[1][5];
-        if(year == 0){
+        if (year == 0) {
             //als jaar 0 is toon dan alle waarden op 0 voor eeste invul van jtable. // lelijke fix
             returnval[0][0] = 0;
             returnval[0][1] = 0;
             returnval[0][2] = 0;
             returnval[0][3] = 0;
             returnval[0][4] = 0;
-        }else{
-        //maak query en vul returnval;
+        } else {
+            //maak query en vul returnval;
             returnval[0][0] = year;
             returnval[0][1] = 75;
             returnval[0][2] = 25;
@@ -1009,8 +1021,8 @@ public class DbConnect {
         //return de array
         return returnval;
     }
-   
-public Object[][] getPakketWijzigen(int pakketID) {
+
+    public Object[][] getPakketWijzigen(int pakketID) {
         try {
             //get aantal personen.
             rs = st.executeQuery("SELECT COUNT(*)"
@@ -1024,7 +1036,7 @@ public Object[][] getPakketWijzigen(int pakketID) {
                     + "JOIN Locatie E "
                     + "On C.Eind = E.LocatieID "
                     + "WHERE A.PakketID = " + pakketID + ";");
-            
+
             int aantal = 0;
             while (rs.next()) {
                 aantal = rs.getInt("Count(*)");
@@ -1046,7 +1058,7 @@ public Object[][] getPakketWijzigen(int pakketID) {
                     + "JOIN Locatie E "
                     + "On C.Eind = E.LocatieID "
                     + "WHERE A.PakketID = " + pakketID + ";";
-            
+
 
 
             //Query uitvoeren
@@ -1057,28 +1069,28 @@ public Object[][] getPakketWijzigen(int pakketID) {
             while (rs.next()) {
 
                 returnval[i][0] = rs.getString("tr");
-                
-                if(Integer.parseInt(rs.getString("bp")) == 0){
+
+                if (Integer.parseInt(rs.getString("bp")) == 0) {
                     returnval[i][1] = "Koerier";
-                }else if((Integer.parseInt(rs.getString("bp")) == 1)){
-                    returnval[i][1] = "BPS'er";                    
-                }else{
+                } else if ((Integer.parseInt(rs.getString("bp")) == 1)) {
+                    returnval[i][1] = "BPS'er";
+                } else {
                     returnval[i][1] = "onbekend";
                 }
-                
+
                 returnval[i][2] = rs.getString("k");
                 returnval[i][3] = rs.getString("begin");
                 returnval[i][4] = rs.getString("eind");
-                
-                if(Integer.parseInt(rs.getString("s")) == 0){
+
+                if (Integer.parseInt(rs.getString("s")) == 0) {
                     returnval[i][5] = "Aangemeld";
-                }else if((Integer.parseInt(rs.getString("s")) == 1)){
-                    returnval[i][5] = "Onderweg";                    
-                }else if((Integer.parseInt(rs.getString("s")) == 2)){
-                    returnval[i][5] = "Verwacht";                    
-                }else if((Integer.parseInt(rs.getString("s")) == 3)){
-                    returnval[i][5] = "Afgeleverd";                    
-                }else{
+                } else if ((Integer.parseInt(rs.getString("s")) == 1)) {
+                    returnval[i][5] = "Onderweg";
+                } else if ((Integer.parseInt(rs.getString("s")) == 2)) {
+                    returnval[i][5] = "Verwacht";
+                } else if ((Integer.parseInt(rs.getString("s")) == 3)) {
+                    returnval[i][5] = "Afgeleverd";
+                } else {
                     returnval[i][5] = "Onbekend";
                 }
                 i++;
@@ -1089,14 +1101,14 @@ public Object[][] getPakketWijzigen(int pakketID) {
         } catch (Exception ea) {
             System.out.println("Query lees ERROR: " + ea);
         }
-          return null;
+        return null;
     }
 
     public int getLocatieID(String query) {
         // Dominque
         System.out.println(query);
         int locatieID = 0;
-        try{
+        try {
             rs = st.executeQuery(query);
             while (rs.next()) {
                 locatieID = Integer.parseInt(rs.getString("LocatieID"));
@@ -1107,12 +1119,12 @@ public Object[][] getPakketWijzigen(int pakketID) {
         }
         return locatieID;
     }
-    
+
     public int getPersoonID(String query) {
         // Dominque
         System.out.println(query);
         int persoonID = 0;
-        try{
+        try {
             rs = st.executeQuery(query);
             while (rs.next()) {
                 persoonID = Integer.parseInt(rs.getString("PersoonID"));
@@ -1122,8 +1134,8 @@ public Object[][] getPakketWijzigen(int pakketID) {
             System.out.println("error : " + e.getClass());
         }
         return persoonID;
-    }    
-    
+    }
+
     public void nieuweGebruiker(String query) {
         // Dominique
         System.out.println(query);
@@ -1136,24 +1148,24 @@ public Object[][] getPakketWijzigen(int pakketID) {
         }
 
     }
-    
+
     public Object[][] getPakketStatus() {
         try {
             //LAURENS
             //get status.
-           
+
             rs = st.executeQuery("SELECT COUNT(*) FROM Traject t JOIN Verzending v ON t.VerzendingID = v.VerzendingID JOIN Pakket p ON p.PakketID = v.VerzendingID JOIN Koerier k ON k.KoerierID = t.KoerierID JOIN Locatie D ON t.Eind = D.LocatieID JOIN Locatie E ON t.Begin = E.LocatieID");
             int aantal = 0;
             while (rs.next()) {
                 aantal = rs.getInt("COUNT(*)");
             }
             //haal alles op.
-            
+
 
             Object[][] returnval = new Object[aantal][12];
             query = "SELECT t.TrajectID as TrajectID, t.VerzendingID as VerzendingID, v.PakketID as PakketID, t.KoerierID as KoerierID, k.Bedrijfsnaam as Bedrijfsnaam, t.Begin as Begin, t.Eind as Eind, D.Plaatsnaam as Beginplaats, E.Plaatsnaam as Eindplaats, v.Aankomsttijd as Aankomsttijd, v.Aflevertijd as Aflevertijd, v.Status as Status FROM Traject t JOIN Verzending v ON t.VerzendingID = v.VerzendingID JOIN Pakket p ON p.PakketID = v.VerzendingID JOIN Koerier k ON k.KoerierID = t.KoerierID JOIN Locatie D ON t.Eind = D.LocatieID JOIN Locatie E ON t.Begin = E.LocatieID";
             int i = 0;
-            
+
             rs = st.executeQuery(query);
             while (rs.next()) {
 
@@ -1176,27 +1188,27 @@ public Object[][] getPakketWijzigen(int pakketID) {
             System.out.println("error : " + e.getClass());
 
         }
-        
+
         return null;
     }
-    
+
     public Object[][] getFeedback(int PakketID) {
         try {
             //Daniel
             //tel hoeveel feedback er is.
-           
+
             rs = st.executeQuery("SELECT COUNT(*) FROM Feedback WHERE PakketID = " + PakketID + ";");
             int aantal = 0;
             while (rs.next()) {
                 aantal = rs.getInt("COUNT(*)");
             }
             //haal alles op.
-            
+
 
             Object[][] returnval = new Object[aantal][5];
             query = "SELECT FeedbackID, PakketID, Waardering, Omschrijving, Ontvangstatus FROM Feedback WHERE PakketID = " + PakketID + ";";
             int i = 0;
-            
+
             rs = st.executeQuery(query);
             while (rs.next()) {
 
@@ -1213,18 +1225,19 @@ public Object[][] getPakketWijzigen(int pakketID) {
             System.out.println("error : " + e.getClass());
 
         }
-        
+
         return null;
     }
+
     public void updateStatus(Object trajectID, int status) {
         try {
             query = "UPDATE Traject "
                     + "SET Status = " + status + " WHERE TrajectID = '" + trajectID + "'";
-            
+
             System.out.println(query);
             st.executeUpdate(query);
-            
-            
+
+
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
         }

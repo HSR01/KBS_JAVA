@@ -11,12 +11,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -72,6 +70,10 @@ class GebruikStatistieken extends JPanel implements ActionListener {
             }
         };
 
+        aTable = new JTable(dataModel);
+        //Functie dat breedte kollomen zet
+        tabel(aTable);
+
         //voegt Steden toe aan het dropdown menu
         DefaultComboBoxModel Beginn = new DefaultComboBoxModel();
         for (int i = 0; i < 26; i++) {
@@ -88,16 +90,6 @@ class GebruikStatistieken extends JPanel implements ActionListener {
         Eind = new JComboBox(Einde);
 
 
-
-        aTable = new JTable(dataModel);
-        aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        aTable.getColumnModel().getColumn(0).setPreferredWidth(65);
-        aTable.getColumnModel().getColumn(1).setPreferredWidth(110);
-        aTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-        aTable.getColumnModel().getColumn(3).setPreferredWidth(110);
-        aTable.getColumnModel().getColumn(4).setPreferredWidth(61);
-        aTable.getColumnModel().getColumn(5).setPreferredWidth(140);
-        aTable.getColumnModel().getColumn(6).setPreferredWidth(140);
 
         this.North = new JPanel();
         this.South = new JPanel();
@@ -125,59 +117,80 @@ class GebruikStatistieken extends JPanel implements ActionListener {
 
     public TableModel Vernieuwtabel() {
 
-        DbConnect dbc = new DbConnect();
-        final String[] tabelinhoud = {"PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "TrajectID", "Beginplaats", "Eindplaats"};
-        begin = (String) Begin.getSelectedItem();
-        eind = (String) Eind.getSelectedItem();
 
-        final Object[][] data = dbc.getSpecifiekGebruikStatistiek(begin, eind);
+        try {
+            DbConnect dbc = new DbConnect();
+            final String[] tabelinhoud = {"PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "TrajectID", "Beginplaats", "Eindplaats"};
+            begin = (String) Begin.getSelectedItem();
+            eind = (String) Eind.getSelectedItem();
 
-        TableModel dataModel = new AbstractTableModel() {
-            @Override
-            public int getColumnCount() {
-                return tabelinhoud.length;
-            }
+            final Object[][] data = dbc.getSpecifiekGebruikStatistiek(begin, eind);
+            System.out.println(data);
 
-            @Override
-            public int getRowCount() {
-                return data.length;
-            }
+            TableModel dataModel = new AbstractTableModel() {
+                @Override
+                public int getColumnCount() {
+                    return tabelinhoud.length;
+                }
 
-            @Override
-            public Object getValueAt(int row, int col) {
-                return data[row][col];
-            }
+                @Override
+                public int getRowCount() {
+                    return data.length;
+                }
 
-            @Override
-            public String getColumnName(int column) {
-                return tabelinhoud[column];
-            }
-            //@Override
-            //public Class getColumnClass(int col) {
-            //  return getValueAt(0,col).getClass();
-            //}
+                @Override
+                public Object getValueAt(int row, int col) {
+                    return data[row][col];
+                }
 
-            @Override
-            public void setValueAt(Object aValue, int row, int column) {
-                data[row][column] = aValue;
-            }
-        };
+                @Override
+                public String getColumnName(int column) {
+                    return tabelinhoud[column];
+                }
+                //@Override
+                //public Class getColumnClass(int col) {
+                //  return getValueAt(0,col).getClass();
+                //}
 
-        return dataModel;
+                @Override
+                public void setValueAt(Object aValue, int row, int column) {
+                    data[row][column] = aValue;
+                }
+            };
+
+            tabel(aTable);
+
+
+            return dataModel;
+        } catch (Exception NPE) {
+            JOptionPane.showMessageDialog(this, "Er zijn geen waardes voor de opgegeven filter.");
+        }
+        return null;
     }
 
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == Start) { //Aantal pakketen op een traject
             //this.hide();
             DbConnect dbc = new DbConnect();
-            System.out.println(begin);
-            System.out.println(eind);
+            //    System.out.println(begin.toString());
+            //   System.out.println(eind.toString());
             GebruikStatistieken.aTable.setModel(Vernieuwtabel()); //Ververst tabel, maakt hem leeg
+            tabel(aTable);
             GebruikStatistieken.aTable.repaint();
 
         }
     }
 
+    public void tabel(JTable aTable) {
+
+        aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        aTable.getColumnModel().getColumn(0).setPreferredWidth(65);
+        aTable.getColumnModel().getColumn(1).setPreferredWidth(110);
+        aTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        aTable.getColumnModel().getColumn(3).setPreferredWidth(110);
+        aTable.getColumnModel().getColumn(4).setPreferredWidth(61);
+        aTable.getColumnModel().getColumn(5).setPreferredWidth(140);
+        aTable.getColumnModel().getColumn(6).setPreferredWidth(140);
 
     }
-
+}

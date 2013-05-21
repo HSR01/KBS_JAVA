@@ -135,7 +135,7 @@ public class JSON {
         Stations.add("Arnhem");
         Stations.add("Assen");
         Stations.add("Breda");
-        Stations.add("'s Hertogenbosch");
+        Stations.add("'s  Hertogenbosch");
         Stations.add("Den Haag");
         Stations.add("Den Helder");
         Stations.add("Deventer");
@@ -209,9 +209,10 @@ public class JSON {
         BufferedReader rd;
         String line, JSONResult = "";
         
-        // Open connectie
+        // Open connectie   
         conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod(requestMethod);
+        if (conn.getRequestMethod().equals(""))
+            conn.setRequestMethod(requestMethod);
         // Haal JSON op (zie json.org voor de specificatie)
         rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         // Voeg lijnen van JSON toe aan JSONResult
