@@ -80,7 +80,7 @@ class PakketStatus extends JPanel implements ActionListener{
             
         TableModel dataModel = new AbstractTableModel() {
             //instancieer columnnamen
-            final String[] tabelinhoud = {"Pakket ID", "Type", "Vervoerder", "Van", "Naar", "Status"};
+            final String[] tabelinhoud = {"Traject ID", "Type", "Vervoerder", "Van", "Naar", "Status"};
             DbConnect dbc = new DbConnect();       
             final Object[][] data = dbc.getPakketWijzigen(pakketID);
 

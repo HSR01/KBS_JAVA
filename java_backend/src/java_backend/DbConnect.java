@@ -186,7 +186,6 @@ public class DbConnect {
             return returnval;
         } catch (Exception e) {
             System.out.println("error : " + e.getClass());
-
         }
         return null;
     }
@@ -1034,7 +1033,7 @@ public Object[][] getPakketWijzigen(int pakketID) {
 
 
             //Select query
-            query = "SELECT C.TrajectID AS traj, C.BPS AS bp, C.KoerierID AS k, D.Plaatsnaam AS begin, E.Plaatsnaam AS eind, B.Status AS s "
+            query = "SELECT C.TrajectID AS tr, C.BPS AS bp, C.KoerierID AS k, D.Plaatsnaam AS begin, E.Plaatsnaam AS eind, B.Status AS s "
                     + "FROM Pakket A "
                     + "JOIN Verzending B "
                     + "ON A.PakketID = B.PakketID "
@@ -1055,12 +1054,31 @@ public Object[][] getPakketWijzigen(int pakketID) {
             int i = 0;
             while (rs.next()) {
 
-                returnval[i][0] = rs.getString("traj");
-                returnval[i][1] = rs.getString("bp");
+                returnval[i][0] = rs.getString("tr");
+                
+                if(Integer.parseInt(rs.getString("bp")) == 0){
+                    returnval[i][1] = "Koerier";
+                }else if((Integer.parseInt(rs.getString("bp")) == 1)){
+                    returnval[i][1] = "BPS'er";                    
+                }else{
+                    returnval[i][1] = "onbekend";
+                }
+                
                 returnval[i][2] = rs.getString("k");
                 returnval[i][3] = rs.getString("begin");
                 returnval[i][4] = rs.getString("eind");
-                returnval[i][5] = rs.getString("s");
+                
+                if(Integer.parseInt(rs.getString("s")) == 0){
+                    returnval[i][5] = "Aangemeld";
+                }else if((Integer.parseInt(rs.getString("s")) == 1)){
+                    returnval[i][5] = "Onderweg";                    
+                }else if((Integer.parseInt(rs.getString("s")) == 2)){
+                    returnval[i][5] = "Verwacht";                    
+                }else if((Integer.parseInt(rs.getString("s")) == 3)){
+                    returnval[i][5] = "Afgeleverd";                    
+                }else{
+                    returnval[i][5] = "Onbekend";
+                }
                 i++;
             }
 
