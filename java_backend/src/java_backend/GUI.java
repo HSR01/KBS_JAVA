@@ -8,7 +8,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.math.BigInteger;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -279,8 +282,18 @@ public class GUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(rootPane, "Niet alle verplichte velden zijn ingevuld.", "Waarschuwing", 2);
             } else {
                 //maak Persoon aan aan de hand van inloggegevens en methode in inlogdata
+                //instancieer methode om md5 te hashen.
+                //geef aan om welke hashingsmethode het gaat.
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(pfWachtwoord.getText().getBytes(), 0, pfWachtwoord.getText().length());
+                String wachtwoord = new BigInteger(1, md.digest()).toString(16);
+                System.out.println(wachtwoord);
                 //dit is een attribuut zodat deze beschikbaar is in de gehele GUI.
-                this.persoon = a.getLoginData(tfEmailadres.getText(), pfWachtwoord.getText(), true);
+                this.persoon = a.getLoginData(tfEmailadres.getText(), wachtwoord, true);
+
+                    
+                                                
+                
                 if (this.persoon != null) {
                     //succesvol ingelogd menu weergeven
                     if (this.persoon.getRechten() == 0) {
@@ -322,7 +335,9 @@ public class GUI extends JFrame implements ActionListener {
                 }
             }   
         } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, "Het inloggen is mislukt. Als dit probleem vaker voorkomt, neem dan contact op met TZTPost.", "Waarschuwing", 2);
+        }catch(NoSuchAlgorithmException ex){
+            JOptionPane.showMessageDialog(rootPane, "Het inloggen is mislukt. Als dit probleem vaker voorkomt, neem dan contact op met TZTPost.", "Waarschuwing", 2);
         }
         return false;
     }
