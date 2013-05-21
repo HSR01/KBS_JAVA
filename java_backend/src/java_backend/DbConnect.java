@@ -145,13 +145,14 @@ public class DbConnect {
      *  <LI>Achternaam</LI>
      *  <LI>Postcode</LI>
      *  <LI>Huisnummer</LI>
+     *  <LI>Toevoeging</LI>
      *  <LI>IBAN</LI>
      * </UL>
      */
     public Object[][] getPersonenWithCoordinates(String Achternaam) {
         try {
             //get aantal personen.
-            String query = "Select COUNT(*) from Persoon p "
+            String query = "SELECT COUNT(*) from Persoon p "
                      + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
                      + "WHERE l.Latitude IS NOT NULL "
                      + "AND l.Longitude IS NOT NULL ";
@@ -164,7 +165,7 @@ public class DbConnect {
             }
             //haal alles op.
             Object[][] returnval = new Object[aantal][7];
-            query = "SELECT p.PersoonID, p.Voornaam, p.Tussenvoegsel, p.Achternaam, l.Postcode, l.Huisnummer, p.IBAN "
+            query = "SELECT p.PersoonID, p.Voornaam, p.Tussenvoegsel, p.Achternaam, l.Postcode, l.Huisnummer, l.Toevoeging, p.IBAN "
                      + "FROM Persoon p "
                      + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
                      + "WHERE l.Latitude IS NOT NULL "
@@ -180,7 +181,8 @@ public class DbConnect {
                 returnval[i][3] = rs.getString("Achternaam");
                 returnval[i][4] = rs.getString("Postcode");
                 returnval[i][5] = rs.getString("Huisnummer");
-                returnval[i][6] = rs.getString("IBAN");
+                returnval[i][6] = rs.getString("Toevoeging");
+                returnval[i][7] = rs.getString("IBAN");
                 i++;
             }
             return returnval;

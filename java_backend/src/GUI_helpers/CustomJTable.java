@@ -3,7 +3,6 @@ package GUI_helpers;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java_backend.DbConnect;
-import java_backend.WijzigPersoon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -93,7 +92,6 @@ public class CustomJTable extends JPanel implements ListSelectionListener {
                         final String[] specifiekeGebruikerGegevens = dbc.getSpecifiekeGebruikerGegevens(selectedID);
                         final String[] specifiekeGebruikerLocatie = dbc.getSpecifiekeGebruikerLocatie(selectedID);
                         // Voert de update query uit.
-                        WijzigPersoon wijzigData = new WijzigPersoon(specifiekeGebruikerGegevens, specifiekeGebruikerLocatie);
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package java_backend;
 
+import GUI_helpers.CustomJTable;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -139,7 +140,11 @@ class NieuweVerzending extends JPanel implements ActionListener {
               jd.add(new JLabel("U heeft geen zoekterm ingevuld."));
               jd.setVisible(true);
            } else {
-               //er is wat ingevuld voer query uit.
+               Object[][] data = dbc.getPersonenWithCoordinates(zoekveld.getText().toString());
+               String[] columnnames = { "PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "Postcode", "Huisnummer", "Toevoeging", "IBAN" };
+               int[] columnsizes = { 20, 70, 35, 70, 40, 20, 10, 40 };
+               
+               this.add(new CustomJTable(columnnames, columnsizes, data));
            }
         } else if (ae.getSource() == submit) {
             //verstuur button
