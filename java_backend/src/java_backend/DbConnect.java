@@ -1191,8 +1191,14 @@ public class DbConnect {
 
         return null;
     }
-
-    public Object[][] getFeedback(int PakketID) {
+    /**
+     * @author Jelle(v2.)) en Daniel(v1.0)
+     * @param PakketID
+     * @description v1.0 return array of strings.
+     * @description v2.0 return array of feedback objects.
+     * @return array of feedback objects
+     */
+    public Feedback[] getFeedback(int PakketID) {
         try {
             //Daniel
             //tel hoeveel feedback er is.
@@ -1205,19 +1211,19 @@ public class DbConnect {
             //haal alles op.
 
 
-            Object[][] returnval = new Object[aantal][5];
+            Feedback[] returnval = new Feedback[aantal];
             query = "SELECT FeedbackID, PakketID, Waardering, Omschrijving, Ontvangstatus FROM Feedback WHERE PakketID = " + PakketID + ";";
             int i = 0;
 
             rs = st.executeQuery(query);
             while (rs.next()) {
-
-                returnval[i][0] = rs.getString("FeedbackID");
-                returnval[i][1] = rs.getString("PakketID");
-                returnval[i][2] = rs.getString("Waardering");
-                returnval[i][3] = rs.getString("Omschrijving");
-                returnval[i][4] = rs.getString("Ontvangstatus");
-
+                //vull feedback objecten.
+                returnval[i] = new Feedback();
+                returnval[i].setFeedbackID(Integer.parseInt(rs.getString("FeedbackID")));
+                returnval[i].setOmschrijving(rs.getString("Omschrijving"));
+                returnval[i].setPakketID(Integer.parseInt(rs.getString("PakketID")));
+                returnval[i].setWaardering(Integer.parseInt(rs.getString("Waardering")));
+                returnval[i].setOntvangststatus(Integer.parseInt(rs.getString("Ontvangstatus")));
                 i++;
             }
             return returnval;
