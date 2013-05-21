@@ -1,13 +1,17 @@
 package java_backend;
 
 import GUI_helpers.CustomJTable;
+import GUI_helpers.SelectDialog;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,7 +21,7 @@ import javax.swing.JTextField;
  * @author Jelle
  */
 class NieuweVerzending extends JPanel implements ActionListener {
-    private Persoon afzender;
+    private Locatie afzenderLocatie = null;
     private JLabel zoeklabel, voornaam, tussenvoegsel, achternaam, straatnaam, huisnr, toevoeging, postcode, plaats, telefoonnummer, gewicht, omschrijving, aankomst;
     private JTextField zoekveld, tvoornaam, ttussenvoegsel, tachternaam, tstraatnaam, thuisnr, ttoevoeging, tpostcode, tplaats, ttelefoonnummer, tgewicht, tomschrijving, taankomst;
     private JButton zoek, submit;
@@ -140,15 +144,18 @@ class NieuweVerzending extends JPanel implements ActionListener {
               jd.add(new JLabel("U heeft geen zoekterm ingevuld."));
               jd.setVisible(true);
            } else {
+               //   Initialiseer de gegevens en toon daarna de SelectDialog.
                Object[][] data = dbc.getPersonenWithCoordinates(zoekveld.getText().toString());
                String[] columnnames = { "PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "Postcode", "Huisnummer", "Toevoeging", "IBAN" };
-               int[] columnsizes = { 20, 70, 35, 70, 40, 20, 10, 40 };
+               int[] columnsizes = { 40, 120, 50, 120, 50, 40, 40, 40, 10 };
                
-               this.add(new CustomJTable(columnnames, columnsizes, data));
+               CustomJTable popup = new CustomJTable(columnnames, columnsizes, data);
+               afzenderLocatie = dbc.getLocatieFromPersoonId(popup.result.toString());
            }
         } else if (ae.getSource() == submit) {
             //verstuur button
-            if (tvoornaam.getText().equals("") 
+            if (afzenderLocatie == null
+                    || tvoornaam.getText().equals("") 
                     || tachternaam.getText().equals("")
                     || tstraatnaam.getText().equals("")
                     || thuisnr.getText().equals("")
@@ -156,6 +163,8 @@ class NieuweVerzending extends JPanel implements ActionListener {
                     || tpostcode.getText().equals("")
                 ) {
                 String errors = "<html>";
+                if (afzenderLocatie == null)
+                    errors += "<br>Selecteer een verzender";
                 if (tvoornaam.getText().equals(""))
                     errors += "<br>Voornaam is verplicht";
                 if (tachternaam.getText().equals(""))
@@ -191,16 +200,9 @@ class NieuweVerzending extends JPanel implements ActionListener {
                 data[10] = tomschrijving.getText().toString();
                 
                 try {
-                    Geocoding geo = new Geocoding();
-                    Coordinaten coordinate = geo.QueryAndGetCoordinates("Zutphen", "Slindewaterstraat", 26);
-                    Locatie loc = new Locatie(40, "", "", "", 0, "", coordinate);
-                    dbc.newVerzending(loc, data);
+                    dbc.newVerzending(afzenderLocatie, data);
                 } catch (MultipleAdressesFoundException ex) {
-                    JDialog jd = new JDialog();
-                    jd.setSize(200,175);
-                    jd.setTitle("Foutmelding - Adres verkeerd");
-                    jd.add(new JLabel("Meerdere adressen gevonden."));
-                    jd.setVisible(true);
+                    Logger.getLogger(NieuweVerzending.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
        }

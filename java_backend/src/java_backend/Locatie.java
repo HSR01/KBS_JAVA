@@ -47,6 +47,10 @@ public class Locatie {
         this.Toevoeging = toevoeging;
         this.Coordinaten = coordinaten;
     }
+    public Locatie(int id, Coordinaten coordinaten) {
+        this.Id = id;
+        this.Coordinaten = coordinaten;
+    }
     
     /**
      * @return the Postcode

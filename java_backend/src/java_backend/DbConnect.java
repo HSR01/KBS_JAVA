@@ -156,22 +156,22 @@ public class DbConnect {
                      + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
                      + "WHERE l.Latitude IS NOT NULL "
                      + "AND l.Longitude IS NOT NULL ";
-            if(Achternaam.equals(""))
-                query += "AND p.Achternaam = " + Achternaam;
+            if(!Achternaam.equals(""))
+                query += "AND p.Achternaam = '" + Achternaam + "'";
             rs = st.executeQuery(query);
             int aantal = 0;
             while (rs.next()) {
                 aantal = rs.getInt("COUNT(*)");
             }
             //haal alles op.
-            Object[][] returnval = new Object[aantal][7];
+            Object[][] returnval = new Object[aantal][8];
             query = "SELECT p.PersoonID, p.Voornaam, p.Tussenvoegsel, p.Achternaam, l.Postcode, l.Huisnummer, l.Toevoeging, p.IBAN "
                      + "FROM Persoon p "
                      + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
                      + "WHERE l.Latitude IS NOT NULL "
                      + "AND l.Longitude IS NOT NULL ";
-            if(Achternaam.equals(""))
-                query += "AND p.Achternaam = " + Achternaam;
+            if(!Achternaam.equals(""))
+                query += "AND p.Achternaam = '" + Achternaam + "'";
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
@@ -400,7 +400,7 @@ public class DbConnect {
         String voornaam = data[0], tussenvoegsel = data[1], achternaam = data[2], straatnaam = data[3], huisnummer = data[4], toevoeging = data[5],
                 postcode = data[6], plaats = data[7], telefoonnummer = data[8], gewicht = data[9], omschrijving = data[10];
         Geocoding geo = new Geocoding();
-        int locatieId = -1, persoonId = -1, pakketId = -1, verzendingId = -1, trajectId1 = -1, trajectId2 = -1, trajectId3 = -1;
+        int locatieId = -1, persoonId = -1, pakketId = -1, verzendingId = -1;
         Coordinaten coordinatenToLocatie;
         coordinatenToLocatie = geo.QueryAndGetCoordinates(data[7], data[3], Integer.parseInt(data[4]), data[5]);
         try {
@@ -1178,5 +1178,24 @@ public Object[][] getPakketWijzigen(int pakketID) {
         }
         
         return null;
+    }
+
+    public Locatie getLocatieFromPersoonId(String persoonID) {
+        Locatie result = null;
+        try {
+            query = "SELECT l.LocatieID, l.Latitude, l.Longitude "
+                    + "FROM Locatie l "
+                    + "JOIN Persoon_Locatie pl ON l.LocatieID = pl.LocatieID "
+                    + "WHERE pl.PersoonID = " + persoonID;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                Coordinaten coordinaten = new Coordinaten(Double.parseDouble(rs.getString("Latitude")), Double.parseDouble(rs.getString("Longitude")));
+                result = new Locatie(Integer.parseInt(rs.getString("LocatieID")), coordinaten);
+            }
+            return result;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getMessage());
+        }
+        return result;
     }
 }
