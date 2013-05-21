@@ -5,7 +5,11 @@
 package java_backend;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -17,32 +21,70 @@ import javax.swing.JPanel;
  *
  * @author Daniel
  */
-public class PakketWijzigenPopUp extends JFrame{
+public class PakketWijzigenPopUp extends JFrame implements ActionListener{
+    private JButton zoek;
+    private Object trajectID;
+    private JComboBox statussen;
     
-    public PakketWijzigenPopUp(Object aa){
-        
-        super();
-        this.setTitle("Pakket wijzigen");
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //this.setResizable(false);
-        this.setSize(800, 600);  
-        System.out.println(aa);
+    public PakketWijzigenPopUp(Object trajectID){
+        this.trajectID = trajectID;
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
+        this.setLocation(x, y);
+
+        this.setTitle("Status");
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setResizable(false);
+
         PakketWijzigen pw = new PakketWijzigen();
            
         this.setLayout(new BorderLayout());
-        this.add(new JLabel("PakketID - Status wijzigen."), BorderLayout.NORTH);  
-        
-        
-        String[] statussen = {"Aangemeld", "Onderweg", "Verwacht", "Afgeleverd", "Onbekend"};
+  
+        zoek = new JButton("Opslaan");
+
+        String[] statusincombo = {"Aangemeld", "Onderweg", "Verwacht", "Afgeleverd", "Onbekend"};
         JPanel diacontent = new JPanel();
- 
+        statussen = new JComboBox(statusincombo);
+        
+        diacontent.add(new JLabel("Traject " + trajectID + " - Status "));
         diacontent.setLayout(new FlowLayout());        
- 	diacontent.add(new JComboBox(statussen));
+ 	diacontent.add(statussen);
+        diacontent.add(zoek);
+        
+        this.zoek.addActionListener(this);
         
         this.add(diacontent, BorderLayout.CENTER);
 
-        this.setSize(300, 180); 
+        this.setSize(310, 80); 
         this.setVisible(true);
     }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        //selectie button geladen.
+        if (ae.getSource() == zoek) {
+            int status =4;
+            String x = String.valueOf(statussen.getSelectedItem());
+            if(x.equals("Aangemeld")){
+                status = 0;
+            }else if(x.equals("Onderweg")){
+                status = 1;
+            }else if(x.equals("Verwacht")){
+                status = 2;
+            }else if(x.equals("Afgeleverd")){
+                status = 3;
+            }else{
+                status = 4;
+            }                
+
+            //jaar geselecteerd.          
+            DbConnect dbc = new DbConnect();
+            dbc.updateStatus(trajectID, status);
+            //repaint de tabel om het opnieuw weer te geven.
+            PakketWijzigen.info.repaint();
+                
+            }
+     }
     
 }

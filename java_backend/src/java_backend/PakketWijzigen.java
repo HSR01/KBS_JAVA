@@ -29,7 +29,7 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
     private JLabel zoeklabel;
     private JTextField zoekveld;
     private JButton zoek, opslaan;  
-    private JTable info; 
+    public static JTable info; 
             
     public PakketWijzigen() {
         zoeklabel = new JLabel("Pakket ID :");
@@ -91,14 +91,14 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
                 this.info.repaint();
                 
             }
-        }
+     }
 
 
     public TableModel FillTabel(final int pakketID){
             
         TableModel dataModel = new AbstractTableModel() {
             //instancieer columnnamen
-            final String[] tabelinhoud = {"Pakket ID", "Type", "Vervoerder", "Van", "Naar", "Status"};
+            final String[] tabelinhoud = {"Traject ID", "Type", "Vervoerderder ID", "Van", "Naar", "Status"};
             DbConnect dbc = new DbConnect();       
             final Object[][] data = dbc.getPakketWijzigen(pakketID);
 
