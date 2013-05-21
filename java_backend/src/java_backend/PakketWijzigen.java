@@ -29,7 +29,7 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
     private JLabel zoeklabel;
     private JTextField zoekveld;
     private JButton zoek, opslaan;  
-    private JTable info; 
+    public static JTable info; 
             
     public PakketWijzigen() {
         zoeklabel = new JLabel("Pakket ID :");
@@ -91,7 +91,7 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
                 this.info.repaint();
                 
             }
-        }
+     }
 
 
     public TableModel FillTabel(final int pakketID){

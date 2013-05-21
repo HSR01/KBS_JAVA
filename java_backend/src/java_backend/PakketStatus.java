@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
@@ -39,11 +40,16 @@ class PakketStatus extends JPanel implements ActionListener{
 
         //instancieer JTable met datamodel van hierboven.
         this.info = new JTable(FillTabel(0));
-        
+                // Dit is de list selecetioner, die kijkt of je iets selecteert
+        ListSelectionModel listMod = info.getSelectionModel();
+        // Hierdoor kan je maar 1 regel selecteren
+        listMod.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // Voegt de listener toe aan het frame
+        listMod.addListSelectionListener( info );
         //set de layout van het panel op borderlayout
         this.setLayout(new BorderLayout());
         //voeg layout to aan jpanel top
-        JPanel top =new JPanel();
+        JPanel top = new JPanel();
         top.add(zoeklabel);
         top.add(this.zoekveld);
         top.add(this.zoek);
@@ -93,6 +99,7 @@ class PakketStatus extends JPanel implements ActionListener{
             public String getColumnName(int column){ return tabelinhoud[column]; };
         };
         return dataModel;
+        
    };  
     
     public void valueChanged(ListSelectionEvent e) {
@@ -105,7 +112,8 @@ class PakketStatus extends JPanel implements ActionListener{
         // maakt de geselcteerde waarde openbaar
         getSelecteerdeWaarde(geselecteerdeWaarde);
     }
-    
+            // Hierdoor kan je maar 1 regel selecteren
+
     public void getSelecteerdeWaarde(Object string) {
         this.geselecteerdeWaarde = string;
     }

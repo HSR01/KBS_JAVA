@@ -41,10 +41,10 @@ public class GUI extends JFrame implements ActionListener {
         //Standaard instellingen hoofdscherm
         super();
         this.setTitle("TZT Post");
-        this.setLayout(new FlowLayout(FlowLayout.CENTER));
+        this.setLayout(new FlowLayout());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         //this.setResizable(false);
-        this.setSize(800, 600);  
+        this.setSize(1024, 768);  
         
         //Centreren in venster
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();

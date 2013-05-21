@@ -1179,4 +1179,41 @@ public Object[][] getPakketWijzigen(int pakketID) {
         
         return null;
     }
+    
+    public Object[][] getFeedback(int PakketID) {
+        try {
+            //Daniel
+            //tel hoeveel feedback er is.
+           
+            rs = st.executeQuery("SELECT COUNT(*) FROM Feedback WHERE PakketID = " + PakketID + ";");
+            int aantal = 0;
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+            //haal alles op.
+            
+
+            Object[][] returnval = new Object[aantal][4];
+            query = "SELECT FeedbackID, PakketID, Waardering, Omschrijving, Ontvangstatus FROM Feedback WHERE PakketID = " + PakketID + ";";
+            int i = 0;
+            
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+
+                returnval[i][0] = rs.getString("FeedbackID");
+                returnval[i][1] = rs.getString("PakketID");
+                returnval[i][2] = rs.getString("Waardering");
+                returnval[i][3] = rs.getString("Omschrijving");
+                returnval[i][4] = rs.getString("Ontvangstatus");
+
+                i++;
+            }
+            return returnval;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+
+        }
+        
+        return null;
+    }
 }
