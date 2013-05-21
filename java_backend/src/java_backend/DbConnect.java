@@ -781,13 +781,14 @@ public class DbConnect {
             String[] returnval = new String[26];
             //haal alles op.
 
-            query = "SELECT Plaatsnaam FROM Locatie WHERE TZTPoint = '1'";
+            query = "SELECT Plaatsnaam "
+                    + "FROM Locatie "
+                    + "WHERE TZTPoint = '1'"
+                    + "ORDER BY Plaatsnaam ASC";
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
                 returnval[i] = rs.getString("Plaatsnaam");
-
-
                 i++;
             }
             return returnval;
