@@ -315,13 +315,21 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
                 Persoongegevens[11] = tfPlaatsnaam.getText();
                 Persoongegevens[12] = tfStraatnaam.getText();
                 Persoongegevens[13] = tfToevoeging.getText();
-                Persoongegevens[14] = (String) tztpoint.getSelectedItem();
+                
+                if( tztpoint.getSelectedItem().equals("Nee")){
+                    Persoongegevens[14] = "0";
+                }
+                else{
+                    Persoongegevens[14] = "1";
+                }
+                
                 Persoongegevens[15] = tfPostcode.getText();
                 Persoongegevens[16] = latitude;
                 Persoongegevens[17] = longitude;
                 
                 // alle queries
                 // Connectie aanmaken
+                
                 DbConnect a = new DbConnect();
                 if (pfWachtwoord.getText().equals("")){ a.updateGebruikerAccount2(Persoongegevens); }
                 else { a.updateGebruikerAccount(Persoongegevens); }
@@ -378,7 +386,7 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
         setSelectedValue(jaar, DatumJaar);
         
         this.tfIBANnummer.setText(specifiekePersoonGegevens[7]);
-        this.tfMobielnummer.setText(specifiekePersoonGegevens[8]);
+        this.tfMobielnummer.setText(specifiekePersoonGegevens[9]);
         
         String dropdownRechten = specifiekePersoonGegevens[10];
         setSelectedValueRecht(recht, dropdownRechten);

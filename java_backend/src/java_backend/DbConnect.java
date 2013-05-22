@@ -290,15 +290,15 @@ public class DbConnect {
     public void updateGebruikerAccount(String[] data) {
         try {
             query = "UPDATE Persoon "
-                    + "SET Voornaam = " + data[1] + ","
-                    + "Tussenvoegsel = " + data[2] + ","
-                    + "Achternaam = " + data[3] + ","
-                    + "Wachtwoord = " + data[4] + ",aal"
-                    + "Emailadres = " + data[5] + ","
-                    + "Geboortedatum = " + data[6] + ","
-                    + "Rechten = " + data[7] + ","
-                    + "Mobielnummer = " + data[8] + ","
-                    + "IBAN = " + data[9] + " "
+                    + "SET Voornaam = '" + data[1] + "', "
+                    + "Tussenvoegsel = '" + data[2] + "',"
+                    + "Achternaam = '" + data[3] + "',"
+                    + "Wachtwoord = '" + data[4] + "',"
+                    + "Emailadres = '" + data[5] + "',"
+                    + "Geboortedatum = '" + data[6] + "',"
+                    + "Rechten = '" + data[7] + "',"
+                    + "Mobielnummer = '" + data[8] + "',"
+                    + "IBAN = '" + data[9] + "' "
                     + "WHERE PersoonID = '" + data[0] + "'";
             System.out.println(query);
             st.executeUpdate(query);
@@ -307,16 +307,17 @@ public class DbConnect {
             int LocatieID = dbc.getLocatieID("SELECT LocatieID From Persoon where PersoonID = " + data[0]);
 
             query = "UPDATE Locatie "
-                    + "SET Huisnummer= \"" + data[10] + "\", "
-                    + "Plaatsnaam= \"" + data[11] + "\", "
-                    + "Straatnaam = \"" + data[12] + "\", "
-                    + "Toevoeging = \"" + data[13] + "\", "
-                    + "TZTPoint = \"" + data[14] + "\", "
-                    + "Postcode = \"" + data[15] + "\", "
-                    + "Latitude = \"" + data[16] + "\", "
-                    + "Longitude = \"" + data[17] + "\" "
-                    + "WHERE LocatieID = \"" + LocatieID + "\"";
+                    + "SET Huisnummer = '" + data[10] + "', "
+                    + "Plaatsnaam= '" + data[11] + "', "
+                    + "Straatnaam = '" + data[12] + "', "
+                    + "Toevoeging = '" + data[13] + "', "
+                    + "TZTPoint = '" + data[14] + "', "
+                    + "Postcode = '" + data[15] + "', "
+                    + "Latitude = '" + data[16] + "', "
+                    + "Longitude = '" + data[17] + "' "
+                    + "WHERE LocatieID = '" + LocatieID + "'";
             st.executeUpdate(query);
+                    
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
         }
@@ -325,30 +326,30 @@ public class DbConnect {
     public void updateGebruikerAccount2(String[] data) {
         try {
             query = "UPDATE Persoon "
-                    + "SET Voornaam = " + data[1] + ","
-                    + "Tussenvoegsel = " + data[2] + ","
-                    + "Achternaam = " + data[3] + ","
-                    + "Emailadres = " + data[5] + ","
-                    + "Geboortedatum = " + data[6] + ","
-                    + "Rechten = " + data[7] + ","
-                    + "Mobielnummer = " + data[8] + ","
-                    + "IBAN = " + data[9]
-                    + "WHERE PersoonID = " + data[0];
+                    + "SET Voornaam = '" + data[1] + "', "
+                    + "Tussenvoegsel = '" + data[2] + "',"
+                    + "Achternaam = '" + data[3] + "',"
+                    + "Emailadres = '" + data[5] + "',"
+                    + "Geboortedatum = '" + data[6] + "',"
+                    + "Rechten = '" + data[7] + "',"
+                    + "Mobielnummer = '" + data[8] + "',"
+                    + "IBAN = '" + data[9] + "' "
+                    + "WHERE PersoonID = '" + data[0] + "'";
             st.executeUpdate(query);
 
             DbConnect dbc = new DbConnect();
             int LocatieID = dbc.getLocatieID("SELECT LocatieID From Persoon where PersoonID = " + data[0]);
 
             query = "UPDATE Locatie "
-                    + "SET Huisnummer= \"" + data[10] + "\", "
-                    + "Plaatsnaam= \"" + data[11] + "\", "
-                    + "Straatnaam = \"" + data[12] + "\", "
-                    + "Toevoeging = \"" + data[13] + "\", "
-                    + "TZTPoint = \"" + data[14] + "\", "
-                    + "Postcode = \"" + data[15] + "\", "
-                    + "Latitude = \"" + data[16] + "\", "
-                    + "Longitud = \"" + data[17] + "\" "
-                    + "WHERE LocatieID = \"" + LocatieID + "\"";
+                    + "SET Huisnummer = '" + data[10] + "', "
+                    + "Plaatsnaam= '" + data[11] + "', "
+                    + "Straatnaam = '" + data[12] + "', "
+                    + "Toevoeging = '" + data[13] + "', "
+                    + "TZTPoint = '" + data[14] + "', "
+                    + "Postcode = '" + data[15] + "', "
+                    + "Latitude = '" + data[16] + "', "
+                    + "Longitude = '" + data[17] + "' "
+                    + "WHERE LocatieID = '" + LocatieID + "'";
             st.executeUpdate(query);
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
