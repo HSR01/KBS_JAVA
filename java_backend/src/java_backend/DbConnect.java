@@ -1032,7 +1032,7 @@ public class DbConnect {
 
 
             //Select query
-            query = "SELECT C.TrajectID AS tr, C.BPS AS bp, C.KoerierID AS k, D.Plaatsnaam AS begin, E.Plaatsnaam AS eind, B.Status AS s "
+            query = "SELECT C.TrajectID AS tr, C.BPS AS bp, C.KoerierID AS k, D.Plaatsnaam AS begin, E.Plaatsnaam AS eind, C.Status AS s "
                     + "FROM Pakket A "
                     + "JOIN Verzending B "
                     + "ON A.PakketID = B.PakketID "
@@ -1166,6 +1166,7 @@ public class DbConnect {
                 returnval[i][9] = rs.getString("Aankomsttijd");
                 returnval[i][10] = rs.getString("Aflevertijd");
                 returnval[i][11] = rs.getString("Status");
+
                 i++;
             }
             return returnval;
