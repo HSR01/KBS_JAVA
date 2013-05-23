@@ -16,10 +16,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-/**
- *
- * @author Justin
- */
 public class PersoonTraject extends JFrame implements ActionListener, ListSelectionListener {
  private int geselecteerdeWaarde;
  private String[] geselecteerdeWaardes;
