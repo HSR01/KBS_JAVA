@@ -167,8 +167,12 @@ public class BPSTrajectToewijzen extends JFrame implements ActionListener {
         query = "";
         query2 = "";
         if (ae.getSource() == jbWijzig || ae.getSource() == jbNieuw){
-            beginid = dbc.getPersoonID("SELECT LocatieID FROM Locatie WHERE Plaatsnaam = '" + Begin.getSelectedItem() + "'");
-            eindid = dbc.getPersoonID("SELECT LocatieID FROM Locatie WHERE Plaatsnaam = '" + Eind.getSelectedItem() + "'");
+            String beginplaats = (String) Begin.getSelectedItem();
+            String eindplaats = (String) Eind.getSelectedItem();
+            if( beginplaats.equals("'s Hertogenbosch")){ beginid = 6; }
+            else{ beginid = dbc.getPersoonID("SELECT LocatieID AS PersoonID FROM Locatie WHERE Plaatsnaam = '" + beginplaats + "'"); }
+            if( eindplaats.equals("'s Hertogenbosch")){ eindid = 6; }
+            else { eindid = dbc.getPersoonID("SELECT LocatieID AS PersoonID FROM Locatie WHERE Plaatsnaam = '" + eindplaats + "'"); }
         }
         if (ae.getSource() == jbWijzig) {
             query = ""
