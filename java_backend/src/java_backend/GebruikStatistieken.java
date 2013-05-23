@@ -125,7 +125,6 @@ class GebruikStatistieken extends JPanel implements ActionListener {
             eind = (String) Eind.getSelectedItem();
 
             final Object[][] data = dbc.getSpecifiekGebruikStatistiek(begin, eind);
-            System.out.println(data);
 
             TableModel dataModel = new AbstractTableModel() {
                 @Override
@@ -172,8 +171,7 @@ class GebruikStatistieken extends JPanel implements ActionListener {
         if (ae.getSource() == Start) { //Aantal pakketen op een traject
             //this.hide();
             DbConnect dbc = new DbConnect();
-            //    System.out.println(begin.toString());
-            //   System.out.println(eind.toString());
+
             GebruikStatistieken.aTable.setModel(Vernieuwtabel()); //Ververst tabel, maakt hem leeg
             tabel(aTable);
             GebruikStatistieken.aTable.repaint();
@@ -181,7 +179,7 @@ class GebruikStatistieken extends JPanel implements ActionListener {
         }
     }
 
-    public void tabel(JTable aTable) {
+    public static void tabel(JTable aTable) {
 
         aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         aTable.getColumnModel().getColumn(0).setPreferredWidth(65);

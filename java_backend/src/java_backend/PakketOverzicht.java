@@ -48,7 +48,7 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
         this.setSize(800, 600);
         this.setLayout(new BorderLayout());
 
-        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving","Begin", "Eind", "BeginPlaats", "EindPlaats"};
+        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving", "Begin", "Eind", "BeginPlaats", "EindPlaats"};
         DbConnect dbc = new DbConnect();
         final Object[][] data = dbc.getPakket();
         final Object[] stad = dbc.getLocatie();
@@ -83,7 +83,7 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
                 data[row][column] = aValue;
             }
         };
-        
+
         //voegt Steden toe aan het dropdown menu
         DefaultComboBoxModel Beginn = new DefaultComboBoxModel();
         for (int i = 0; i < 26; i++) {
@@ -148,12 +148,12 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
     public TableModel VerVerstabel() {
 
         DbConnect dbc = new DbConnect();
-        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving","Begin", "Eind", "BeginPlaats", "EindPlaats"};
+        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving", "Begin", "Eind", "BeginPlaats", "EindPlaats"};
         begin = (String) Begin.getSelectedItem();
         eind = (String) Eind.getSelectedItem();
-        
+
         final Object[][] data = dbc.getSpecifiekPakket(begin, eind);
-        
+
         TableModel dataModel = new AbstractTableModel() {
             @Override
             public int getColumnCount() {
@@ -192,14 +192,13 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
         if (ae.getSource() == Start) { //Aantal pakketen op een traject
             //this.hide();
             DbConnect dbc = new DbConnect();
-            System.out.println(begin);
-            System.out.println(eind);
+
             PakketOverzicht.aTable.setModel(VerVerstabel()); //Ververst tabel, maakt hem leeg
             PakketOverzicht.aTable.repaint();
-             
 
-            
-            
+
+
+
 
         }
     }

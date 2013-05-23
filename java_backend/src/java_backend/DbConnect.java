@@ -131,11 +131,12 @@ public class DbConnect {
         try {
             //get aantal personen.
             String query = "SELECT COUNT(*) from Persoon p "
-                     + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
-                     + "WHERE l.Latitude IS NOT NULL "
-                     + "AND l.Longitude IS NOT NULL ";
-            if(!Achternaam.equals(""))
+                    + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
+                    + "WHERE l.Latitude IS NOT NULL "
+                    + "AND l.Longitude IS NOT NULL ";
+            if (!Achternaam.equals("")) {
                 query += "AND p.Achternaam = '" + Achternaam + "'";
+            }
             rs = st.executeQuery(query);
             int aantal = 0;
             while (rs.next()) {
@@ -144,12 +145,13 @@ public class DbConnect {
             //haal alles op.
             Object[][] returnval = new Object[aantal][8];
             query = "SELECT p.PersoonID, p.Voornaam, p.Tussenvoegsel, p.Achternaam, l.Postcode, l.Huisnummer, l.Toevoeging, p.IBAN "
-                     + "FROM Persoon p "
-                     + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
-                     + "WHERE l.Latitude IS NOT NULL "
-                     + "AND l.Longitude IS NOT NULL ";
-            if(!Achternaam.equals(""))
+                    + "FROM Persoon p "
+                    + "JOIN Locatie l ON p.LocatieID = l.LocatieID "
+                    + "WHERE l.Latitude IS NOT NULL "
+                    + "AND l.Longitude IS NOT NULL ";
+            if (!Achternaam.equals("")) {
                 query += "AND p.Achternaam = '" + Achternaam + "'";
+            }
             rs = st.executeQuery(query);
             int i = 0;
             while (rs.next()) {
@@ -317,7 +319,7 @@ public class DbConnect {
                     + "Longitude = '" + data[17] + "' "
                     + "WHERE LocatieID = '" + LocatieID + "'";
             st.executeUpdate(query);
-                    
+
         } catch (Exception e) {
             System.out.println("error : " + e.getMessage());
         }
@@ -851,8 +853,17 @@ public class DbConnect {
                     + "JOIN Verzending B ON A.PakketID = B.PakketID "
                     + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
                     + "JOIN Locatie D ON C.Eind = D.LocatieID "
-                    + "JOIN Locatie E ON C.Begin = E.LocatieID "
-                    + "WHERE D.Plaatsnaam = '" + begin + "' AND E.Plaatsnaam = '" + eind + "'";
+                    + "JOIN Locatie E ON C.Begin = E.LocatieID ";
+            if (begin.equals("'s Hertogenbosch")) {
+                query += "WHERE D.Plaatsnaam = '\\" + begin + "' ";
+            } else {
+                query += "WHERE D.Plaatsnaam = '" + begin + "' ";
+            }
+            if (eind.equals("'s Hertogenbosch")) {
+                query += "AND E.Plaatsnaam = '\\" + eind + "' ";
+            } else {
+                query += "AND E.Plaatsnaam = '" + eind + "'";
+            }
             int i = 0;
             rs = st.executeQuery(query);
             while (rs.next()) {
@@ -1179,8 +1190,7 @@ public class DbConnect {
     }
 
     /**
-     * @author Leon Huzen
-     * Haal een Locatie op met een PersoonID als invoer
+     * @author Leon Huzen Haal een Locatie op met een PersoonID als invoer
      * @param persoonID String PersoonID
      * @return Locatie (ID, Coordinaten)
      */
@@ -1202,7 +1212,7 @@ public class DbConnect {
         }
         return result;
     }
-    
+
     /**
      * @author Jelle(v2.)) en Daniel(v1.0)
      * @param PakketID
