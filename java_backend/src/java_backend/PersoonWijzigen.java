@@ -1,5 +1,6 @@
 package java_backend;
 
+import Geolocatie.Geocoding;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
