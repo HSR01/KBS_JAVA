@@ -1,5 +1,6 @@
 package java_backend;
 
+import Database.DbConnect;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -89,7 +90,6 @@ class AanmeldenPakket extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        DbConnect dbc = new DbConnect();
        if (ae.getSource() == zoek) {
            //zoek button
 

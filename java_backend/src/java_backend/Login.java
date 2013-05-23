@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
+import Database.DbConnect;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -79,10 +75,6 @@ public class Login extends JPanel implements ActionListener {
         this.setVisible(true);
     }
 
-    
-   
-    
-    
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == btLogin) {

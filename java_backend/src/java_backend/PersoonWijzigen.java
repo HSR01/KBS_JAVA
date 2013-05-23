@@ -1,8 +1,9 @@
 package java_backend;
 
-import Geolocatie.MultipleAdressesFoundException;
+import Database.DbConnect;
 import Geolocatie.Coordinaten;
 import Geolocatie.Geocoding;
+import Geolocatie.MultipleAdressesFoundException;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -11,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -25,8 +25,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *

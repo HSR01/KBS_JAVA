@@ -1,8 +1,8 @@
 package java_backend;
 
-import Geolocatie.MultipleAdressesFoundException;
 import Geolocatie.Coordinaten;
 import Geolocatie.Geocoding;
+import Geolocatie.MultipleAdressesFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

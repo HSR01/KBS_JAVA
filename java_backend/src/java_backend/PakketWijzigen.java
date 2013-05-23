@@ -1,6 +1,7 @@
 
 package java_backend;
 
+import Database.DbConnect;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;

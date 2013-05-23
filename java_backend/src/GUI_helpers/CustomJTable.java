@@ -1,9 +1,9 @@
 package GUI_helpers;
 
+import Database.DbConnect;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java_backend.DbConnect;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;

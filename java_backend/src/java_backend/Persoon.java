@@ -26,18 +26,18 @@ public class Persoon {
       this.Geboortedatum = new Date();
       this.Mobielnummer = "";
   }
-  public Persoon(String v, String t, String a, String e, String w, Date g, String m) {
-      this.Voornaam = v;
-      this.Tussenvoegsel = t;
-      this.Achternaam = a;
-      this.Emailadres = e;
-      this.Wachtwoord = w;
-      this.Geboortedatum = g;
-      this.Mobielnummer = m;
+  public Persoon(String voornaam, String tussenvoegsel, String achternaam, String emailadres, String wachtwoord, Date geboortedatum, String mobielnummer) {
+      this.Voornaam = voornaam;
+      this.Tussenvoegsel = tussenvoegsel;
+      this.Achternaam = achternaam;
+      this.Emailadres = emailadres;
+      this.Wachtwoord = wachtwoord;
+      this.Geboortedatum = geboortedatum;
+      this.Mobielnummer = mobielnummer;
   }
     @Override
   public String toString() {
-      return this.getVoornaam() + " "+this.getTussenvoegsel()+ " "+this.getAchternaam();
+      return this.getVoornaam() + " " + this.getTussenvoegsel() +  " " + this.getAchternaam();
   }
     /**
      * @return the Voornaam

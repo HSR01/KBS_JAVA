@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
+import Database.DbConnect;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,7 +10,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -41,13 +36,11 @@ class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListe
         //set standaard layout instellingen.
         this.setLayout(new BorderLayout());
         
-        
         //instancieer layout objecten
         this.top = new JPanel();
         this.mid = new JPanel();
         this.info = new JTable();
         this.sp = new JScrollPane(this.info);
-        
         
         //instancieer onderdelen
         this.toplabel = new JLabel("Feedback");
@@ -115,9 +108,6 @@ class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListe
                         feedbackinfo.add(new JLabel("Ontvangststatus"));
                         feedbackinfo.add(new JLabel(""+spec.getOntvangststatus()));
                         feedbackinfo.setVisible(true);
-
-                        
-                        
                     }
                 }
             }

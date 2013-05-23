@@ -1,13 +1,13 @@
 /**
  *
- * Auteur: Dominique
- * 
-**/
+ * @author: Dominique
+ */
 package java_backend;
 
-import Geolocatie.MultipleAdressesFoundException;
+import Database.DbConnect;
 import Geolocatie.Coordinaten;
 import Geolocatie.Geocoding;
+import Geolocatie.MultipleAdressesFoundException;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -266,17 +266,17 @@ public class PersoonNieuw extends JPanel implements ActionListener{
                 }
                 // alle queries
                 // Connectie aanmaken
-                DbConnect a = new DbConnect();
+                DbConnect dbc = new DbConnect();
                 // Locatie inserten
-                a.insertData("Locatie", this.latitude, this.longitude ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
+                dbc.insertData("Locatie", this.latitude, this.longitude ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
                 // LocatieID ophalen van de insert query
-                int locatieID = a.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
+                int locatieID = dbc.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
                 // Gebruiekr inserten met bijgevoegd locatieID
-                a.nieuweGebruiker("INSERT INTO `Persoon` (`PersoonID`, `LocatieID`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Emailadres`, `Wachtwoord`, `Geboortedatum`, `Mobielnummer`, `Profielfoto`, `IBAN`, `Rechten`) VALUES ( '0','" + locatieID + "','" + tfVoornaam.getText() + "','" + tfTussenvoegsel.getText() + "','" + tfAchternaam.getText() + "','" + tfEmailadres.getText() + "','" + wachtwoord + "','" + datum + "','" + tfMobielnummer.getText() + "','" + null + "','" + tfIBANnummer.getText() + "','" + gebruikerniveau + "')");
+                dbc.nieuweGebruiker("INSERT INTO `Persoon` (`PersoonID`, `LocatieID`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Emailadres`, `Wachtwoord`, `Geboortedatum`, `Mobielnummer`, `Profielfoto`, `IBAN`, `Rechten`) VALUES ( '0','" + locatieID + "','" + tfVoornaam.getText() + "','" + tfTussenvoegsel.getText() + "','" + tfAchternaam.getText() + "','" + tfEmailadres.getText() + "','" + wachtwoord + "','" + datum + "','" + tfMobielnummer.getText() + "','" + null + "','" + tfIBANnummer.getText() + "','" + gebruikerniveau + "')");
                 // PersoonID ophalen
-                int persoonID = a.getPersoonID("SELECT PersoonID FROM `Persoon`  Where Emailadres = '" + tfEmailadres.getText() + "'");
+                int persoonID = dbc.getPersoonID("SELECT PersoonID FROM `Persoon`  Where Emailadres = '" + tfEmailadres.getText() + "'");
                 // Insert naar Persoon_Locatie voor koppeling
-                a.nieuweGebruiker("INSERT INTO `Persoon_Locatie` (LocatieID, PersoonID) VALUES (" + locatieID + "," + persoonID + ")");
+                dbc.nieuweGebruiker("INSERT INTO `Persoon_Locatie` (LocatieID, PersoonID) VALUES (" + locatieID + "," + persoonID + ")");
             
             }
         }

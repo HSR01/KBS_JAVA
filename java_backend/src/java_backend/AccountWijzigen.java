@@ -1,11 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
-import GUI_helpers.CustomJTable;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**

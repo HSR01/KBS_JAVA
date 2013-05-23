@@ -1,4 +1,4 @@
-package java_backend;
+package Database;
 
 import Geolocatie.MultipleAdressesFoundException;
 import Geolocatie.Coordinaten;
@@ -11,6 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java_backend.Feedback;
+import java_backend.Locatie;
+import java_backend.Persoon;
+import java_backend.Traject;
 
 /**
  * @author Daniel

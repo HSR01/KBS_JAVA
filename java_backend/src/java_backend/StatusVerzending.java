@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
+import Database.DbConnect;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,14 +16,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-
-
-
-    
-
 /**
- *
- 
+ * @author Status verzending maker
  */
 class StatusVerzending extends JPanel implements ListSelectionListener, ActionListener {
 private Object geselecteerdeWaarde;
@@ -49,7 +40,6 @@ private Object geselecteerdeWaarde;
         final String[] tabelinhoud = {"TrajectID", "VerzendingID", "PakketID", "KoerierID", "Bedrijfsnaam", "Begin", "Eind", "Beginplaats", "Eindplaats", "Aankomsttijd", "Aflevertijd", "Status"};
         DbConnect dbc = new DbConnect();
         final Object[][] data = dbc.getPakketStatus();
-        System.out.println(data);
 
         TableModel dataModel = new AbstractTableModel() {
             @Override

@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
+import Database.DbConnect;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
@@ -66,7 +63,7 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
             JLabel lblimage = new JLabel(new ImageIcon(im));
             this.logo.add(lblimage);
         } catch (Exception e) {
-            System.out.println("Profielfoto Error: " + e);
+            System.out.println("Profielfoto Error: " + e.getMessage());
         }
 
         //loginscherm voor card1
@@ -195,8 +192,6 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
         this.logincenter.add(btAanmelden);
 
 
-
-
         //voeg velden toe aan loginpanel
         this.login.add(this.logincenter);
 
@@ -282,15 +277,6 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
 
             }
 
-
-           // if (fout == false) {
-
-             //   lijstAantal = flijstje.size();
-             //   for (lijstScroller = 0; lijstScroller < lijstAantal; lijstScroller++) {
-            //    }
-
-        //    }
-
             if (fout == true) {
                 //Hash het wachtwoord naar MD5
                 String wachtwoord = pfWachtwoord.getText();
@@ -302,27 +288,18 @@ public class AanmeldenBPS extends JDialog implements ActionListener {
                     System.out.println("Hash Error:" + o);
                 }
 
-                DbConnect a = new DbConnect();
+                DbConnect dbc = new DbConnect();
                 String LocatieID = "1";
                 String Profielfoto = "hoi";
                 String Geboortedatum = dag.getSelectedItem() + "/" + maand.getSelectedItem() + "/" + jaar.getSelectedItem();
 
 
-                a.insertData("Persoon", LocatieID, tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), wachtwoord, Geboortedatum, tfMobielnummer.getText(), Profielfoto, tfIbannummer.getText());
+                dbc.insertData("Persoon", LocatieID, tfVoornaam.getText(), tfTussenvoegsel.getText(), tfAchternaam.getText(), tfEmailadres.getText(), wachtwoord, Geboortedatum, tfMobielnummer.getText(), Profielfoto, tfIbannummer.getText());
 
                 //SELECT ID 
-                a.insertData("Locatie", "00000", "00000", tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");
+                dbc.insertData("Locatie", "00000", "00000", tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");
 
             }
-
-
-
         }
-
-
-
-
-
-
     }
 }

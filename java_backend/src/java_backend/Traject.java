@@ -1,5 +1,3 @@
-/*
- */
 package java_backend;
 
 /**

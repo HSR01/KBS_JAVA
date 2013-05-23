@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
 /**
@@ -11,7 +7,6 @@ package java_backend;
 public class Feedback {
     private int Waardering, FeedbackID, Ontvangststatus, PakketID;
     private String Omschrijving;
-
     
     public Feedback() {
         this.Waardering = 0;
@@ -19,7 +14,6 @@ public class Feedback {
         this.Ontvangststatus = 0;
         this.FeedbackID = 0;
         this.PakketID = 0;
-        
     }
     
     public Feedback(int w, String om, int o, int f, int p) {
@@ -99,6 +93,4 @@ public class Feedback {
     public void setOmschrijving(String Omschrijving) {
         this.Omschrijving = Omschrijving;
     }
-    
-    
 }

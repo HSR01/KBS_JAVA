@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -15,7 +10,7 @@ import javax.swing.JPanel;
 class AccountBlokkeren extends JPanel {
 
     public AccountBlokkeren() {
-                this.add(new JLabel("Account Blokkeren"));
+        this.add(new JLabel("Account Blokkeren"));
         this.setVisible(true);
     }
     

@@ -1,7 +1,8 @@
 package java_backend;
 
-import Geolocatie.MultipleAdressesFoundException;
+import Database.DbConnect;
 import GUI_helpers.CustomJTable;
+import Geolocatie.MultipleAdressesFoundException;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
