@@ -1,5 +1,6 @@
 package java_backend;
 
+import Geolocatie.Geocoding;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
