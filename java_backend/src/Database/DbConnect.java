@@ -54,6 +54,7 @@ public class DbConnect {
 
     /**
      * Controleerd of verbinding goed is of niet adhv dbconnect.
+     *
      * @return Boolean
      * @author Jelle
      */
@@ -993,6 +994,64 @@ public class DbConnect {
         } catch (Exception e) {
             System.out.println("error : " + e.getClass());
 
+        }
+        return null;
+    }
+
+    public Object[][] getZoekSpecifiekGebruikStatistiek(String zoekoptie) {
+        try {
+            query = "SELECT COUNT(*) "
+                    + "FROM Persoon P "
+                    + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
+                    + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
+                    + "JOIN Locatie LocB on T.Begin = LocB.LocatieID "
+                    + "JOIN Locatie LocE on T.Eind = LocE.LocatieID "
+                    + "WHERE P.PersoonID = '" + zoekoptie + "' "
+                    + "OR P.Voornaam = '" + zoekoptie + "' "
+                    + "OR P.Tussenvoegsel = '" + zoekoptie + "' "
+                    + "OR P.Achternaam = '" + zoekoptie + "' "
+                    + "OR T.TrajectID = '" + zoekoptie + "' "
+                    + "OR LocB.Plaatsnaam = '" + zoekoptie + "' "
+                    + "OR LocE.Plaatsnaam = '" + zoekoptie + "' ";
+
+            rs = st.executeQuery(query);
+            int aantal = 0;
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+
+
+            Object[][] returnval = new Object[aantal][7];
+            query = "SELECT P.PersoonID, P.Voornaam, P.Tussenvoegsel, P.Achternaam, T.TrajectID, LocB.Plaatsnaam AS Beginplaats, LocE.Plaatsnaam AS Eindplaats "
+                    + "FROM Persoon P "
+                    + "JOIN Traject_BPS TBPS on P.PersoonID = TBPS.PersoonID "
+                    + "JOIN Traject T on TBPS.TrajectID = T.TrajectID "
+                    + "JOIN Locatie LocB on T.Begin = LocB.LocatieID JOIN "
+                    + "Locatie LocE on T.Eind = LocE.LocatieID "
+                    + "WHERE P.PersoonID = '" + zoekoptie + "' "
+                    + "OR P.Voornaam = '" + zoekoptie + "' "
+                    + "OR P.Tussenvoegsel = '" + zoekoptie + "' "
+                    + "OR P.Achternaam = '" + zoekoptie + "' "
+                    + "OR T.TrajectID = '" + zoekoptie + "' "
+                    + "OR LocB.Plaatsnaam = '" + zoekoptie + "' "
+                    + "OR LocE.Plaatsnaam = '" + zoekoptie + "' ";
+
+            int i = 0;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                returnval[i][0] = rs.getString("PersoonID");
+                returnval[i][1] = rs.getString("Voornaam");
+                returnval[i][2] = rs.getString("Tussenvoegsel");
+                returnval[i][3] = rs.getString("Achternaam");
+                returnval[i][4] = rs.getString("TrajectID");
+                returnval[i][5] = rs.getString("Beginplaats");
+                returnval[i][6] = rs.getString("Eindplaats");
+                i++;
+            }
+            return returnval;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+            e.printStackTrace();
         }
         return null;
     }

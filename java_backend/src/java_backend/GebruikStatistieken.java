@@ -2,6 +2,7 @@ package java_backend;
 
 import Database.DbConnect;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -24,10 +26,12 @@ class GebruikStatistieken extends JPanel implements ActionListener {
     static JTable aTable;
     protected JComboBox Begin, Eind;
     private JPanel North, South;
-    private JLabel van, naar;
+    private JLabel van, naar, zoeken;
     private JButton Start;
     private String begin, eind;
     private TableModel dataModel;
+    private JTextField zoekveld;
+    private JButton zoek;
 
     public GebruikStatistieken() {
         super();
@@ -93,9 +97,21 @@ class GebruikStatistieken extends JPanel implements ActionListener {
         this.van = new JLabel("Van:");
         this.naar = new JLabel("Naar:");
         this.Start = new JButton("Start");
+        this.zoek = new JButton("Zoek");
+        this.zoeken = new JLabel("Zoek:");
+        this.zoekveld = new JTextField(4);
+
+
+        South.setLayout(new GridLayout(3, 3));
+
+        South.add(zoeken);
+        South.add(zoekveld);
+        South.add(zoek);
 
         South.add(van);
         South.add(Begin);
+        South.add(new JLabel(""));
+
         South.add(naar);
         South.add(Eind);
         South.add(Start);
@@ -108,6 +124,7 @@ class GebruikStatistieken extends JPanel implements ActionListener {
         this.add(South, BorderLayout.SOUTH);
 
         Start.addActionListener(this);
+        zoek.addActionListener(this);
 
         this.setVisible(true);
     }
@@ -164,15 +181,71 @@ class GebruikStatistieken extends JPanel implements ActionListener {
         return null;
     }
 
+    public TableModel Vernieuwtabel(Object[][] datas) {
+        final Object[][] data = datas;
+        try {
+            DbConnect dbc = new DbConnect();
+            final String[] tabelinhoud = {"PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "TrajectID", "Beginplaats", "Eindplaats"};
+
+
+            TableModel dataModel = new AbstractTableModel() {
+                @Override
+                public int getColumnCount() {
+                    return tabelinhoud.length;
+                }
+
+                @Override
+                public int getRowCount() {
+                    return data.length;
+                }
+
+                @Override
+                public Object getValueAt(int row, int col) {
+                    return data[row][col];
+                }
+
+                @Override
+                public String getColumnName(int column) {
+                    return tabelinhoud[column];
+                }
+                //@Override
+                //public Class getColumnClass(int col) {
+                //  return getValueAt(0,col).getClass();
+                //}
+
+                @Override
+                public void setValueAt(Object aValue, int row, int column) {
+                    data[row][column] = aValue;
+                }
+            };
+
+            tabel(aTable);
+
+
+            return dataModel;
+        } catch (Exception NPE) {
+            JOptionPane.showMessageDialog(this, "Er zijn geen waardes voor de opgegeven filter.");
+        }
+        return null;
+    }
+
     public void actionPerformed(ActionEvent ae) {
+        DbConnect dbc = new DbConnect();
         if (ae.getSource() == Start) { //Aantal pakketen op een traject
             //this.hide();
-            DbConnect dbc = new DbConnect();
 
             GebruikStatistieken.aTable.setModel(Vernieuwtabel()); //Ververst tabel, maakt hem leeg
             tabel(aTable);
             GebruikStatistieken.aTable.repaint();
 
+        } else if (ae.getSource() == zoek) {
+            //String zoekoptie = zoekveld.getText();
+            System.out.println(zoekveld.getText());
+            dbc.getZoekSpecifiekGebruikStatistiek(zoekveld.getText());
+
+            GebruikStatistieken.aTable.setModel(Vernieuwtabel(dbc.getZoekSpecifiekGebruikStatistiek(zoekveld.getText()))); //Ververst tabel, maakt hem leeg
+            tabel(aTable);
+            GebruikStatistieken.aTable.repaint();
         }
     }
 
