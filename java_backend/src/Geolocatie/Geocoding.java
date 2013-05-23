@@ -10,7 +10,26 @@ import java_backend.Traject;
 import org.json.simple.parser.ParseException;
 import parsers.JSON;
 
+/**
+ * ROute berekening, Coordinaten ophalen en connectivity met CloudMade
+ * @author LeonHuzen
+ */
 public class Geocoding{
+    /**
+     * Bekijk of CloudMade beschikbaar is.
+     * @return Of er een connectie mogelijk is
+     */
+    public boolean checkConnection() {
+        try {
+            URL url = new URL("http://geocoding.cloudmade.com/3b072221200c491981975ab50d5134b3/geocoding/v2/find.js?query=country:NL;");
+            String checkConnection = new JSON().getKeyFromJSONURL(url, "found", "GET").toString();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    
     /**
      * @param apikey API key van cloudmade
      * @param query Querystring street:[straatnaam];city:[plaatsnaam]; 

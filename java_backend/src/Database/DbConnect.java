@@ -53,9 +53,9 @@ public class DbConnect {
     }
 
     /**
-     * @author Jelle
-     * @description Controleerd of verbinding goed is of niet adhv dbconnect.
+     * Controleerd of verbinding goed is of niet adhv dbconnect.
      * @return Boolean
+     * @author Jelle
      */
     public boolean checkConnection() {
         //als st niet null is is connection actief.
