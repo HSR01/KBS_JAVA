@@ -1,5 +1,7 @@
 package java_backend;
 
+import Geolocatie.MultipleAdressesFoundException;
+import Geolocatie.Coordinaten;
 import Geolocatie.Geocoding;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,7 +9,6 @@ import java.util.logging.Logger;
 public class Java_backend {
     public static void main(String[] args) {
         GUI GUI = new GUI();
-        
     }
     
     /**

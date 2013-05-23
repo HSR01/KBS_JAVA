@@ -1,4 +1,4 @@
-package java_backend;
+package Geolocatie;
 
 /**
  *

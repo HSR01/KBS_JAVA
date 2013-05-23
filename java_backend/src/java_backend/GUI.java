@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package java_backend;
 
 import java.awt.*;
@@ -115,23 +111,23 @@ public class GUI extends JFrame implements ActionListener {
         //inlogscherm
         JPanel Card1 = new JPanel(); 
         //home
-        JPanel Card2 = new Home();
+        JPanel Card2 = new java_backend.Home();
         //Startscherm
-        JPanel Card3 = new Start();
+        JPanel Card3 = new java_backend.Start();
         
         //overige kaarten ingeladen vanuit aparte subklasse.
-        JPanel Card4 = new AanmeldenPakket();
-        JPanel Card5 = new NieuweVerzending();
-        JPanel Card6 = new FeedbackPanel();
-        JPanel Card7 = new VerzendingAnnuleren();
-        JPanel Card8 = new PakketWijzigen();
-        JPanel Card9 = new AccountWijzigen();
-        JPanel Card10 = new AccountBlokkeren();
-        JPanel Card11 = new GebruikStatistieken();
-        JPanel Card12 = new PakketOverzicht();
-        JPanel Card13 = new FinancieelOverzicht();
-        JPanel Card14 = new PakketStatus();
-        JPanel Card15 = new AccountToevoegen();
+        JPanel Card4 = new java_backend.AanmeldenPakket();
+        JPanel Card5 = new java_backend.NieuweVerzending();
+        JPanel Card6 = new java_backend.FeedbackPanel();
+        JPanel Card7 = new java_backend.VerzendingAnnuleren();
+        JPanel Card8 = new java_backend.PakketWijzigen();
+        JPanel Card9 = new java_backend.AccountWijzigen();
+        JPanel Card10 = new java_backend.AccountBlokkeren();
+        JPanel Card11 = new java_backend.GebruikStatistieken();
+        JPanel Card12 = new java_backend.PakketOverzicht();
+        JPanel Card13 = new java_backend.FinancieelOverzicht();
+        JPanel Card14 = new java_backend.PakketStatus();
+        JPanel Card15 = new java_backend.AccountToevoegen();
         
         //Laad de database plugin
         DbConnect dbc = new DbConnect();

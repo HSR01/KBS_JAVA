@@ -1,7 +1,7 @@
 package java_backend;
 
+import Geolocatie.MultipleAdressesFoundException;
 import GUI_helpers.CustomJTable;
-import GUI_helpers.SelectDialog;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -11,14 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
  *
- * @author Jelle
+ * @author Leon Huzen en Jelle Smeets
  */
 class NieuweVerzending extends JPanel implements ActionListener {
     private Locatie afzenderLocatie = null;

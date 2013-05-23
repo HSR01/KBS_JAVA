@@ -1,5 +1,7 @@
 package java_backend;
 
+import Geolocatie.MultipleAdressesFoundException;
+import Geolocatie.Coordinaten;
 import Financien.Financien;
 import Geolocatie.Geocoding;
 import java.sql.*;

@@ -1,5 +1,7 @@
 package java_backend;
 
+import Geolocatie.Coordinaten;
+
 /**
  *
  * @author Jelle + Leon Huzen

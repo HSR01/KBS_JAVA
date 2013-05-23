@@ -5,6 +5,8 @@
 **/
 package java_backend;
 
+import Geolocatie.MultipleAdressesFoundException;
+import Geolocatie.Coordinaten;
 import Geolocatie.Geocoding;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
