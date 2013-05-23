@@ -74,15 +74,15 @@ public class DbConnect {
             //Select query
             query = "SELECT * FROM test";
 
-            //Select collum
-            String collum = "YOLO";
+            //Select kolom
+            String kolom = "YOLO";
 
             //Query uitvoeren
             rs = st.executeQuery(query);
 
             //Loop door de query data heen
             while (rs.next()) {
-                String content = rs.getString(collum);
+                String content = rs.getString(kolom);
                 System.out.println(content);
             }
             //Afvangen fouten voor getdata    
@@ -590,7 +590,7 @@ public class DbConnect {
             stmt.setString(1, emailadres);
             stmt.setString(2, wachtwoord);
 
-            //Select collum
+            //Select kolom
             String password = "Wachtwoord";
             String email = "Emailadres";
 
@@ -725,11 +725,11 @@ public class DbConnect {
         try {
 
 
-            //Select collum
-            String collum = "YOLO";
+            //Select kolom
+            String kolom = "YOLO";
 
             //Update query
-            query = "UPDATE test SET " + collum + "='" + content + "' WHERE " + collum + "'" + field + "'";
+            query = "UPDATE test SET " + kolom + "='" + content + "' WHERE " + kolom + "'" + field + "'";
 
             //Query uitvoeren
             st.executeUpdate(query);

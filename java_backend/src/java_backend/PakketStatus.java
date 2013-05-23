@@ -22,10 +22,9 @@ import javax.swing.table.TableModel;
  * @author Jelle
  */
 class PakketStatus extends JPanel implements ActionListener{
-    private Object geselecteerdeWaarde; 
     private JLabel zoeklabel;
     private JTextField zoekveld;
-    private JButton zoek, opslaan;  
+    private JButton zoek;  
     private JTable info; 
     
     public PakketStatus() {
@@ -97,21 +96,7 @@ class PakketStatus extends JPanel implements ActionListener{
         
    };  
     
-    public void valueChanged(ListSelectionEvent e) {
-        // Pakt de tablemodel van aTable
-        TableModel tm = info.getModel();
-        // Bepaalt de geselecteerde rij en vult een array met alle waardes
-        int[] selRows = info.getSelectedRows();
-        // Dit vult geselecteerdeWaarde
-        Object geselecteerdeWaarde = tm.getValueAt(selRows[0],0);
-        // maakt de geselcteerde waarde openbaar
-        getSelecteerdeWaarde(geselecteerdeWaarde);
-    }
-            // Hierdoor kan je maar 1 regel selecteren
-
-    public void getSelecteerdeWaarde(Object string) {
-        this.geselecteerdeWaarde = string;
-    }
+   
 }
 
 
