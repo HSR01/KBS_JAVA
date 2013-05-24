@@ -1055,15 +1055,72 @@ public class DbConnect {
         }
         return null;
     }
-
     /**
+     * Methode om aantal pakketten per jaar op te halen.
+     * @author Smeets
+     * @param year
+     * @return int - aantal pakketten per jaar
+     */
+    public int getAantalPakketten(int year){
+        return year;
+    }
+    /**
+     * Methode om kostprijs per jaar op te halen.
+     * @author Jelle Smeets
+     * @param year
+     * @return int - kostprijs per jaar
+     */
+    public int getKostprijs(int year){
+        return year;
+    }
+    
+    /**
+     * gets finance information from database with
      * @autor Jelle
      * @param int year, year is the year you want the finance information from.
-     * @description gets finance information from database with
      * @return returnval array with integer information about finance.
      */
+    /**
+     * Bereken winst aan de hand van het jaar.
+     * @param year
+     * @return 
+     */
+    public int getWinst(int year){
+        //prijs per pakket staat vast.
+        int prijspakket = 25;
+        //bereken de omzet
+        int omzet = (this.getAantalPakketten(year) * prijspakket);
+        //bereken de winst
+        int winst = omzet - getKostprijs(year);
+        //return de winst.
+        return winst;
+    }
+    /**
+     * Haal aantal bps ritten op per jaar.
+     * @author Jelle
+     * @param year
+     * @return int - aantal bps ritten
+     */
+    public int getAantalBps(int year){
+        return year;
+    }
+    /**
+     * Haal aantal koerier ritten op per jaar.
+     * @author Jelle
+     * @param year
+     * @return int - aantal koerier ritten
+     */
+    public int getAantalKoerier(int year){
+        return year;
+    }
+    /**
+     * Haal financiele gegevens op in een array voor een JTable.
+     * @param year
+     * @return Multidimensionale array voor JTable.
+     */
     public int[][] getFinance(int year) {
-        //make query still to do.
+
+        
         //instancieer returnval
         int[][] returnval = new int[1][5];
         if (year == 0) {
@@ -1074,12 +1131,23 @@ public class DbConnect {
             returnval[0][3] = 0;
             returnval[0][4] = 0;
         } else {
+           //haal variabelen op.
+            int aantalpakketten = this.getAantalPakketten(year);
+            int kostprijs = this.getKostprijs(year);
+            int winst = this.getWinst(year);
+            int bps = this.getAantalBps(year);
+            int koerier = this.getAantalKoerier(year);
             //maak query en vul returnval;
-            returnval[0][0] = year;
-            returnval[0][1] = 75;
-            returnval[0][2] = 25;
-            returnval[0][3] = 1000;
-            returnval[0][4] = 100;
+            //aantal pakketten
+            returnval[0][0] = aantalpakketten;
+            //aantal keer bps
+            returnval[0][1] = bps;
+            //aantal keer koerier
+            returnval[0][2] = koerier;
+            //kostprijs
+            returnval[0][3] = kostprijs;
+            //winst
+            returnval[0][4] = winst;
         }
         //return de array
         return returnval;

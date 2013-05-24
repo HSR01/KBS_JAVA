@@ -109,7 +109,7 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
             
          TableModel dataModel = new AbstractTableModel() {
                     //instancieer columnnamen
-        final String[] tabelinhoud = {"Aantal pakken", "Aantal keer BPS", "Aantal keer koerier", "omzet", "winst"};
+        final String[] tabelinhoud = {"Aantal pakketten", "Aantal keer BPS", "Aantal keer koerier", "kostprijs", "winst"};
 
           /*
            * @autor Jelle
