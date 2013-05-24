@@ -3,6 +3,7 @@ package java_backend;
 /**
  * @author Jelle Smeets
  */
+import Database.DbConnect;
 import java.util.Date;
 public class Persoon {
   private int persoonID;
@@ -34,6 +35,16 @@ public class Persoon {
       this.Wachtwoord = wachtwoord;
       this.Geboortedatum = geboortedatum;
       this.Mobielnummer = mobielnummer;
+  }
+    public void setPersoon(String voornaam, String tussenvoegsel, String achternaam, String emailadres, String wachtwoord, Date geboortedatum, String mobielnummer, int rechten) {
+      this.Voornaam = voornaam;
+      this.Tussenvoegsel = tussenvoegsel;
+      this.Achternaam = achternaam;
+      this.Emailadres = emailadres;
+      this.Wachtwoord = wachtwoord;
+      this.Geboortedatum = geboortedatum;
+      this.Mobielnummer = mobielnummer;
+      this.rechten = rechten;
   }
     @Override
   public String toString() {
@@ -164,5 +175,11 @@ public class Persoon {
     public void setRechten(int rechten) {
         this.rechten = rechten;
     }
+    public void getPersoonById(int id){
+        DbConnect dbc = new DbConnect();
+        Persoon p = dbc.getPersoonById(id);
+        this.setPersoon(p.getVoornaam(), p.getTussenvoegsel(), p.getAchternaam(), p.getEmailadres(), p.getWachtwoord(), p.getGeboortedatum(), p.getMobielnummer(), p.getRechten());
+    }
+    
     
 }

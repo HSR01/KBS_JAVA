@@ -49,7 +49,6 @@ public class DbConnect {
         } catch (Exception ex) {
             System.out.println("Onbekende error");
         }
-        //System.out.println(st);
     }
 
     /**
@@ -1463,4 +1462,35 @@ public class DbConnect {
             System.out.println("error : " + e.getMessage());
         }
     }
+    /**
+     * Get persoon aan de hand van id uit de database.
+     * @author Jelle
+     * @param id
+     * @return Persoon object/null
+     */
+    public Persoon getPersoonById(int id){
+        try{
+            Persoon p = new Persoon();
+            query = "select * from persoon where id = '"+id+"'";
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                p.setAchternaam(rs.getString("Achternaam"));
+                p.setEmailadres(rs.getString("Emailadres"));
+                
+                //geboortedatumfix
+               // p.setGeboortedatum(rs.getString("Geboortedatum"));
+                
+                p.setMobielnummer(rs.getString("Mobielnummer"));
+                p.setPersoonID(rs.getInt("PersoonID"));
+                p.setRechten(rs.getInt("Rechten"));
+                p.setTussenvoegsel(rs.getString("Russenvoegsel"));
+                p.setVoornaam(rs.getString("Voornaam"));
+            }
+        }catch(Exception e){
+            
+            
+        }
+        return null;
+    }
+    
 }

@@ -38,15 +38,13 @@ class NieuweVerzending extends JPanel implements ActionListener {
         toppanel.setSize(200, 200);
         toppanel.setLayout(new FlowLayout());
         
-        //instacnier alle velden voor top panel
-        zoeklabel = new JLabel("Zoek Afzender");
-        zoekveld = new JTextField(10);
-        zoek = new JButton("Zoek");
+        //instancieer de 2 personen zoek classes.
+        ZoekPersoon afzender = new ZoekPersoon("afzender");
+        ZoekPersoon ontvanger = new ZoekPersoon("ontvanger");
         
-        //voeg onderdelen toe aan toppanel
-        toppanel.add(zoeklabel);
-        toppanel.add(zoekveld);
-        toppanel.add(zoek);
+        //voeg de zoekvelden toe aan het toppanel.
+        toppanel.add(afzender);
+        toppanel.add(ontvanger);
         
         //instancieer midpanel voor formulier
         JPanel midpanel = new JPanel();
@@ -118,7 +116,7 @@ class NieuweVerzending extends JPanel implements ActionListener {
         bottompanel.add(submit);
         
         //activeer action listeners voor 2 buttons
-        zoek.addActionListener(this);
+        //zoek.addActionListener(this);
         submit.addActionListener(this);
         
         //voeg alle onderdelen toe aan layout.

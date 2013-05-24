@@ -2,6 +2,7 @@ package GUI_helpers;
 
 import Database.DbConnect;
 import java.awt.BorderLayout;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -98,8 +99,8 @@ public class CustomJTable extends JDialog implements ActionListener, ListSelecti
         listMod.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // Voegt de listener toe aan het frame
         listMod.addListSelectionListener(this);
-        
-        Center.add(jTable);
+
+        Center.add(new JScrollPane(jTable));
         South.add(selecteer);
         selecteer.addActionListener(this);
         
