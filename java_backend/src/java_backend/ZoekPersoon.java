@@ -33,6 +33,7 @@ class ZoekPersoon extends JPanel implements ActionListener{
             System.out.println("persoon null");
             this.info = new JLabel(this.persoon.getAchternaam());
         }else{
+            //maak layout.
             System.out.println("else");
             this.zoekveld = new JTextField(10);
             this.submit = new JButton("Zoek");
@@ -68,18 +69,18 @@ class ZoekPersoon extends JPanel implements ActionListener{
             }else{
                 //jdiaglog met personen.
                DbConnect dbc = new DbConnect();
+               //vul object met data van persoon.
                Object[][] data = dbc.getPersonenWithCoordinates(zoekveld.getText().toString());
+               //laad custom jtable
                String[] columnnames = { "PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "Postcode", "Huisnummer", "Toevoeging", "IBAN" };
                int[] columnsizes = { 40, 120, 50, 120, 50, 40, 40, 40, 10 };
                
                CustomJTable popup = new CustomJTable(columnnames, columnsizes, data);
+               //haal persoon object op.
                this.persoon = dbc.getPersoonById(Integer.parseInt(popup.result.toString()));
-               
+               //haal locatie op..
                locatie = dbc.getLocatieFromPersoonId(popup.result.toString());
-               
-               super.revalidate();
-               super.repaint();
-               System.out.println("MOET REPAINTEN");
+               //moet nog repainten.
             }
         }
     }
