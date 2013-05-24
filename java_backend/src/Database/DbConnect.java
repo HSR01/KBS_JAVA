@@ -49,7 +49,7 @@ public class DbConnect {
         } catch (Exception ex) {
             System.out.println("Onbekende error");
         }
-        System.out.println(st);
+        //System.out.println(st);
     }
 
     /**
