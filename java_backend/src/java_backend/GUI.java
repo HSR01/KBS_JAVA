@@ -283,6 +283,9 @@ public class GUI extends JFrame implements ActionListener {
                 boolean Login = logIn(tfEmailadres.getText(), pfWachtwoord.getText());
                 //als login true is is er succesvol ingelogd.
                 if(Login){
+                    //unset de default button zodat niet bij elke keer enter het inlog script geladen word.
+                    getRootPane().setDefaultButton(null);
+                    
                     //alleen bij succesvolle inlog mag iemand door naar de volgende card.
                     this.cl.show(this.cardHolder, "home");
                 }else{

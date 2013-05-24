@@ -93,4 +93,36 @@ public class Feedback {
     public void setOmschrijving(String Omschrijving) {
         this.Omschrijving = Omschrijving;
     }
+    /**
+     * Haalt string met sterren op aan de handv an het aantal sterren van het object.
+     * @author Jelle
+     * @return String 
+     */
+    public String getSter(){
+        String returnstring = new String();
+        for(int i=0; i<this.getWaardering(); i++){
+            returnstring += "* ";
+        }
+        return returnstring;
+    }
+
+    /**
+     * Haalt de string op aan de hand van de ontvangststatus van het object.
+     * @author Jelle
+     * @return String
+     */
+    public String getOntvangstString(){
+
+        if(this.getOntvangststatus() == 0 ){
+            return "Aangemeld";
+        }else if(this.getOntvangststatus() == 1){
+            return "Onderweg";
+        }else if(this.getOntvangststatus() == 2){
+            return "Verwacht";
+        }else if(this.getOntvangststatus() == 3){
+            return "Afgeleverd";
+        }else{
+            return "Onbekend";
+        }
+    }
 }

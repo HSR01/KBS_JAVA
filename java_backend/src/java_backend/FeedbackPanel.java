@@ -102,11 +102,11 @@ class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListe
                         feedbackinfo.add(new JLabel("PakketID"));
                         feedbackinfo.add(new JLabel(""+spec.getPakketID()));
                         feedbackinfo.add(new JLabel("Waardering"));
-                        feedbackinfo.add(new JLabel("" + spec.getWaardering() + " " + "Sterren"));
+                        feedbackinfo.add(new JLabel(spec.getSter()));
                         feedbackinfo.add(new JLabel("Omschrijving"));
                         feedbackinfo.add(new JLabel(spec.getOmschrijving()));
                         feedbackinfo.add(new JLabel("Ontvangststatus"));
-                        feedbackinfo.add(new JLabel(""+spec.getOntvangststatus()));
+                        feedbackinfo.add(new JLabel(spec.getOntvangstString()));
                         feedbackinfo.setVisible(true);
                     }
                 }
@@ -166,7 +166,7 @@ class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListe
                     }else if (col == 1){
                         return results[row].getPakketID();
                     }else{
-                        return results[row].getWaardering();
+                        return results[row].getSter();
                     }
                 }
                 
