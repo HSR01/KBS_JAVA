@@ -1057,12 +1057,28 @@ public class DbConnect {
     }
     /**
      * Methode om aantal pakketten per jaar op te halen.
-     * @author Smeets
+     * @author Jelle Smeets
      * @param year
      * @return int - aantal pakketten per jaar
      */
     public int getAantalPakketten(int year){
-        return year;
+        //set aantal op 0;
+        int aantal = 0;
+        try{
+            //haal aantal ritten op in jaar van year.
+            String query = "select count(*) as 'aantal ritten' from Verzending where `Aflevertijd` >= '1-1-"+year+" 00:00:00' && `Aflevertijd` <= '31-12-"+year+" 23:59:59'";
+            //voer query uit.
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                //zet aantal ritten in aantal
+                aantal = rs.getInt("aantal ritten");
+            }
+        }catch(Exception e){
+            //toon foutmelding in output.
+            System.out.println(e.getMessage());
+        }
+        //return aantal
+        return aantal;
     }
     /**
      * Methode om kostprijs per jaar op te halen.
@@ -1071,15 +1087,24 @@ public class DbConnect {
      * @return int - kostprijs per jaar
      */
     public int getKostprijs(int year){
-        return year;
+    //set aantal op 0;
+        int aantal = 0;
+        try{
+            //haal aantal ritten op in jaar van year.
+            String query = "select sum(KostPrijs) as 'kostprijs' from Verzending where `Aflevertijd` >= '1-1-"+year+" 00:00:00' && `Aflevertijd` <= '31-12-"+year+" 23:59:59'";
+            //voer query uit.
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                //zet aantal ritten in aantal
+                aantal = rs.getInt("kostprijs");
+            }
+        }catch(Exception e){
+            //toon foutmelding in output.
+            System.out.println(e.getMessage());
+        }
+        //return aantal
+        return aantal;
     }
-    
-    /**
-     * gets finance information from database with
-     * @autor Jelle
-     * @param int year, year is the year you want the finance information from.
-     * @return returnval array with integer information about finance.
-     */
     /**
      * Bereken winst aan de hand van het jaar.
      * @param year
@@ -1102,8 +1127,25 @@ public class DbConnect {
      * @return int - aantal bps ritten
      */
     public int getAantalBps(int year){
-        return year;
+        //set aantal op 0;
+        int aantal = 0;
+        try{
+            //haal aantal ritten op in jaar van year.
+            String query = "select count(*) as 'aantal bps' from Traject where BPS != 0 AND VerzendingID IN (select VerzendingID from Verzending where `Aflevertijd` >= '1-1-"+year+" 00:00:00' AND `Aflevertijd` <= '31-12-"+year+" 23:59:59')";
+            //voer query uit.
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                //zet aantal ritten in aantal
+                aantal = rs.getInt("aantal bps");
+            }
+        }catch(Exception e){
+            //toon foutmelding in output.
+            System.out.println(e.getMessage());
+        }
+        //return aantal
+        return aantal;
     }
+        
     /**
      * Haal aantal koerier ritten op per jaar.
      * @author Jelle
@@ -1111,7 +1153,23 @@ public class DbConnect {
      * @return int - aantal koerier ritten
      */
     public int getAantalKoerier(int year){
-        return year;
+                //set aantal op 0;
+        int aantal = 0;
+        try{
+            //haal aantal ritten op in jaar van year.
+            String query = "select count(*) as 'aantal koerier' from Traject where KoerierID != 0 AND VerzendingID IN (select VerzendingID from Verzending where `Aflevertijd` >= '1-1-"+year+" 00:00:00' AND `Aflevertijd` <= '31-12-"+year+" 23:59:59')";
+            //voer query uit.
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                //zet aantal ritten in aantal
+                aantal = rs.getInt("aantal koerier");
+            }
+        }catch(Exception e){
+            //toon foutmelding in output.
+            System.out.println(e.getMessage());
+        }
+        //return aantal
+        return aantal;
     }
     /**
      * Haal financiele gegevens op in een array voor een JTable.
