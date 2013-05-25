@@ -2,19 +2,32 @@ package java_backend;
 
 /**
  *
- * @author Jelle
+ * @author Jelle, Daniel en Leon
  */
 public class Koerier {
     private String Bedrijfsnaam;
     private String Bedrijfstelefoonnummer;
+    public int KoerierID;
+    public double Prijs;
+    public double PrijsPerKm;    
+    public double StartTarief;
+    public int StartMeters;
+    public int Actief;
+    public double RitPrijs;
     
     public Koerier() {
         this.Bedrijfsnaam = "";
         this.Bedrijfstelefoonnummer = "";
     }
+    
     public Koerier(String bn, String bt) {
         this.Bedrijfsnaam = bn;
         this.Bedrijfstelefoonnummer = bt;
+    }
+    
+    public Koerier(int koerierID, double prijs) {
+        this.KoerierID = koerierID;
+        this.Prijs = prijs;
     }
     
     public static Koerier getKoerierById(int id) {

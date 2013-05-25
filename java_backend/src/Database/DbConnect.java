@@ -8,10 +8,12 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java_backend.Feedback;
+import java_backend.Koerier;
 import java_backend.Locatie;
 import java_backend.Persoon;
 import java_backend.Traject;
@@ -492,19 +494,21 @@ public class DbConnect {
                 Traject Traject1, Traject3;
                 int stop1, stop2;
                 Financien financien = new Financien();
-                double[] koerier;
+                Koerier k = new Koerier();
+                
                 Traject1 = geo.GetRouteFrom(from, fromToTZT);
-                koerier = financien.BerekenKoerier(Traject1.Meters);
+                k = financien.BerekenGoedkoopsteKoerier(Traject1.Meters);
                 // 1e gedeelte
+                //DIT NOG EVEN MET LEON NAKIJKEN ZOKANIKHEMVINDEN
                 stop1 = getLocatieId(fromToTZT, true);
-                insertTraject(verzendingId, persoonsLocatie.getId(), stop1, "2:00", Traject1.Meters, 0, (int) Math.round(koerier[1]));
+                //insertTraject(verzendingId, persoonsLocatie.getId(), stop1, "2:00", Traject1.Meters, 0, (int) Math.round(koerier[1]));
                 // 2e gedeelte
                 stop2 = getLocatieId(TZTToTo, true);
                 insertTraject(verzendingId, stop1, stop2, "1:00", 333, 0, 0);
                 // 3e gedeelte
                 Traject3 = geo.GetRouteFrom(TZTToTo, to);
-                koerier = financien.BerekenKoerier(Traject3.Meters);
-                insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, (int) Math.round(koerier[1]));
+                k = financien.BerekenGoedkoopsteKoerier(Traject3.Meters);
+               // insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, (int) Math.round(koerier[1]));
             }
 
             return true;
@@ -1491,6 +1495,47 @@ public class DbConnect {
             
         }
         return null;
+    }
+      public ArrayList<Koerier> GetAllActiveKoeriers() {
+         ArrayList<Koerier> result = new ArrayList<Koerier>();
+        try {
+            //Daniel
+            //Haal de koeries (transport bedrijven op uit de database.
+            
+            rs = st.executeQuery("SELECT COUNT(*) FROM Koerier ;");
+            int aantal = 0;
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+            
+            //haal alles op.
+            query = "SELECT KoerierID, Bedrijfsnaam, Prijsperkm, Starttarief, Startmeters, Actief "
+                    + "FROM Koerier "
+                    + "WHERE Actief = 1;";
+            int i = 0;
+
+            rs = st.executeQuery(query);
+            Koerier k = new Koerier();
+            while (rs.next()) {
+                //vull feedback objecten.
+                k.KoerierID = rs.getInt("KoerierID");
+                k.setBedrijfsnaam(rs.getString("Bedrijfsnaam"));
+                k.PrijsPerKm = rs.getDouble("PrijsperKm");
+                k.StartTarief = rs.getDouble("Starttarief");
+                k.StartMeters = rs.getInt("StartMeters");
+                k.Actief = rs.getInt("Actief");  
+                i++;
+                //koerier toevoegen aan resultaat!
+                result.add(k);
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+
+        }
+
+        return result;
     }
     
 }

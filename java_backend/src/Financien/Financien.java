@@ -1,70 +1,55 @@
 package Financien;
 
+import Database.DbConnect;
+import java.util.ArrayList;
+import java_backend.Koerier;
+
 public class Financien {
     
     public Financien() {
         
     }
     /**
-     * @author Daniel van der Berg (bitch!)
+     * @author Daniel & Leon
      * Pas de onderstaande gegevens aan om koeriers te wijzigen.
      */
     
-    //Theo Snel en zonen gegevens
-    private final int TheoSnelenZonen = 1;
-    private double TS_Perkm = 0.20;
-    private double TS_Starttarief = 5.00;
-    private int TS_Startm = 25000;
-    //------------------------->
-    
-    //Sjors fiets koeriers gegevens
-    private final int SjorsFietsKoeriers = 2;
-    private double SF_Perkm = 0.25;
-    private double SF_Starttarief = 0.00;
-    private int SF_Startm = 0;
-    //------------------------->
-    
-    //Jansen transport diensten
-    private final int JansenTransport = 3;
-    private double JT_Perkm = 0.00;
-    private double JT_Starttarief = 20.00;
-    private int JT_Startm = 400000;
-    //------------------------->  
-    
-    public double[] BerekenKoerier(int m) {   
+   
+    private int KoerierID;
+    private double PerKm;
+    private double StartTarief;
+    private int StartKm;
+    private int Actief;
+    private double som[][];
+  
+    /**
+     * 
+     * @param meter
+     * @return goedkoopste koerier
+     */
+    public Koerier BerekenGoedkoopsteKoerier(int meter) {        
+        DbConnect dbc = new DbConnect();
         
-        //variabelen waarin de waardes teruggegeven worden.
-        double prijs = 0;
-        double type = 0;
-       
-        //tarief per koerier berekenen inclusief start kosten
-        double TS = m > TS_Startm ? TS_Perkm * ((m - TS_Startm) / 1000) + TS_Starttarief : TS_Starttarief;        
-        double SF = m > SF_Startm ? SF_Perkm * ((m - SF_Startm) / 1000) + SF_Starttarief : SF_Starttarief;
-        double JT = m > JT_Startm ? JT_Perkm * ((m - JT_Startm) / 1000) + JT_Starttarief : JT_Starttarief;
-        
-        //controleren welke koerier het goedkoopst is
-        if (m < 1000) {
-            prijs = 0.25;
-            type = SjorsFietsKoeriers;
-        } else {
-            if (TS <= SF && TS <= JT) {
-                prijs = TS;
-                type = TheoSnelenZonen;
-            }if (SF <= TS && SF <= JT) {
-                prijs = SF;
-                type = SjorsFietsKoeriers;
-            }if (JT <= TS && JT <= SF) {
-                prijs = JT;  
-                type = JansenTransport;
-            }              
-        }
-        
-        
-        //na de vorige loop is in de return array gevuld in prijs zit de prijs van de goedkoopste koerier in type welke koerier het goedkoopst is.
-        double[] result = {prijs, type};
-        
-        //array returnen.
-        return result;
+        //haal de arraylist op uit Dbconnect klasse
+        final ArrayList<Koerier> koeriers = dbc.GetAllActiveKoeriers();
  
+        //loop er door heen en bereken de prijs over de afgelopen afstand
+        for (Koerier k : koeriers) {
+            k.RitPrijs = meter > k.StartMeters ? k.PrijsPerKm * ((meter - k.StartMeters) / 1000) + k.StartTarief : k.StartTarief;
+        }
+       
+        // Goedkoopste koerier teruggeven.
+        return getCheapestKoerier(koeriers);
+    }
+    
+    //Haal de goedkoopste koerier uit de koerier array en return deze
+    private Koerier getCheapestKoerier(ArrayList<Koerier> koeriers) {
+        Koerier goedkoopste = koeriers.get(0);
+        for (int i = 1; i < koeriers.size(); i++){
+            if (koeriers.get(i).RitPrijs < goedkoopste.RitPrijs) {
+                goedkoopste = koeriers.get(i);
+            }
+        }
+        return goedkoopste;
     }
 }
