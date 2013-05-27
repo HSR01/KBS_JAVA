@@ -31,7 +31,7 @@ public class GUI extends JFrame implements ActionListener {
     //menu onderdelen.
     private JMenuBar menubar;
     private JMenu Bestand, Verzending, Pakket, Accounts, Statistieken;
-    private JMenuItem Afmelden, Afsluiten, NieuweVerzending, Feedback, VerzendingAnnuleren, PakketStatus, PakketWijzigen, AccountToevoegen, AccountWijzigen, AccountBlokeren, GebruikStatistieken, PakketStatistieken, FinancieelOverzicht;
+    private JMenuItem Afmelden, Afsluiten, NieuweVerzending, Feedback, VerzendingAnnuleren, PakketStatus, PakketWijzigen, AccountToevoegen, AccountWijzigen, AccountBlokeren, GebruikStatistieken, PakketStatistieken, FinancieelOverzicht, KoerierOverzicht;
 
     public GUI() {
         //Standaard instellingen hoofdscherm
@@ -83,7 +83,9 @@ public class GUI extends JFrame implements ActionListener {
         JPanel Card12 = new PakketOverzicht();
         JPanel Card13 = new FinancieelOverzicht();
         JPanel Card14 = new PakketStatus();
-        JPanel Card15 = new AccountToevoegen();    
+        JPanel Card15 = new AccountToevoegen();   
+        JPanel Card16 = new KoerierOverzicht();    
+            
             
         //voeg kaarten toe aan kaartenhouder de string is voor naam om deze later aan te roepen.
         cardHolder.add(Card1, "login");
@@ -101,6 +103,7 @@ public class GUI extends JFrame implements ActionListener {
         cardHolder.add(Card13, "financieeloverzicht");
         cardHolder.add(Card14, "pakketstatus");
         cardHolder.add(Card15, "accounttoevoegen");
+        cardHolder.add(Card16, "koerieroverzicht");
         //voeg kaartenhouder toe aan layout.
         this.add(cardHolder);
         
@@ -200,7 +203,8 @@ public class GUI extends JFrame implements ActionListener {
         //Actionlistener voor statistieken
         GebruikStatistieken.addActionListener(this);
         PakketStatistieken.addActionListener(this);
-        FinancieelOverzicht.addActionListener(this);        
+        FinancieelOverzicht.addActionListener(this);   
+        KoerierOverzicht.addActionListener(this);
         //alles tonen en menu toevoegen
         
         this.setVisible(true);
@@ -336,7 +340,10 @@ public class GUI extends JFrame implements ActionListener {
             ChangeMenu("pakketstatistieken");
         } else if (ae.getSource() == FinancieelOverzicht) {
             ChangeMenu("financieeloverzicht");
+        }else if (ae.getSource() == KoerierOverzicht) {
+            ChangeMenu("koerieroverzicht");
         }
+        
     }
     /**
      * @author Jelle
@@ -390,6 +397,7 @@ public class GUI extends JFrame implements ActionListener {
         this.GebruikStatistieken = new JMenuItem("Gebruik statistieken");
         this.PakketStatistieken = new JMenuItem("Pakket statistieken");
         this.FinancieelOverzicht = new JMenuItem("Financieel overzicht");
+        this.KoerierOverzicht = new JMenuItem("Koerier overzicht");
  
         //voeg onderdelen aan bestand menu toe.
         this.Bestand.add(this.Afmelden);
@@ -413,5 +421,6 @@ public class GUI extends JFrame implements ActionListener {
         this.Statistieken.add(GebruikStatistieken);
         this.Statistieken.add(PakketStatistieken);
         this.Statistieken.add(FinancieelOverzicht);
+        this.Statistieken.add(KoerierOverzicht);
     }
 }

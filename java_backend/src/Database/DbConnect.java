@@ -1537,4 +1537,84 @@ public class DbConnect {
         return result;
     }
     
+       public Object[][] getKoerierKostprijs() {
+        try {
+            //LAURENS
+            //get specifiekpakket.
+            
+            rs = st.executeQuery("SELECT COUNT(*) FROM Verzending v JOIN Traject t ON v.VerzendingID = t.VerzendingID JOIN Traject_BPS bps ON t.TrajectID = bps.TrajectID JOIN Persoon p ON bps.PersoonID = p.PersoonID JOIN Koerier k ON t.KoerierID = k.KoerierID WHERE v.status =  '3'");
+            int aantal = 0;
+            
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+            //haal alles op.
+           
+
+            Object[][] returnval = new Object[aantal][8];
+            query = "SELECT p.achternaam AS Achternaam, k.bedrijfsnaam AS Bedrijfsnaam, p.emailadres AS Emailadres, v.status AS Status , v.Aankomsttijd AS Aankomsttijd, v.Aflevertijd AS Aflevertijd, v.KostPrijs AS Kostprijs, p.IBAN AS IBAN FROM Verzending v JOIN Traject t ON v.VerzendingID = t.VerzendingID JOIN Traject_BPS bps ON t.TrajectID = bps.TrajectID JOIN Persoon p ON bps.PersoonID = p.PersoonID JOIN Koerier k ON t.KoerierID = k.KoerierID WHERE v.status =  '3'";
+            
+            int i = 0;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+
+                returnval[i][0] = rs.getString("Achternaam");
+                returnval[i][1] = rs.getString("Bedrijfsnaam");
+                returnval[i][2] = rs.getString("Emailadres");
+                returnval[i][3] = rs.getString("Status");
+                returnval[i][4] = rs.getString("Aankomsttijd");
+                returnval[i][5] = rs.getString("Aflevertijd");
+                returnval[i][6] = rs.getString("Kostprijs");
+                returnval[i][7] = rs.getString("IBAN");
+                i++;
+            }
+            return returnval;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
+    
+    
+    public Object[][] getSpecifiekKoerierKostprijs(String m, String j) {
+        try {
+            //LAURENS
+            //get specifiekpakket.
+           
+            rs = st.executeQuery("SELECT COUNT(*) FROM Verzending v JOIN Traject t ON v.VerzendingID = t.VerzendingID JOIN Traject_BPS bps ON t.TrajectID = bps.TrajectID JOIN Persoon p ON bps.PersoonID = p.PersoonID JOIN Koerier k ON t.KoerierID = k.KoerierID WHERE v.status =  '3' AND MONTH( Aankomsttijd ) =  '" + m + "' AND YEAR( Aankomsttijd ) ='" +  j + "'");
+            int aantal = 0;
+            System.out.println(aantal);
+            
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+            //haal alles op.
+            
+
+            Object[][] returnval = new Object[aantal][8];
+            query = "SELECT p.achternaam AS Achternaam, k.bedrijfsnaam AS Bedrijfsnaam, p.emailadres AS Emailadres, v.status AS Status , v.Aankomsttijd AS Aankomsttijd, v.Aflevertijd AS Aflevertijd, v.KostPrijs AS Kostprijs, p.IBAN AS IBAN FROM Verzending v JOIN Traject t ON v.VerzendingID = t.VerzendingID JOIN Traject_BPS bps ON t.TrajectID = bps.TrajectID JOIN Persoon p ON bps.PersoonID = p.PersoonID JOIN Koerier k ON t.KoerierID = k.KoerierID WHERE v.status =  '3' AND MONTH( Aankomsttijd ) =  '" + m + "' AND YEAR( Aankomsttijd ) ='" +  j + "'";
+            
+            int i = 0;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+
+                returnval[i][0] = rs.getString("Achternaam");
+                returnval[i][1] = rs.getString("Bedrijfsnaam");
+                returnval[i][2] = rs.getString("Emailadres");
+                returnval[i][3] = rs.getString("Status");
+                returnval[i][4] = rs.getString("Aankomsttijd");
+                returnval[i][5] = rs.getString("Aflevertijd");
+                returnval[i][6] = rs.getString("Kostprijs");
+                returnval[i][7] = rs.getString("IBAN");
+                i++;
+            }
+            return returnval;
+        } catch (Exception e) {
+            System.out.println("error : " + e.getClass());
+
+        }
+        return null;
+    }
+    
 }
