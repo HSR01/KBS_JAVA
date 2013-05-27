@@ -380,10 +380,10 @@ public class DbConnect {
     public Boolean newVerzending(Persoon afzender, Persoon ontvanger, Locatie afzenderlocatie, Locatie ontvangerlocatie, String[] pakket) throws MultipleAdressesFoundException {
         String gewicht = pakket[0], omschrijving = pakket[1], afzenderplaats = afzenderlocatie.getPlaatsnaam(), 
                 ontvangerplaats = ontvangerlocatie.getPlaatsnaam(), afzenderstraatnaam = afzenderlocatie.getStraatnaam();       
-        if (afzenderplaats.substring(0, 3).matches("'s ")) {
+        if (afzenderplaats != null && afzenderplaats.substring(0, 3).matches("'s ")) {
             afzenderplaats = "Hertogenbosch";
         }
-        if (ontvangerplaats.substring(0, 3).matches("'s ")) {
+        if (ontvangerplaats != null &&  ontvangerplaats.substring(0, 3).matches("'s ")) {
             ontvangerplaats = "Hertogenbosch";
         }
         Geocoding geo = new Geocoding();
@@ -456,12 +456,13 @@ public class DbConnect {
 
             // INSERT Verzending, get VerzendingID
             query = "INSERT INTO Verzending "
-                    + "(VerzendingID, PakketID, Aankomsttijd, Aflevertijd, Status) "
+                    + "(VerzendingID, PakketID, Aankomsttijd, Aflevertijd, Status, KostPrijs) "
                     + "VALUES (0, "
                     + pakketId + ", "
-                    + timeStamp + ", " 
+                    + "'" + timeStamp + "', " 
                     + "null, " 
-                    + "'0')";
+                    + "'0', "
+                    + "13.37)"; //todo, kostprijs
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
@@ -1471,9 +1472,11 @@ public class DbConnect {
     public Persoon getPersoonById(int id){
         try{
             Persoon p = new Persoon();
-            query = "select * from persoon where id = '"+id+"'";
+            query = "SELECT * from Persoon where PersoonID = '"+id+"'";
             rs = st.executeQuery(query);
             while(rs.next()){
+                p.setVoornaam(rs.getString("Voornaam"));
+                p.setTussenvoegsel(rs.getString("Tussenvoegsel"));
                 p.setAchternaam(rs.getString("Achternaam"));
                 p.setEmailadres(rs.getString("Emailadres"));
                 
@@ -1483,9 +1486,9 @@ public class DbConnect {
                 p.setMobielnummer(rs.getString("Mobielnummer"));
                 p.setPersoonID(rs.getInt("PersoonID"));
                 p.setRechten(rs.getInt("Rechten"));
-                p.setTussenvoegsel(rs.getString("Russenvoegsel"));
-                p.setVoornaam(rs.getString("Voornaam"));
             }
+            if (p != null)
+                return p;
         }catch(Exception e){
             
             
