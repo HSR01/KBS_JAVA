@@ -23,18 +23,10 @@ class ZoekPersoon extends JPanel implements ActionListener{
     private Persoon persoon = null;
     private JButton submit;
     private JTextField zoekveld;
-    private Locatie locatie;
+    private Locatie locatie = null;
     private JLabel info;
 
     public ZoekPersoon(String type){
-        //als this persoon null is is er geen persoon geselecteerd dus veld tonen.
-        //instancieer objecten
-        if(this.persoon != null){
-            System.out.println("persoon null");
-            this.info = new JLabel(this.persoon.getAchternaam());
-        }else{
-            //maak layout.
-            System.out.println("else");
             this.zoekveld = new JTextField(10);
             this.submit = new JButton("Zoek");
         
@@ -44,7 +36,7 @@ class ZoekPersoon extends JPanel implements ActionListener{
             this.add(this.submit);
         
             this.submit.addActionListener(this); 
-        }
+
 
         this.setVisible(true);
     }
@@ -54,6 +46,12 @@ class ZoekPersoon extends JPanel implements ActionListener{
     
     public Persoon getPersoon(){
         return this.persoon;
+    }
+    public void setLocatie(Locatie l){
+        this.locatie = l;
+    }
+    public Locatie getLocatie(){
+        return this.locatie;
     }
 
     @Override
@@ -80,6 +78,7 @@ class ZoekPersoon extends JPanel implements ActionListener{
                this.persoon = dbc.getPersoonById(Integer.parseInt(popup.result.toString()));
                //haal locatie op..
                locatie = dbc.getLocatieFromPersoonId(popup.result.toString());
+               
                //moet nog repainten.
             }
         }

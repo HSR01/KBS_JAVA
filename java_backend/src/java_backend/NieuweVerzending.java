@@ -25,6 +25,7 @@ class NieuweVerzending extends JPanel implements ActionListener {
     private JLabel zoeklabel, voornaam, tussenvoegsel, achternaam, straatnaam, huisnr, toevoeging, postcode, plaats, telefoonnummer, gewicht, omschrijving, aankomst;
     private JTextField zoekveld, tvoornaam, ttussenvoegsel, tachternaam, tstraatnaam, thuisnr, ttoevoeging, tpostcode, tplaats, ttelefoonnummer, tgewicht, tomschrijving, taankomst;
     private JButton zoek, submit;
+    private ZoekPersoon afzender, ontvanger;
 
     public NieuweVerzending() {
         this.setSize(200, 600);
@@ -39,8 +40,8 @@ class NieuweVerzending extends JPanel implements ActionListener {
         toppanel.setLayout(new FlowLayout());
         
         //instancieer de 2 personen zoek classes.
-        ZoekPersoon afzender = new ZoekPersoon("afzender");
-        ZoekPersoon ontvanger = new ZoekPersoon("ontvanger");
+        afzender = new ZoekPersoon("afzender");
+        ontvanger = new ZoekPersoon("ontvanger");
         
         //voeg de zoekvelden toe aan het toppanel.
         toppanel.add(afzender);
@@ -130,79 +131,20 @@ class NieuweVerzending extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        DbConnect dbc = new DbConnect();
-       if (ae.getSource() == zoek) {
-           //zoek button
-           if (zoekveld.getText().equals("")) {
-               //er is niks ingevuld toon foutmelding
-               //maak jdialog omdat joptionpane niet werk in jpanel.
-              JDialog jd = new JDialog();
-              jd.setSize(200,175);
-              jd.setTitle("Foutmelding");
-              jd.add(new JLabel("U heeft geen zoekterm ingevuld."));
-              jd.setVisible(true);
-           } else {
-               //   Initialiseer de gegevens en toon daarna de SelectDialog.
-               Object[][] data = dbc.getPersonenWithCoordinates(zoekveld.getText().toString());
-               String[] columnnames = { "PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "Postcode", "Huisnummer", "Toevoeging", "IBAN" };
-               int[] columnsizes = { 40, 120, 50, 120, 50, 40, 40, 40, 10 };
-               
-               CustomJTable popup = new CustomJTable(columnnames, columnsizes, data);
-               afzenderLocatie = dbc.getLocatieFromPersoonId(popup.result.toString());
-           }
-        } else if (ae.getSource() == submit) {
-            //verstuur button
-            if (afzenderLocatie == null
-                    || tvoornaam.getText().equals("") 
-                    || tachternaam.getText().equals("")
-                    || tstraatnaam.getText().equals("")
-                    || thuisnr.getText().equals("")
-                    || tplaats.getText().equals("")
-                    || tpostcode.getText().equals("")
-                ) {
-                String errors = "<html>";
-                if (afzenderLocatie == null)
-                    errors += "<br>Selecteer een verzender";
-                if (tvoornaam.getText().equals(""))
-                    errors += "<br>Voornaam is verplicht";
-                if (tachternaam.getText().equals(""))
-                    errors += "<br>Achternaam is verplicht";
-                if (tstraatnaam.getText().equals(""))
-                    errors += "<br>Straatnaam is verplicht";
-                if (thuisnr.getText().equals(""))
-                    errors += "<br>Huisnummer is verplicht";
-                if (tplaats.getText().equals(""))
-                    errors += "<br>Plaats is verplicht";
-                if (tpostcode.getText().equals(""))
-                    errors += "<br>Postcode is verplicht";
-                
-                errors += "</html>";
-                JDialog jd = new JDialog();
-                jd.setSize(400,175);
-                jd.setTitle("Foutmelding - Verplichte velden niet ingevuld.");
-                jd.add(new JLabel(errors));
-                jd.setVisible(true);
-            } else {
-                // Valide formulier
-                String[] data = new String[11];
-                data[0] = tvoornaam.getText().toString();
-                data[1] = ttussenvoegsel.getText().toString();
-                data[2] = tachternaam.getText().toString();
-                data[3] = tstraatnaam.getText().toString();
-                data[4] = thuisnr.getText().toString();
-                data[5] = ttoevoeging.getText().toString();
-                data[6] = tpostcode.getText().toString();
-                data[7] = tplaats.getText().toString();
-                data[8] = ttelefoonnummer.getText().toString();
-                data[9] = tgewicht.getText().toString();
-                data[10] = tomschrijving.getText().toString();
-                
-                try {
-                    dbc.newVerzending(afzenderLocatie, data);
+        if(ae.getSource() == submit){
+            DbConnect dbc = new DbConnect();
+            if(afzender.getPersoon() != null && ontvanger.getPersoon() != null){
+               String[] pakket = new String[2];
+               pakket[0] = tgewicht.getText().toString();
+               pakket[1] = tomschrijving.getText().toString();
+               try {
+                    dbc.newVerzending(afzender.getPersoon(), ontvanger.getPersoon(), afzender.getLocatie(), ontvanger.getLocatie(), pakket);
                 } catch (MultipleAdressesFoundException ex) {
                     Logger.getLogger(NieuweVerzending.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }else{
+                //niet alles ingevuld.
             }
-       }
+        }
     }
 }

@@ -371,68 +371,68 @@ public class DbConnect {
     /**
      * Nieuwe verzending opslaan.
      *
-     * @param persoonsLocatie locatie van de verzender
-     * @param data meegeven data (11 values) is volgorde: <OL start="0">
-     * <LI>voornaam</LI> <LI>tussenvoegsel</LI> <LI>achternaam</LI>
-     * <LI>straatnaam</LI> <LI>huisnr</LI> <LI>toevoeging</LI> <LI>postcode</LI>
-     * <LI>plaats</LI> <LI>telefoonnummer</LI> <LI>gewicht</LI>
+     * @param afzender locatie van de verzender
+     * @param pakket meegeven data (11 values) is volgorde: <OL start="0">
+     * <LI>gewicht</LI>
      * <LI>omschrijving</LI> </OL>
      * @return
      */
-    public Boolean newVerzending(Locatie persoonsLocatie, String[] data) throws MultipleAdressesFoundException {
-        String voornaam = data[0], tussenvoegsel = data[1], achternaam = data[2], straatnaam = data[3], huisnummer = data[4], toevoeging = data[5],
-                postcode = data[6], plaats = data[7], telefoonnummer = data[8], gewicht = data[9], omschrijving = data[10];
-        if (plaats.substring(0, 3).matches("'s ")) {
-            plaats = "Hertogenbosch";
+    public Boolean newVerzending(Persoon afzender, Persoon ontvanger, Locatie afzenderlocatie, Locatie ontvangerlocatie, String[] pakket) throws MultipleAdressesFoundException {
+        String gewicht = pakket[0], omschrijving = pakket[1], afzenderplaats = afzenderlocatie.getPlaatsnaam(), 
+                ontvangerplaats = ontvangerlocatie.getPlaatsnaam(), afzenderstraatnaam = afzenderlocatie.getStraatnaam();       
+        if (afzenderplaats.substring(0, 3).matches("'s ")) {
+            afzenderplaats = "Hertogenbosch";
         }
-
+        if (ontvangerplaats.substring(0, 3).matches("'s ")) {
+            ontvangerplaats = "Hertogenbosch";
+        }
         Geocoding geo = new Geocoding();
         int locatieId = -1, persoonId = -1, pakketId = -1, verzendingId = -1;
-        Coordinaten coordinatenToLocatie;
-        coordinatenToLocatie = geo.QueryAndGetCoordinates(plaats, straatnaam, Integer.parseInt(huisnummer), toevoeging);
+//        Coordinaten coordinatenToLocatie;
+        //coordinatenToLocatie = geo.QueryAndGetCoordinates(afzenderplaats, afzenderstraatnaam, Integer.parseInt(huisnummer), toevoeging);
         try {
-            // INSERT LOCATIE, get LocatieID
-            query = "INSERT INTO Locatie "
-                    + "(LocatieID, Latitude, Longitude, Plaatsnaam, Straatnaam, Huisnummer, Toevoeging, Postcode, Telefoonnummer, TZTPoint) "
-                    + "VALUES (0, "
-                    + "'" + coordinatenToLocatie.Latitude.toString() + "',"
-                    + "'" + coordinatenToLocatie.Longitude.toString() + "',"
-                    + "'" + plaats + "', "
-                    + "'" + straatnaam + "', "
-                    + "'" + huisnummer + "', "
-                    + "'" + toevoeging + "', "
-                    + "'" + postcode + "', "
-                    + "'" + telefoonnummer + "', "
-                    + "'0')";
-            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-
-            rs = st.getGeneratedKeys();
-
-            if (rs.next()) {
-                locatieId = rs.getInt(1);
-            } else {
-            }
-            rs.close();
-            rs = null;
+//            // INSERT LOCATIE, get LocatieID
+//            query = "INSERT INTO Locatie "
+//                    + "(LocatieID, Latitude, Longitude, Plaatsnaam, Straatnaam, Huisnummer, Toevoeging, Postcode, Telefoonnummer, TZTPoint) "
+//                    + "VALUES (0, "
+//                    + "'" + coordinatenToLocatie.Latitude.toString() + "',"
+//                    + "'" + coordinatenToLocatie.Longitude.toString() + "',"
+//                    + "'" + afzenderplaats + "', "
+//                    + "'" + afzenderstraatnaam + "', "
+//                    + "'" + huisnummer + "', "
+//                    + "'" + toevoeging + "', "
+//                    + "'" + postcode + "', "
+//                    + "'" + telefoonnummer + "', "
+//                    + "'0')";
+//            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+//
+//            rs = st.getGeneratedKeys();
+//
+//            if (rs.next()) {
+//                locatieId = rs.getInt(1);
+//            } else {
+//            }
+//            rs.close();
+            //rs = null;
 
             // INSERT PERSOON, get PersoonID
-            query = "INSERT INTO Persoon "
-                    + "(PersoonID, LocatieID, Voornaam, Tussenvoegsel, Achternaam) "
-                    + "VALUES (0, "
-                    + "'" + locatieId + "',"
-                    + "'" + voornaam + "',"
-                    + "'" + tussenvoegsel + "', "
-                    + "'" + achternaam + "')";
-            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-
-            rs = st.getGeneratedKeys();
-
-            if (rs.next()) {
-                persoonId = rs.getInt(1);
-            } else {
-            }
-            rs.close();
-            rs = null;
+//            query = "INSERT INTO Persoon "
+//                    + "(PersoonID, LocatieID, Voornaam, Tussenvoegsel, Achternaam) "
+//                    + "VALUES (0, "
+//                    + "'" + locatieId + "',"
+//                    + "'" + voornaam + "',"
+//                    + "'" + tussenvoegsel + "', "
+//                    + "'" + achternaam + "')";
+//            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+//
+//            rs = st.getGeneratedKeys();
+//
+//            if (rs.next()) {
+//                persoonId = rs.getInt(1);
+//            } else {
+//            }
+//            rs.close();
+//            rs = null;
 
             // INSERT Pakket, get PakketID
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
@@ -459,8 +459,8 @@ public class DbConnect {
                     + "(VerzendingID, PakketID, Aankomsttijd, Aflevertijd, Status) "
                     + "VALUES (0, "
                     + pakketId + ", "
-                    + "null, " //todo
-                    + "null, " //todo
+                    + timeStamp + ", " 
+                    + "null, " 
                     + "'0')";
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -473,13 +473,9 @@ public class DbConnect {
             rs.close();
             rs = null;
 
+            
+            Coordinaten from = afzenderlocatie.getCoordinaten(), to = ontvangerlocatie.getCoordinaten();
 
-            Coordinaten from = null, to = coordinatenToLocatie;
-            if (persoonsLocatie.hasCoordinaten()) {
-                from = persoonsLocatie.getCoordinaten();
-            } else {
-                from = geo.QueryAndGetCoordinates(persoonsLocatie);
-            }
 
             Traject compleetTraject;
             compleetTraject = geo.GetRouteFrom(from, to);
@@ -494,21 +490,21 @@ public class DbConnect {
                 Traject Traject1, Traject3;
                 int stop1, stop2;
                 Financien financien = new Financien();
-                Koerier k = new Koerier();
+//                Koerier k = new Koerier();
                 
                 Traject1 = geo.GetRouteFrom(from, fromToTZT);
-                k = financien.BerekenGoedkoopsteKoerier(Traject1.Meters);
+                Koerier k = financien.BerekenGoedkoopsteKoerier(Traject1.Meters);
                 // 1e gedeelte
                 //DIT NOG EVEN MET LEON NAKIJKEN ZOKANIKHEMVINDEN
                 stop1 = getLocatieId(fromToTZT, true);
-                //insertTraject(verzendingId, persoonsLocatie.getId(), stop1, "2:00", Traject1.Meters, 0, (int) Math.round(koerier[1]));
+                insertTraject(verzendingId, afzenderlocatie.getId(), stop1, "2:00", Traject1.Meters, 0, k.KoerierID);
                 // 2e gedeelte
                 stop2 = getLocatieId(TZTToTo, true);
                 insertTraject(verzendingId, stop1, stop2, "1:00", 333, 0, 0);
                 // 3e gedeelte
                 Traject3 = geo.GetRouteFrom(TZTToTo, to);
                 k = financien.BerekenGoedkoopsteKoerier(Traject3.Meters);
-               // insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, (int) Math.round(koerier[1]));
+                insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, k.KoerierID);
             }
 
             return true;
