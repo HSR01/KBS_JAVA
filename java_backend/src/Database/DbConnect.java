@@ -434,31 +434,35 @@ public class DbConnect {
             compleetTraject = geo.GetRouteFrom(from, to);
             Koerier k = new Koerier();
             Financien financien = new Financien();
-            if (compleetTraject.Meters < 20000) {
+            // Coordinaten van TZTPoint (station)
+            Coordinaten fromToTZT, TZTToTo;
+            fromToTZT = geo.GetNearestTZTPoint(from).getCoordinaten();
+            TZTToTo = geo.GetNearestTZTPoint(to).getCoordinaten();
+
+            Traject Traject1, Traject3;
+            int stop1, stop2;
+
+            Traject1 = geo.GetRouteFrom(from, fromToTZT);
+            Traject3 = geo.GetRouteFrom(TZTToTo, to);
+            
+            if (compleetTraject.Meters < 20000 
+                    || (financien.BerekenGoedkoopsteKoerier(Traject1.Meters).RitPrijs + financien.BerekenGoedkoopsteKoerier(Traject3.Meters).RitPrijs + 2)
+                    < financien.BerekenGoedkoopsteKoerier(compleetTraject.Meters).RitPrijs) {
                 k = financien.BerekenGoedkoopsteKoerier(compleetTraject.Meters);
                 insertTraject(verzendingId, afzenderlocatie.getId(), ontvangerlocatie.getId(), "0:30", compleetTraject.Meters, 0, k.KoerierID);
             } else if (compleetTraject.Meters > 20000) {
-                // Coordinaten van TZTPoint (station)
-                Coordinaten fromToTZT, TZTToTo;
-                fromToTZT = geo.GetNearestTZTPoint(from).getCoordinaten();
-                TZTToTo = geo.GetNearestTZTPoint(to).getCoordinaten();
-
-                Traject Traject1, Traject3;
-                int stop1, stop2;
-                
-                Traject1 = geo.GetRouteFrom(from, fromToTZT);
-                k = financien.BerekenGoedkoopsteKoerier(Traject1.Meters);
                 // 1e gedeelte
+                k = financien.BerekenGoedkoopsteKoerier(Traject1.Meters);
                 stop1 = getLocatieId(fromToTZT, true);
                 insertTraject(verzendingId, afzenderlocatie.getId(), stop1, "2:00", Traject1.Meters, 0, k.KoerierID);
                 // 2e gedeelte
                 stop2 = getLocatieId(TZTToTo, true);
                 insertTraject(verzendingId, stop1, stop2, "0:00", 0, 0, 0);
                 // 3e gedeelte
-                Traject3 = geo.GetRouteFrom(TZTToTo, to);
                 k = financien.BerekenGoedkoopsteKoerier(Traject3.Meters);
                 insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, k.KoerierID);
             }
+            
             int kostprijs = financien.getKostprijs(verzendingId);
             query = "UPDATE Verzending set KostPrijs = '"+kostprijs+"' where VerzendingID = '"+verzendingId+"'";
             rs = st.executeQuery(query);
