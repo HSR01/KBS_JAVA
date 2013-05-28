@@ -21,9 +21,8 @@ import javax.swing.JTextField;
  * @author Leon Huzen en Jelle Smeets
  */
 class NieuweVerzending extends JPanel implements ActionListener {
-    private Locatie afzenderLocatie = null;
-    private JLabel zoeklabel, voornaam, tussenvoegsel, achternaam, straatnaam, huisnr, toevoeging, postcode, plaats, telefoonnummer, gewicht, omschrijving, aankomst;
-    private JTextField zoekveld, tvoornaam, ttussenvoegsel, tachternaam, tstraatnaam, thuisnr, ttoevoeging, tpostcode, tplaats, ttelefoonnummer, tgewicht, tomschrijving, taankomst;
+    private JLabel gewicht, omschrijving;
+    private JTextField  tgewicht, tomschrijving;
     private JButton zoek, submit;
     private ZoekPersoon afzender, ontvanger;
 
@@ -53,53 +52,13 @@ class NieuweVerzending extends JPanel implements ActionListener {
         midpanel.setLayout(new GridLayout(13, 2));
         
         //instancieer velden voor midpanel
-        voornaam = new JLabel("Voornaam");
-        tussenvoegsel = new JLabel("Tussenvoegsel");
-        achternaam = new JLabel("Achternaam");
-        straatnaam = new JLabel("Straatnaam");
-        huisnr = new JLabel("Huisnummer");
-        toevoeging = new JLabel("Toevoeging");
-        huisnr = new JLabel("Huisnr");
-        postcode = new JLabel("Postcode");
-        plaats = new JLabel("Plaats");
-        telefoonnummer = new JLabel("Telefoonnummer");
         gewicht = new JLabel("Gewicht");
         omschrijving = new JLabel("Omschrijving");
-        aankomst = new JLabel("Aankomst");
         
-        tvoornaam = new JTextField();
-        ttussenvoegsel = new JTextField();
-        tachternaam = new JTextField();
-        tstraatnaam = new JTextField();
-        thuisnr = new JTextField();
-        ttoevoeging = new JTextField();
-        thuisnr = new JTextField();
-        tpostcode = new JTextField();
-        tplaats = new JTextField();
-        ttelefoonnummer = new JTextField();
         tgewicht = new JTextField();
         tomschrijving = new JTextField();
-        taankomst = new JTextField();
         
         //voeg de velden toe aan het panel.
-        midpanel.add(voornaam);
-        midpanel.add(tvoornaam);
-        midpanel.add(tussenvoegsel);
-        midpanel.add(ttussenvoegsel);
-        midpanel.add(achternaam);
-        midpanel.add(tachternaam);
-        midpanel.add(straatnaam);
-        midpanel.add(tstraatnaam);
-        midpanel.add(huisnr);
-        midpanel.add(thuisnr);
-        midpanel.add(toevoeging);
-        midpanel.add(ttoevoeging);
-        midpanel.add(postcode);
-        midpanel.add(tpostcode);
-        midpanel.add(plaats);
-        midpanel.add(tplaats);
-        midpanel.add(telefoonnummer);
-        midpanel.add(ttelefoonnummer);
         midpanel.add(gewicht);
         midpanel.add(tgewicht);
         midpanel.add(omschrijving);
@@ -117,7 +76,6 @@ class NieuweVerzending extends JPanel implements ActionListener {
         bottompanel.add(submit);
         
         //activeer action listeners voor 2 buttons
-        //zoek.addActionListener(this);
         submit.addActionListener(this);
         
         //voeg alle onderdelen toe aan layout.
@@ -131,19 +89,33 @@ class NieuweVerzending extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource() == submit){
-            DbConnect dbc = new DbConnect();
-            if(afzender.getPersoon() != null && ontvanger.getPersoon() != null){
-               String[] pakket = new String[2];
-               pakket[0] = tgewicht.getText().toString();
-               pakket[1] = tomschrijving.getText().toString();
-               try {
+        if (ae.getSource() == submit) {
+            String errors = "<html>";
+            if (tgewicht.getText().equals(""))
+                errors += "<br>Geen gewicht opgegeven.";
+            if (tomschrijving.getText().equals(""))
+                errors += "<br>Geen omschrijving opgegeven.";
+            if (afzender.getPersoon() == null)
+                errors += "<br>Geen afzender geselecteerd.";
+            if (ontvanger.getPersoon() == null)
+                errors += "<br>Geen ontvanger geselecteerd.";
+            if (errors.equals("<html>")) {
+                DbConnect dbc = new DbConnect();
+                String[] pakket = new String[2];
+                pakket[0] = tgewicht.getText().toString();
+                pakket[1] = tomschrijving.getText().toString();
+                try {
                     dbc.newVerzending(afzender.getPersoon(), ontvanger.getPersoon(), afzender.getLocatie(), ontvanger.getLocatie(), pakket);
                 } catch (MultipleAdressesFoundException ex) {
                     Logger.getLogger(NieuweVerzending.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else{
-                //niet alles ingevuld.
+            } else {
+                errors += "</html>";
+                JDialog jd = new JDialog();
+                jd.setSize(400,175);
+                jd.setTitle("Foutmelding - Verplichte velden niet ingevuld.");
+                jd.add(new JLabel(errors));
+                jd.setVisible(true);
             }
         }
     }
