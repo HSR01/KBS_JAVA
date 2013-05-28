@@ -246,7 +246,9 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
                 tfAchternaam.getText().equals("")   ||
                 tfMobielnummer.getText().equals("")){ 
                 JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
-            } else {
+            }else if(!isInteger(tfHuisnummer.getText())){
+                JOptionPane.showMessageDialog( this,"Het huisnummer is geen nummer!");
+            }else {
                 //Hash het wachtwoord naar MD5
                 String wachtwoord = pfWachtwoord.getText();
                 try {
@@ -337,6 +339,7 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
                 
                 AccountsBeherenTabel.aTable.setModel(AccountsBeherenTabel.FillTabel());
                 AccountsBeherenTabel.aTable.repaint();
+                JOptionPane.showMessageDialog( this,"De persoon is gewijzigd!");
                 this.setVisible(false);
             }
         }
@@ -438,5 +441,17 @@ public class PersoonWijzigen extends JFrame implements ActionListener{
         if( value.equals("2")){ comboBox.setSelectedIndex(2); }
         if( value.equals("3")){ comboBox.setSelectedIndex(3); }
         if( value.equals("4")){ comboBox.setSelectedIndex(4); }
-    }     
+    }
+        public boolean isInteger( String input )  
+    {  
+       try  
+       {  
+          Integer.parseInt( input );  
+          return true;  
+       }  
+       catch( Exception e)  
+       {  
+          return false;  
+       }  
+    }  
 }

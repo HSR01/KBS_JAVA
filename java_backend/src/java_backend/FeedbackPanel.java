@@ -190,8 +190,16 @@ class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListe
         if(ae.getSource() == zoek){
             //vul de tabel opnieuw met het pakket id.
             try{
-                info.setModel(FillTable(Integer.parseInt(zoekveld.getText())));
-                info.repaint();
+                if(zoekveld.getText().equals("")){
+                    JDialog jd = new JDialog();
+                    jd.setSize(200,175);
+                    jd.setTitle("Foutmelding");
+                    jd.add(new JLabel("Er is niks ingevuld!"));
+                    jd.setVisible(true);                   
+                }else{
+                    info.setModel(FillTable(Integer.parseInt(zoekveld.getText())));
+                    info.repaint();
+                }
             }catch(NumberFormatException e){
                 //toon melding dat het ingevulde pakketid geen nummer is.
                 //toon dit in een dialog box.
@@ -200,6 +208,8 @@ class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListe
               jd.setTitle("Foutmelding");
               jd.add(new JLabel("Het PakketID is geen nummer!"));
               jd.setVisible(true);
+            }catch(Exception e){
+                System.out.println(e.getMessage());
             }
         }
     }

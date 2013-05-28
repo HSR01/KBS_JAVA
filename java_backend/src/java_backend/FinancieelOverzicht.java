@@ -129,7 +129,7 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
            */
             public Object getValueAt(int row, int col) {
                 DbConnect dbc = new DbConnect();
-                int[][] returnval = dbc.getFinance(selectyear);
+                Object[][] returnval = dbc.getFinance(selectyear);
                 return returnval[0][col];
             }
           //set kolom namen

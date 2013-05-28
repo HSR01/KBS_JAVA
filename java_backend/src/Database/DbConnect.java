@@ -416,7 +416,7 @@ public class DbConnect {
                     + "'" + timeStamp + "', " 
                     + "null, " 
                     + "'0', "
-                    + "13.37)"; //todo, kostprijs
+                    + "0)"; //todo, kostprijs
             st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             rs = st.getGeneratedKeys();
@@ -459,7 +459,9 @@ public class DbConnect {
                 k = financien.BerekenGoedkoopsteKoerier(Traject3.Meters);
                 insertTraject(verzendingId, stop2, locatieId, "2:00", Traject3.Meters, 0, k.KoerierID);
             }
-
+            int kostprijs = financien.getKostprijs(verzendingId);
+            query = "UPDATE Verzending set KostPrijs = '"+kostprijs+"' where VerzendingID = '"+verzendingId+"'";
+            rs = st.executeQuery(query);
             return true;
         } catch (Exception e) {
             System.out.println("(DbConnect.java) @ newVerzending - Error : " + e.getMessage());
@@ -1038,9 +1040,9 @@ public class DbConnect {
      * @param year
      * @return int - kostprijs per jaar
      */
-    public int getKostprijs(int year){
+    public double getKostprijs(int year){
     //set aantal op 0;
-        int aantal = 0;
+        double aantal = 0;
         try{
             //haal aantal ritten op in jaar van year.
             String query = "select sum(KostPrijs) as 'kostprijs' from Verzending where `Aankomsttijd` >= '1-1-"+year+" 00:00:00' && `Aankomsttijd` <= '31-12-"+year+" 23:59:59'";
@@ -1048,7 +1050,7 @@ public class DbConnect {
             rs = st.executeQuery(query);
             while(rs.next()){
                 //zet aantal ritten in aantal
-                aantal = rs.getInt("kostprijs");
+                aantal = rs.getDouble("kostprijs");
             }
         }catch(Exception e){
             //toon foutmelding in output.
@@ -1062,13 +1064,13 @@ public class DbConnect {
      * @param year
      * @return 
      */
-    public int getWinst(int year){
+    public double getWinst(int year){
         //prijs per pakket staat vast.
         int prijspakket = 25;
         //bereken de omzet
-        int omzet = (this.getAantalPakketten(year) * prijspakket);
+        double omzet = (this.getAantalPakketten(year) * prijspakket);
         //bereken de winst
-        int winst = omzet - getKostprijs(year);
+        double winst = omzet - getKostprijs(year);
         //return de winst.
         return winst;
     }
@@ -1128,11 +1130,11 @@ public class DbConnect {
      * @param year
      * @return Multidimensionale array voor JTable.
      */
-    public int[][] getFinance(int year) {
+    public Object[][] getFinance(int year) {
 
         
         //instancieer returnval
-        int[][] returnval = new int[1][5];
+        Object[][] returnval = new Object[1][5];
         if (year == 0) {
             //als jaar 0 is toon dan alle waarden op 0 voor eeste invul van jtable. // lelijke fix
             returnval[0][0] = 0;
@@ -1143,8 +1145,8 @@ public class DbConnect {
         } else {
            //haal variabelen op.
             int aantalpakketten = this.getAantalPakketten(year);
-            int kostprijs = this.getKostprijs(year);
-            int winst = this.getWinst(year);
+            double kostprijs = this.getKostprijs(year);
+            double winst = this.getWinst(year);
             int bps = this.getAantalBps(year);
             int koerier = this.getAantalKoerier(year);
             //maak query en vul returnval;

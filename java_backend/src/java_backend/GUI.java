@@ -31,7 +31,7 @@ public class GUI extends JFrame implements ActionListener {
     //menu onderdelen.
     private JMenuBar menubar;
     private JMenu Bestand, Verzending, Pakket, Accounts, Statistieken;
-    private JMenuItem Afmelden, Afsluiten, NieuweVerzending, Feedback, VerzendingAnnuleren, PakketStatus, PakketWijzigen, AccountToevoegen, AccountWijzigen, AccountBlokeren, GebruikStatistieken, PakketStatistieken, FinancieelOverzicht, KoerierOverzicht;
+    private JMenuItem Afmelden, Afsluiten, NieuweVerzending, Feedback, PakketStatus, PakketWijzigen, AccountToevoegen, AccountWijzigen, AccountBlokeren, GebruikStatistieken, PakketStatistieken, FinancieelOverzicht, KoerierOverzicht;
 
     public GUI() {
         //Standaard instellingen hoofdscherm
@@ -75,7 +75,6 @@ public class GUI extends JFrame implements ActionListener {
         JPanel Card4 = new AanmeldenPakket();
         JPanel Card5 = new NieuweVerzending();
         JPanel Card6 = new FeedbackPanel();
-        JPanel Card7 = new VerzendingAnnuleren();
         JPanel Card8 = new PakketWijzigen();
         JPanel Card9 = new AccountWijzigen();
         JPanel Card10 = new AccountBlokkeren();
@@ -94,7 +93,6 @@ public class GUI extends JFrame implements ActionListener {
         cardHolder.add(Card4, "aanmeldenpakket");
         cardHolder.add(Card5, "nieuweverzending");
         cardHolder.add(Card6, "feedback");
-        cardHolder.add(Card7, "verzendingannuleren");
         cardHolder.add(Card8, "pakketwijzigen");
         cardHolder.add(Card9, "accountwijzigen");
         cardHolder.add(Card10, "accountblokkeren");
@@ -189,7 +187,6 @@ public class GUI extends JFrame implements ActionListener {
         //Actionlistener voor verzending
         NieuweVerzending.addActionListener(this);
         Feedback.addActionListener(this);
-        VerzendingAnnuleren.addActionListener(this);
         
         //Actionlistener voor pakket
         PakketStatus.addActionListener(this);
@@ -322,8 +319,6 @@ public class GUI extends JFrame implements ActionListener {
             ChangeMenu("nieuweverzending");
         } else if (ae.getSource() == Feedback) {
             ChangeMenu("feedback");
-        } else if (ae.getSource() == VerzendingAnnuleren) {
-            ChangeMenu("verzendingannuleren");
         } else if (ae.getSource() == PakketStatus) {
              ChangeMenu("pakketstatus");           
         } else if (ae.getSource() == PakketWijzigen) {
@@ -383,7 +378,6 @@ public class GUI extends JFrame implements ActionListener {
         //instancieer menu onderdelen voor verzending        
         this.NieuweVerzending = new JMenuItem("Nieuwe verzending");
         this.Feedback = new JMenuItem("Feedback");
-        this.VerzendingAnnuleren = new JMenuItem("Verzending annuleren");
         
         //instancieer menu onderdelen voor pakket        
         this.PakketStatus = new JMenuItem("Pakket status");
@@ -406,7 +400,6 @@ public class GUI extends JFrame implements ActionListener {
         //voeg onderdelen aan verzending
         this.Verzending.add(NieuweVerzending);
         this.Verzending.add(Feedback);
-        this.Verzending.add(VerzendingAnnuleren);
         
         //voeg onderdelen aan pakket toe
         this.Pakket.add(PakketStatus);

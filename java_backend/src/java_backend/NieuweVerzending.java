@@ -92,13 +92,15 @@ class NieuweVerzending extends JPanel implements ActionListener {
         if (ae.getSource() == submit) {
             String errors = "<html>";
             if (tgewicht.getText().equals(""))
-                errors += "<br>Geen gewicht opgegeven.";
+                errors += "<br />Geen gewicht opgegeven.";
             if (tomschrijving.getText().equals(""))
-                errors += "<br>Geen omschrijving opgegeven.";
+                errors += "<br />Geen omschrijving opgegeven.";
             if (afzender.getPersoon() == null)
-                errors += "<br>Geen afzender geselecteerd.";
+                errors += "<br />Geen afzender geselecteerd.";
             if (ontvanger.getPersoon() == null)
-                errors += "<br>Geen ontvanger geselecteerd.";
+                errors += "<br />Geen ontvanger geselecteerd.";
+            if(!isInteger(tgewicht.getText()))
+                errors += "<br />Het gewicht is geen geldig gewicht.";
             if (errors.equals("<html>")) {
                 DbConnect dbc = new DbConnect();
                 String[] pakket = new String[2];
@@ -119,4 +121,15 @@ class NieuweVerzending extends JPanel implements ActionListener {
             }
         }
     }
+    public boolean isInteger( String input ){  
+       try  
+       {  
+          Integer.parseInt( input );  
+          return true;  
+       }  
+       catch( Exception e)  
+       {  
+          return false;  
+       }  
+    } 
 }
