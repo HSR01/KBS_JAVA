@@ -453,7 +453,7 @@ public class DbConnect {
                 insertTraject(verzendingId, afzenderlocatie.getId(), stop1, "2:00", Traject1.Meters, 0, k.KoerierID);
                 // 2e gedeelte
                 stop2 = getLocatieId(TZTToTo, true);
-                insertTraject(verzendingId, stop1, stop2, "1:00", 333, 0, 0);
+                insertTraject(verzendingId, stop1, stop2, "0:00", 0, 0, 0);
                 // 3e gedeelte
                 Traject3 = geo.GetRouteFrom(TZTToTo, to);
                 k = financien.BerekenGoedkoopsteKoerier(Traject3.Meters);
