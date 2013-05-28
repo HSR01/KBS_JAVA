@@ -31,7 +31,7 @@ public class DbConnect {
     private String locatie = "Latitude, Longitude, Plaatsnaam, Straatnaam, Huisnummer, Toevoeging, Postcode, Telefoonnummer, TZTPoint";
     private String tabel;
     //Server url
-    String url = "jdbc:mysql://server48.firstfind.nl/vanderbe-2";
+    String url = "jdbc:mysql://server48.firstfind.nl/vanderbe-2?allowMultiQuery=true";
     //Server login naam
     String user = "vanderbe";
     //Server wachtwoord
@@ -1527,15 +1527,67 @@ public class DbConnect {
         return null;
     }
     
+    /**
+     * Haal de kilometers en trajectID's op van de trajecten die nog geen BPS'er hebbem
+     * @param uurGeleden Het aantal uur dat een traject nog geen BPS'er mag hebben
+     * @author Leon Huzen
+     * @since 28-05-2013
+     */
+    public void setKoeriersAlsErGeenBPSerIs (int uurGeleden) {
+        try {
+            /**
+             * Haal de kilometers en trajectID's op van de 
+             * trajecten die al een aantal @uurgeleden gemaakt zijn
+             */
+            String query = "SELECT t.Kilometers, t.TrajectID "
+                        + "FROM Verzending v "
+                        + "JOIN Traject t ON t.VerzendingID = v.VerzendingID "
+                        + "WHERE YEAR(v.Aankomsttijd) = YEAR(CURDATE()) "
+                        + "AND MONTH(v.Aankomsttijd) = MONTH(CURDATE()) "
+                        + "AND DAY(v.Aankomsttijd) = DAY(CURDATE()) "
+                        + "AND HOUR( v.Aankomsttijd ) < HOUR( SUBTIME( CURTIME( ) ,  '" + uurGeleden + ":00:00.000000' ) ) "
+                        + "AND t.KoerierID = 0 "
+                        + "AND t.BPS = 0";
+            rs = st.executeQuery(query);
+            
+            // Maak een Statement
+            st = con.createStatement();  
+            query = "";
+            // Voor elk traject de beste koerier
+            while (rs.next()) {
+                int TrajectID = rs.getInt("TrajectID");
+                Double doubleMeters = rs.getDouble("Kilometers") * 1000; 
+                int meters = doubleMeters.intValue();
+                Financien fin = new Financien();
+                query = "UPDATE Traject t "
+                        + "SET t.KoerierID = " + fin.BerekenGoedkoopsteKoerier(meters).KoerierID + " " // Goedkoopste koerier
+                        + "WHERE TrajectID = " + TrajectID + ";"; // Van een bepaald traject
+                st.addBatch(query); // Toevoegen aan batch
+            }
+            try {  
+                st.executeBatch(); // Batch in de database updaten
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Error in setKoeriersAlsErGeenBPSerIs: " + e.getMessage());
+        }
+    }
     
     public Object[][] getSpecifiekKoerierKostprijs(String m, String j) {
         try {
             //LAURENS
             //get specifiekpakket.
-           
-            rs = st.executeQuery("SELECT COUNT(*) FROM Verzending v JOIN Traject t ON v.VerzendingID = t.VerzendingID JOIN Traject_BPS bps ON t.TrajectID = bps.TrajectID JOIN Persoon p ON bps.PersoonID = p.PersoonID JOIN Koerier k ON t.KoerierID = k.KoerierID WHERE v.status =  '3' AND MONTH( Aankomsttijd ) =  '" + m + "' AND YEAR( Aankomsttijd ) ='" +  j + "'");
+            rs = st.executeQuery("SELECT COUNT(*) "
+                    + "FROM Verzending v "
+                    + "JOIN Traject t ON v.VerzendingID = t.VerzendingID "
+                    + "JOIN Traject_BPS bps ON t.TrajectID = bps.TrajectID "
+                    + "JOIN Persoon p ON bps.PersoonID = p.PersoonID "
+                    + "JOIN Koerier k ON t.KoerierID = k.KoerierID "
+                    + "WHERE v.status =  '3' "
+                    + "AND MONTH( Aankomsttijd ) =  '" + m + "' "
+                    + "AND YEAR( Aankomsttijd ) ='" +  j + "'");
             int aantal = 0;
-            System.out.println(aantal);
             
             while (rs.next()) {
                 aantal = rs.getInt("COUNT(*)");
