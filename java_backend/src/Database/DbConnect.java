@@ -264,7 +264,6 @@ public class DbConnect {
             return returnval;
         } catch (Exception e) {
             System.out.println("error : " + e.getClass());
-
         }
         return null;
     }
@@ -388,52 +387,7 @@ public class DbConnect {
         }
         Geocoding geo = new Geocoding();
         int locatieId = -1, persoonId = -1, pakketId = -1, verzendingId = -1;
-//        Coordinaten coordinatenToLocatie;
-        //coordinatenToLocatie = geo.QueryAndGetCoordinates(afzenderplaats, afzenderstraatnaam, Integer.parseInt(huisnummer), toevoeging);
         try {
-//            // INSERT LOCATIE, get LocatieID
-//            query = "INSERT INTO Locatie "
-//                    + "(LocatieID, Latitude, Longitude, Plaatsnaam, Straatnaam, Huisnummer, Toevoeging, Postcode, Telefoonnummer, TZTPoint) "
-//                    + "VALUES (0, "
-//                    + "'" + coordinatenToLocatie.Latitude.toString() + "',"
-//                    + "'" + coordinatenToLocatie.Longitude.toString() + "',"
-//                    + "'" + afzenderplaats + "', "
-//                    + "'" + afzenderstraatnaam + "', "
-//                    + "'" + huisnummer + "', "
-//                    + "'" + toevoeging + "', "
-//                    + "'" + postcode + "', "
-//                    + "'" + telefoonnummer + "', "
-//                    + "'0')";
-//            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-//
-//            rs = st.getGeneratedKeys();
-//
-//            if (rs.next()) {
-//                locatieId = rs.getInt(1);
-//            } else {
-//            }
-//            rs.close();
-            //rs = null;
-
-            // INSERT PERSOON, get PersoonID
-//            query = "INSERT INTO Persoon "
-//                    + "(PersoonID, LocatieID, Voornaam, Tussenvoegsel, Achternaam) "
-//                    + "VALUES (0, "
-//                    + "'" + locatieId + "',"
-//                    + "'" + voornaam + "',"
-//                    + "'" + tussenvoegsel + "', "
-//                    + "'" + achternaam + "')";
-//            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-//
-//            rs = st.getGeneratedKeys();
-//
-//            if (rs.next()) {
-//                persoonId = rs.getInt(1);
-//            } else {
-//            }
-//            rs.close();
-//            rs = null;
-
             // INSERT Pakket, get PakketID
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
             query = "INSERT INTO Pakket "
@@ -473,15 +427,16 @@ public class DbConnect {
             }
             rs.close();
             rs = null;
-
             
             Coordinaten from = afzenderlocatie.getCoordinaten(), to = ontvangerlocatie.getCoordinaten();
 
-
             Traject compleetTraject;
             compleetTraject = geo.GetRouteFrom(from, to);
+            Koerier k = new Koerier();
+            Financien financien = new Financien();
             if (compleetTraject.Meters < 20000) {
-                // TODO FINANCIEN! @Daniel en @Leon
+                k = financien.BerekenGoedkoopsteKoerier(compleetTraject.Meters);
+                insertTraject(verzendingId, afzenderlocatie.getId(), ontvangerlocatie.getId(), "0:30", compleetTraject.Meters, 0, k.KoerierID);
             } else if (compleetTraject.Meters > 20000) {
                 // Coordinaten van TZTPoint (station)
                 Coordinaten fromToTZT, TZTToTo;
@@ -490,13 +445,10 @@ public class DbConnect {
 
                 Traject Traject1, Traject3;
                 int stop1, stop2;
-                Financien financien = new Financien();
-//                Koerier k = new Koerier();
                 
                 Traject1 = geo.GetRouteFrom(from, fromToTZT);
-                Koerier k = financien.BerekenGoedkoopsteKoerier(Traject1.Meters);
+                k = financien.BerekenGoedkoopsteKoerier(Traject1.Meters);
                 // 1e gedeelte
-                //DIT NOG EVEN MET LEON NAKIJKEN ZOKANIKHEMVINDEN
                 stop1 = getLocatieId(fromToTZT, true);
                 insertTraject(verzendingId, afzenderlocatie.getId(), stop1, "2:00", Traject1.Meters, 0, k.KoerierID);
                 // 2e gedeelte
