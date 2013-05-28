@@ -1018,7 +1018,7 @@ public class DbConnect {
         int aantal = 0;
         try{
             //haal aantal ritten op in jaar van year.
-            String query = "select count(*) as 'aantal ritten' from Verzending where `Aflevertijd` >= '1-1-"+year+" 00:00:00' && `Aflevertijd` <= '31-12-"+year+" 23:59:59'";
+            String query = "select count(*) as 'aantal ritten' from Verzending where `Aankomsttijd` >= '1-1-"+year+" 00:00:00' && `Aankomsttijd` <= '31-12-"+year+" 23:59:59'";
             //voer query uit.
             rs = st.executeQuery(query);
             while(rs.next()){
@@ -1043,7 +1043,7 @@ public class DbConnect {
         int aantal = 0;
         try{
             //haal aantal ritten op in jaar van year.
-            String query = "select sum(KostPrijs) as 'kostprijs' from Verzending where `Aflevertijd` >= '1-1-"+year+" 00:00:00' && `Aflevertijd` <= '31-12-"+year+" 23:59:59'";
+            String query = "select sum(KostPrijs) as 'kostprijs' from Verzending where `Aankomsttijd` >= '1-1-"+year+" 00:00:00' && `Aankomsttijd` <= '31-12-"+year+" 23:59:59'";
             //voer query uit.
             rs = st.executeQuery(query);
             while(rs.next()){
@@ -1083,7 +1083,7 @@ public class DbConnect {
         int aantal = 0;
         try{
             //haal aantal ritten op in jaar van year.
-            String query = "select count(*) as 'aantal bps' from Traject where BPS != 0 AND VerzendingID IN (select VerzendingID from Verzending where `Aflevertijd` >= '1-1-"+year+" 00:00:00' AND `Aflevertijd` <= '31-12-"+year+" 23:59:59')";
+            String query = "select count(*) as 'aantal bps' from Traject where BPS != 0 AND VerzendingID IN (select VerzendingID from Verzending where `Aankomsttijd` >= '1-1-"+year+" 00:00:00' AND `Aankomsttijd` <= '31-12-"+year+" 23:59:59')";
             //voer query uit.
             rs = st.executeQuery(query);
             while(rs.next()){
@@ -1109,7 +1109,7 @@ public class DbConnect {
         int aantal = 0;
         try{
             //haal aantal ritten op in jaar van year.
-            String query = "select count(*) as 'aantal koerier' from Traject where KoerierID != 0 AND VerzendingID IN (select VerzendingID from Verzending where `Aflevertijd` >= '1-1-"+year+" 00:00:00' AND `Aflevertijd` <= '31-12-"+year+" 23:59:59')";
+            String query = "select count(*) as 'aantal koerier' from Traject where KoerierID != 0 AND VerzendingID IN (select VerzendingID from Verzending where `Aankomsttijd` >= '1-1-"+year+" 00:00:00' AND `Aankomsttijd` <= '31-12-"+year+" 23:59:59')";
             //voer query uit.
             rs = st.executeQuery(query);
             while(rs.next()){
@@ -1567,6 +1567,91 @@ public class DbConnect {
 
         }
         return null;
+    }
+
+    /**
+     * Bepaal kostprijs  aan de hand van verzendingID
+     * @param verzendingID
+     * @author Jelle Smeets
+     * @return int kostprijs
+     */
+    public int calculateKostprijsByVerzendingID(int verzendingID) {
+        try{
+            query = "select * from Traject where VerzendingID in('"+verzendingID+"')";   
+            rs = st.executeQuery(query);
+            int kostprijs = 0;
+            while(rs.next()){
+                int meters = rs.getInt("Kilometers");
+                int bps = rs.getInt("BPS");
+                int koerier = rs.getInt("KoerierID");
+                if(bps == 0 && koerier == 0){
+                    //geen koerier en bps. 
+                    //betekend dat er bps er gekozen is maar nog niet beschikbaar is op het traject.
+                    kostprijs += 2;
+                }else if(bps != 0){
+                    //bpser is op dit traject actief.
+                    kostprijs += 2;
+                }else if(koerier != 0){
+                    //koerier actief op dit traject
+                    Financien f = new Financien();
+                    kostprijs += f.getKoerierskosten(meters, koerier);
+                }    
+                
+            }
+            return kostprijs;
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+            return 0;
+        }
+    }
+    
+    /**
+     * Haal de kostprijs op aan de hand van het id.
+     * @author Jelle Smeets
+     * @param verzendingID
+     * @return int kostprijs
+     */
+    public int getKostPrijsById(int verzendingID) {
+        //haal query op.
+        
+        try{
+            query = "select * from Verzending where VerzendingID = '"+verzendingID+"'";
+            rs = st.executeQuery(query);
+            int kostprijs = 0;
+            //als er een kostprijs is return deze.
+            while(rs.next()){
+                kostprijs = rs.getInt("KostPrijs");
+            }
+            //anders return de 0 waarde die al geset is.
+            return kostprijs;
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+            return 0;
+        }
+    }
+
+    public double[] getKostenberekeningKoerier(int KoerierID) {
+        try{
+            
+            query = "select * from Koerier where KoerierID = '"+KoerierID+"'";
+            rs = st.executeQuery(query);
+            double[] returnval = new double[3];
+            int i = 0;
+            while(rs.next()){
+                returnval[0] = rs.getDouble("Prijsperkm");
+                returnval[1] = rs.getDouble("Starttarief");
+                returnval[2] = rs.getDouble("Startmeters");
+                i++;
+            }
+            if(i == 0){
+                return null;
+            }else{
+                return returnval;
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
     
 }

@@ -52,4 +52,42 @@ public class Financien {
         }
         return goedkoopste;
     }
+    
+    /**
+     * Haal de kostprijs op.
+     * @param verzendingID
+     * @return 
+     */
+    public int getKostprijs(int verzendingID){
+        DbConnect dbc = new DbConnect();
+        //haal kostprijs op.
+        int kostprijs = dbc.getKostPrijsById(verzendingID);
+        //als kostprijs 0 is bereken deze dan.
+        if(kostprijs == 0){
+            return dbc.calculateKostprijsByVerzendingID(verzendingID);
+        }else{
+            //er is al een kostprijs return deze.
+            return kostprijs;
+        }
+
+    }
+    
+    public double getKoerierskosten(int meters, int KoerierID){
+        DbConnect dbc = new DbConnect();
+        double[] kosten = dbc.getKostenberekeningKoerier(KoerierID);
+        if(kosten != null){
+            //als meters kleiner is dan startmeters
+            if(meters < kosten[2]){
+                //keer starttarief uit.
+                return kosten[1];
+            }else{
+                //anders starttarief + aantal km * Km
+                return kosten[1] + ((meters / 1000) * kosten[0]);
+            }
+        }else{
+            return 0; // foutmelding berekening koerier niet gelukt.
+        }
+    }
+    
+    
 }
