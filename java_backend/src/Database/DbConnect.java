@@ -660,9 +660,6 @@ public class DbConnect {
                     ? value[i] + "','"
                     : value[i] + "";
         }
-        System.out.println(tabelnaam);
-        System.out.println(tabel);
-        System.out.println(waardes);
 
         try {
 
@@ -672,7 +669,6 @@ public class DbConnect {
 
             //Query uitvoeren
             st.executeUpdate(query);
-            System.out.println(query);
 
         } catch (Exception e) {
             System.out.println(e);
@@ -1253,7 +1249,6 @@ public class DbConnect {
 
     public int getLocatieID(String query) {
         // Dominque
-        System.out.println(query);
         int locatieID = 0;
         try {
             rs = st.executeQuery(query);
@@ -1269,7 +1264,6 @@ public class DbConnect {
 
     public int getPersoonID(String query) {
         // Dominque
-        System.out.println(query);
         int persoonID = 0;
         try {
             rs = st.executeQuery(query);
@@ -1285,7 +1279,6 @@ public class DbConnect {
 
     public void nieuweGebruiker(String query) {
         // Dominique
-        System.out.println(query);
         try {
             //Query uitvoeren
             st.executeUpdate(query);

@@ -16,6 +16,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -211,7 +213,11 @@ public class PersoonNieuw extends JPanel implements ActionListener{
                 tfAchternaam.getText().equals("")   ||
                 tfMobielnummer.getText().equals("")){ 
                 JOptionPane.showMessageDialog( this,"Niet alle verplichte velden zijn ingevuld, Controleer de velden en probeer het opnieuw.");
-            } else {
+            }else if(!isInteger(tfHuisnummer.getText())){
+                 JOptionPane.showMessageDialog( this,"Het huisnummer is geen nummer.");
+            }else if(!isValidEmailAddress(tfEmailadres.getText())){
+                JOptionPane.showMessageDialog( this,"Het e-mail adres is ongeldig.");
+            }else {
                 //Hash het wachtwoord naar MD5
                 String wachtwoord = pfWachtwoord.getText();
                 try {
@@ -257,29 +263,56 @@ public class PersoonNieuw extends JPanel implements ActionListener{
                 
                 //Sla de gegevens op in de database
                 Geocoding geo = new Geocoding();
+                Boolean geosucces = null;
                 try {
                     cords = geo.QueryAndGetCoordinates(tfPlaatsnaam.getText(), tfStraatnaam.getText(), Integer.parseInt(tfHuisnummer.getText()));
                     this.latitude = "" + cords.Latitude;
                     this.longitude = "" + cords.Longitude;
+                    geosucces = true;
                 } catch (MultipleAdressesFoundException ex) {
-                    Logger.getLogger(PersoonNieuw.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog( this,"Er gaat iets mis met toevoegen van de locatie.");
+                    geosucces = false;
                 }
-                // alle queries
-                // Connectie aanmaken
-                DbConnect dbc = new DbConnect();
-                // Locatie inserten
-                dbc.insertData("Locatie", this.latitude, this.longitude ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
-                // LocatieID ophalen van de insert query
-                int locatieID = dbc.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
-                // Gebruiekr inserten met bijgevoegd locatieID
-                dbc.nieuweGebruiker("INSERT INTO `Persoon` (`PersoonID`, `LocatieID`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Emailadres`, `Wachtwoord`, `Geboortedatum`, `Mobielnummer`, `Profielfoto`, `IBAN`, `Rechten`) VALUES ( '0','" + locatieID + "','" + tfVoornaam.getText() + "','" + tfTussenvoegsel.getText() + "','" + tfAchternaam.getText() + "','" + tfEmailadres.getText() + "','" + wachtwoord + "','" + datum + "','" + tfMobielnummer.getText() + "','" + null + "','" + tfIBANnummer.getText() + "','" + gebruikerniveau + "')");
-                // PersoonID ophalen
-                int persoonID = dbc.getPersoonID("SELECT PersoonID FROM `Persoon`  Where Emailadres = '" + tfEmailadres.getText() + "'");
-                // Insert naar Persoon_Locatie voor koppeling
-                dbc.nieuweGebruiker("INSERT INTO `Persoon_Locatie` (LocatieID, PersoonID) VALUES (" + locatieID + "," + persoonID + ")");
-            
+                //als er geen locatie is mag de persoon ook niet worden toegevoegd.
+                if(geosucces){
+                    // alle queries
+                    // Connectie aanmaken
+                    DbConnect dbc = new DbConnect();
+                    // Locatie inserten
+                    dbc.insertData("Locatie", this.latitude, this.longitude ,tfPlaatsnaam.getText(), tfStraatnaam.getText(), tfHuisnummer.getText(), tfToevoeging.getText(), tfPostcode.getText(), tfMobielnummer.getText(), "0");  
+                    // LocatieID ophalen van de insert query
+                    int locatieID = dbc.getLocatieID("SELECT LocatieID From Locatie where Plaatsnaam = '" + tfPlaatsnaam.getText() + "' and Straatnaam = '" + tfStraatnaam.getText() + "' and Huisnummer = '" + tfHuisnummer.getText() + "' and Toevoeging = '" + tfToevoeging.getText() + "' and Postcode = '" + tfPostcode.getText() + "'");
+                    // Gebruiekr inserten met bijgevoegd locatieID
+                    dbc.nieuweGebruiker("INSERT INTO `Persoon` (`PersoonID`, `LocatieID`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Emailadres`, `Wachtwoord`, `Geboortedatum`, `Mobielnummer`, `Profielfoto`, `IBAN`, `Rechten`) VALUES ( '0','" + locatieID + "','" + tfVoornaam.getText() + "','" + tfTussenvoegsel.getText() + "','" + tfAchternaam.getText() + "','" + tfEmailadres.getText() + "','" + wachtwoord + "','" + datum + "','" + tfMobielnummer.getText() + "','" + null + "','" + tfIBANnummer.getText() + "','" + gebruikerniveau + "')");
+                    // PersoonID ophalen
+                    int persoonID = dbc.getPersoonID("SELECT PersoonID FROM `Persoon`  Where Emailadres = '" + tfEmailadres.getText() + "'");
+                    // Insert naar Persoon_Locatie voor koppeling
+                    dbc.nieuweGebruiker("INSERT INTO `Persoon_Locatie` (LocatieID, PersoonID) VALUES (" + locatieID + "," + persoonID + ")");
+                    JOptionPane.showMessageDialog( this,"De persoon is toegevoegd!");
+                }
+
             }
         }
+    }    public boolean isInteger( String input ){  
+       try  
+       {  
+          Integer.parseInt( input );  
+          return true;  
+       }  
+       catch( Exception e)  
+       {  
+          return false;  
+       }  
+    } 
+   public  boolean isValidEmailAddress(String email){
+    Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+    Matcher m = p.matcher(email);
+    boolean matchFound = m.matches();
+
+    if(matchFound){
+        return true;
+    }else{
+        return false;
+        }
     }
-   
 }
