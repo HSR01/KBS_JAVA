@@ -17,6 +17,7 @@ import java_backend.Koerier;
 import java_backend.Locatie;
 import java_backend.Persoon;
 import java_backend.Traject;
+import javax.swing.JOptionPane;
 
 /**
  * @author Daniel
@@ -706,6 +707,7 @@ public class DbConnect {
                     + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
                     + "JOIN Locatie D ON C.Eind = D.LocatieID "
                     + "JOIN Locatie E ON C.Begin = E.LocatieID";
+
             rs = st.executeQuery(query);
             int aantal = 0;
             while (rs.next()) {
@@ -713,24 +715,38 @@ public class DbConnect {
             }
 
 
-            Object[][] returnval = new Object[aantal][8];
-            query = "SELECT A.PakketID, B.VerzendingID, C.TrajectID, A.Omschrijving, C.Eind, C.Begin, D.Plaatsnaam AS BeginPlaats, E.Plaatsnaam AS EindPlaats "
-                    + "FROM Pakket A "
-                    + "JOIN Verzending B ON A.PakketID = B.PakketID "
-                    + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
-                    + "JOIN Locatie D ON C.Eind = D.LocatieID "
-                    + "JOIN Locatie E ON C.Begin = E.LocatieID";
+            Object[][] returnval = new Object[aantal][16];
+
+            query = "SELECT A.PakketID, B.VerzendingID, C.TrajectID, A.Omschrijving, D.Plaatsnaam AS Beginplaats, D.Straatnaam AS BeginStraatnaam, D.Huisnummer AS BeginHuisnummer, D.Toevoeging AS BeginToevoeging, D.Postcode AS BeginPostcode, D.TZTPoint AS TZTpointBegin, E.Plaatsnaam AS Eindplaats, E.Straatnaam AS EindStraatnaam, E.Huisnummer AS EindHuisnummer, E.Toevoeging AS EindToevoeging, E.Postcode AS EindPostcode, E.TZTPoint AS TZTpointEind "
+                    + "FROM Pakket A"
+                    + " JOIN Verzending B ON A.PakketID = B.PakketID"
+                    + " JOIN Traject C ON B.VerzendingID = C.VerzendingID"
+                    + " JOIN Locatie D ON C.Eind = D.LocatieID"
+                    + " JOIN Locatie E ON C.Begin = E.LocatieID";
+
             rs = st.executeQuery(query);
+
+
             int i = 0;
             while (rs.next()) {
                 returnval[i][0] = rs.getString("PakketID");
                 returnval[i][1] = rs.getString("VerzendingID");
                 returnval[i][2] = rs.getString("TrajectID");
                 returnval[i][3] = rs.getString("Omschrijving");
-                returnval[i][4] = rs.getString("Begin");
-                returnval[i][5] = rs.getString("Eind");
-                returnval[i][6] = rs.getString("BeginPlaats");
-                returnval[i][7] = rs.getString("Eindplaats");
+                returnval[i][4] = rs.getString("Beginplaats");
+                returnval[i][5] = rs.getString("BeginStraatnaam");
+                returnval[i][6] = rs.getString("BeginHuisnummer");
+                returnval[i][7] = rs.getString("BeginToevoeging");
+                returnval[i][8] = rs.getString("BeginPostcode");
+                returnval[i][9] = rs.getString("TZTpointBegin");
+                returnval[i][10] = rs.getString("Eindplaats");
+                returnval[i][11] = rs.getString("EindStraatnaam");
+                returnval[i][12] = rs.getString("EindHuisnummer");
+                returnval[i][13] = rs.getString("EindToevoeging");
+                returnval[i][14] = rs.getString("EindPostcode");
+                returnval[i][15] = rs.getString("TZTpointEind");
+
+
                 i++;
             }
             return returnval;
@@ -793,30 +809,12 @@ public class DbConnect {
         return null;
     }
 
-    public Object[][] getSpecifiekPakket(String begin, String eind) {
+     public Object[][] getSpecifiekPakket(String begin, String eind) {
         try {
             //LAURENS
             //get specifiekpakket.
-            rs = st.executeQuery("SELECT COUNT(*) AS aantalPakketten "
-                    + "FROM Pakket A "
-                    + "JOIN Verzending B ON A.PakketID = B.PakketID "
-                    + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
-                    + "JOIN Locatie D ON C.Eind = D.LocatieID "
-                    + "JOIN Locatie E ON C.Begin = E.LocatieID");
-            int aantal = 0;
-            while (rs.next()) {
-                aantal = rs.getInt("aantalPakketten");
-            }
-            //haal alles op.
 
-
-            Object[][] returnval = new Object[aantal][8];
-            query = "SELECT A.PakketID, B.VerzendingID, C.TrajectID, A.Omschrijving, C.Eind, C.Begin, D.Plaatsnaam AS BeginPlaats, E.Plaatsnaam AS EindPlaats "
-                    + "FROM Pakket A "
-                    + "JOIN Verzending B ON A.PakketID = B.PakketID "
-                    + "JOIN Traject C ON B.VerzendingID = C.VerzendingID "
-                    + "JOIN Locatie D ON C.Eind = D.LocatieID "
-                    + "JOIN Locatie E ON C.Begin = E.LocatieID ";
+            query = "SELECT COUNT(*) FROM Pakket A JOIN Verzending B ON A.PakketID = B.PakketID JOIN Traject C ON B.VerzendingID = C.VerzendingID JOIN Locatie D ON C.Eind = D.LocatieID JOIN Locatie E ON C.Begin = E.LocatieID ";
             if (begin.equals("'s Hertogenbosch")) {
                 query += "WHERE D.Plaatsnaam = '\\" + begin + "' ";
             } else {
@@ -827,23 +825,62 @@ public class DbConnect {
             } else {
                 query += "AND E.Plaatsnaam = '" + eind + "'";
             }
-            int i = 0;
+            
             rs = st.executeQuery(query);
-            while (rs.next()) {
+           
 
+            int aantal = 0;
+            while (rs.next()) {
+                aantal = rs.getInt("COUNT(*)");
+            }
+            //haal alles op.
+            if(aantal == 0){
+             JOptionPane.showMessageDialog(null, "Er zijn geen records gevonden. Probeer het opnieuw.", "", JOptionPane.ERROR_MESSAGE);   
+            }
+
+            Object[][] returnval = new Object[aantal][16];
+
+            query = "SELECT A.PakketID, B.VerzendingID, C.TrajectID, A.Omschrijving, D.Plaatsnaam AS Beginplaats, D.Straatnaam AS BeginStraatnaam, D.Huisnummer AS BeginHuisnummer, D.Toevoeging AS BeginToevoeging, D.Postcode AS BeginPostcode, D.TZTPoint AS TZTpointBegin, E.Plaatsnaam AS Eindplaats, E.Straatnaam AS EindStraatnaam, E.Huisnummer AS EindHuisnummer, E.Toevoeging AS EindToevoeging, E.Postcode AS EindPostcode, E.TZTPoint AS TZTpointEind FROM Pakket A JOIN Verzending B ON A.PakketID = B.PakketID JOIN Traject C ON B.VerzendingID = C.VerzendingID JOIN Locatie D ON C.Eind = D.LocatieID JOIN Locatie E ON C.Begin = E.LocatieID ";
+            if (begin.equals("'s Hertogenbosch")) {
+                query += "WHERE D.Plaatsnaam = '\\" + begin + "' ";
+            } else {
+                query += "WHERE D.Plaatsnaam = '" + begin + "' ";
+            }
+            if (eind.equals("'s Hertogenbosch")) {
+                query += "AND E.Plaatsnaam = '\\" + eind + "' ";
+            } else {
+                query += "AND E.Plaatsnaam = '" + eind + "'";
+            }
+           
+            rs = st.executeQuery(query);
+
+
+            int i = 0;
+            
+            while (rs.next()) {
                 returnval[i][0] = rs.getString("PakketID");
                 returnval[i][1] = rs.getString("VerzendingID");
                 returnval[i][2] = rs.getString("TrajectID");
                 returnval[i][3] = rs.getString("Omschrijving");
-                returnval[i][4] = rs.getString("Begin");
-                returnval[i][5] = rs.getString("Eind");
-                returnval[i][6] = rs.getString("BeginPlaats");
-                returnval[i][7] = rs.getString("EindPlaats");
+                returnval[i][4] = rs.getString("Beginplaats");
+                returnval[i][5] = rs.getString("BeginStraatnaam");
+                returnval[i][6] = rs.getString("BeginHuisnummer");
+                returnval[i][7] = rs.getString("BeginToevoeging");
+                returnval[i][8] = rs.getString("BeginPostcode");
+                returnval[i][9] = rs.getString("TZTpointBegin");
+                returnval[i][10] = rs.getString("Eindplaats");
+                returnval[i][11] = rs.getString("EindStraatnaam");
+                returnval[i][12] = rs.getString("EindHuisnummer");
+                returnval[i][13] = rs.getString("EindToevoeging");
+                returnval[i][14] = rs.getString("EindPostcode");
+                returnval[i][15] = rs.getString("TZTpointEind");
+
+
                 i++;
             }
             return returnval;
         } catch (Exception e) {
-            System.out.println("error : " + e.getClass());
+            System.out.println("error : " + e.getMessage() + e.toString());
 
         }
         return null;

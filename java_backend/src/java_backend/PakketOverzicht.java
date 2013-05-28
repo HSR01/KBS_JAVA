@@ -27,7 +27,7 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
     static JTable aTable;
     protected JComboBox Begin, Eind;
     private JPanel North, South;
-    private JLabel van, naar;
+    private JLabel van, naar, info;
     private JButton Start;
     private String begin, eind;
     private TableModel dataModel;
@@ -37,7 +37,7 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
         this.setSize(800, 600);
         this.setLayout(new BorderLayout());
 
-        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving", "Begin", "Eind", "BeginPlaats", "EindPlaats"};
+        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving", "Beginplaats", "BeginStraatnaam", "BeginHuisnummer", "BeginToevoeging", "BeginPostcode", "TZTpointBegin", "Eindplaats", "EindStraatnaam", "EindHuisnummer", "EindToevoeging", "EindPostcode", "TZTpointEind"};
         DbConnect dbc = new DbConnect();
         final Object[][] data = dbc.getPakket();
         final Object[] stad = dbc.getLocatie();
@@ -92,27 +92,22 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
 
 
         aTable = new JTable(dataModel);
-        aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        aTable.getColumnModel().getColumn(0).setPreferredWidth(60);
-        aTable.getColumnModel().getColumn(1).setPreferredWidth(80);
-        aTable.getColumnModel().getColumn(2).setPreferredWidth(60);
-        aTable.getColumnModel().getColumn(3).setPreferredWidth(100);
-        aTable.getColumnModel().getColumn(4).setPreferredWidth(50);
-        aTable.getColumnModel().getColumn(5).setPreferredWidth(50);
-        aTable.getColumnModel().getColumn(6).setPreferredWidth(125);
-        aTable.getColumnModel().getColumn(7).setPreferredWidth(125);
+        //functie die breedte kolommen zet
+        tabel(aTable);
 
         this.North = new JPanel();
         this.South = new JPanel();
         this.van = new JLabel("Van:");
         this.naar = new JLabel("Naar:");
         this.Start = new JButton("Start");
+        this.info = new JLabel("Dit is een overzicht van alle pakketten. Selecteer een begin- en eindplaats om specifieke trajecten te tonen.");
 
         South.add(van);
         South.add(Begin);
         South.add(naar);
         South.add(Eind);
         South.add(Start);
+        North.add(info);
 
         this.add(new JScrollPane(aTable));
 
@@ -137,7 +132,7 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
     public TableModel VerVerstabel() {
 
         DbConnect dbc = new DbConnect();
-        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving", "Begin", "Eind", "BeginPlaats", "EindPlaats"};
+        final String[] tabelinhoud = {"PakketID", "VerzendingID", "TrajectID", "Omschrijving", "Beginplaats", "BeginStraatnaam", "BeginHuisnummer", "BeginToevoeging", "BeginPostcode", "TZTpointBegin", "Eindplaats", "EindStraatnaam", "EindHuisnummer", "EindToevoeging", "EindPostcode", "TZTpointEind"};
         begin = (String) Begin.getSelectedItem();
         eind = (String) Eind.getSelectedItem();
 
@@ -151,7 +146,11 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
 
             @Override
             public int getRowCount() {
-                return data.length;
+                if (data == null) {
+                    return 0;
+                } else {
+                    return data.length;
+                }
             }
 
             @Override
@@ -173,7 +172,7 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
                 data[row][column] = aValue;
             }
         };
-
+        tabel(aTable);
         return dataModel;
     }
 
@@ -183,13 +182,36 @@ public class PakketOverzicht extends JPanel implements ListSelectionListener, Ac
             DbConnect dbc = new DbConnect();
 
             PakketOverzicht.aTable.setModel(VerVerstabel()); //Ververst tabel, maakt hem leeg
+            tabel(aTable);
             PakketOverzicht.aTable.repaint();
 
 
 
 
 
+
         }
+    }
+
+    public void tabel(JTable aTable) {
+        aTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        aTable.getColumnModel().getColumn(0).setPreferredWidth(60);
+        aTable.getColumnModel().getColumn(1).setPreferredWidth(80);
+        aTable.getColumnModel().getColumn(2).setPreferredWidth(60);
+        aTable.getColumnModel().getColumn(3).setPreferredWidth(175);
+        aTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+        aTable.getColumnModel().getColumn(5).setPreferredWidth(150);
+        aTable.getColumnModel().getColumn(6).setPreferredWidth(90);
+        aTable.getColumnModel().getColumn(7).setPreferredWidth(90);
+        aTable.getColumnModel().getColumn(8).setPreferredWidth(100);
+        aTable.getColumnModel().getColumn(9).setPreferredWidth(100);
+        aTable.getColumnModel().getColumn(10).setPreferredWidth(125);
+        aTable.getColumnModel().getColumn(11).setPreferredWidth(150);
+        aTable.getColumnModel().getColumn(12).setPreferredWidth(125);
+        aTable.getColumnModel().getColumn(13).setPreferredWidth(90);
+        aTable.getColumnModel().getColumn(14).setPreferredWidth(90);
+        aTable.getColumnModel().getColumn(15).setPreferredWidth(90);
+        
     }
 
     public void valueChanged(ListSelectionEvent e) {
