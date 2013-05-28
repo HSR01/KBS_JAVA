@@ -36,6 +36,16 @@ public class PersoonTraject extends JFrame implements ActionListener, ListSelect
         final String[] tabelinhoud = {"TrajectID", "Begin", "Eind"};
         DbConnect dbc = new DbConnect();
         final Object[][] data = dbc.getPersonen(geselecteerdeWaarde);
+        //data 2 zijn de plaatsnamen toegevoegd ipv id's
+        final Object[][] data2 = new Object[data.length][3];
+        int i = 0;
+        for(Object[] d : data){
+            //vul data 2
+            data2[i][0] = d[0];
+            data2[i][1] = dbc.LocatieIdtoString(d[1]);
+            data2[i][2] = dbc.LocatieIdtoString(d[2]);
+            i++;
+        }
         
         TableModel dataModel = new AbstractTableModel() {
             @Override
@@ -43,7 +53,7 @@ public class PersoonTraject extends JFrame implements ActionListener, ListSelect
             @Override
             public int getRowCount() { return data.length;}
             @Override
-            public Object getValueAt(int row, int col) { return data[row][col]; }
+            public Object getValueAt(int row, int col) { return data2[row][col]; }
             @Override
             public String getColumnName(int column) {return tabelinhoud[column];}
             //@Override
@@ -130,15 +140,23 @@ public class PersoonTraject extends JFrame implements ActionListener, ListSelect
         DbConnect dbc = new DbConnect();
         final String[] tabelinhoud = {"TrajectID", "Begin", "Eind"};
         final Object[][] data = dbc.getPersonen(persoonID);
-            
+        final Object[][] data2 = new Object[data.length][3];
+        int i = 0;
+        for(Object[] d : data){
+            //vul data 2
+            data2[i][0] = d[0];
+            data2[i][1] = dbc.LocatieIdtoString(d[1]);
+            data2[i][2] = dbc.LocatieIdtoString(d[2]);
+            i++;
+        }    
             
                         TableModel dataModel = new AbstractTableModel() {
                             @Override
                             public int getColumnCount() { return tabelinhoud.length; }
                             @Override
-                            public int getRowCount() { return data.length;}
+                            public int getRowCount() { return data2.length;}
                             @Override
-                            public Object getValueAt(int row, int col) { return data[row][col]; }
+                            public Object getValueAt(int row, int col) { return data2[row][col]; }
                             @Override
                             public String getColumnName(int column) {return tabelinhoud[column];}
                             //@Override

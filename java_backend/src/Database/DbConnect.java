@@ -1652,5 +1652,19 @@ public class DbConnect {
             return null;
         }
     }
+
+    public String LocatieIdtoString(Object id) {
+        try{
+            query = "select * from Locatie where LocatieID = '"+id+"'";
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                return rs.getString("Plaatsnaam");
+            }
+            return "Station niet bekent.";
+        }catch(Exception e){
+           return "Station niet bekent."; 
+        }
+        
+    }
     
 }
