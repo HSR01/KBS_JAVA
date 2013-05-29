@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -67,13 +68,23 @@ class PakketStatus extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         //selectie button geladen.
         if (ae.getSource() == zoek) {
-            //jaar geselecteerd.          
+            if(zoekveld.getText().equals("")){
+                //foutmelding niks ingevuld
+                foutmelding("Foutmelding", "U heeft geen waarde ingevoerd");
+            }else if(!isInteger(zoekveld.getText())){
+            //waarde is niet numeriek.
+                foutmelding("Foutmelding", "Het pakketnummer moet een getal zijn.");
+            }else{
+                //vul table met info
+                            //jaar geselecteerd.          
                 this.info.setModel(FillTabel(Integer.parseInt(zoekveld.getText())));
                 //repaint de tabel om het opnieuw weer te geven.
                 this.info.repaint();
-                
             }
+
+                
         }
+    }
 
 
     public TableModel FillTabel(final int pakketID){
@@ -95,7 +106,37 @@ class PakketStatus extends JPanel implements ActionListener{
         return dataModel;
         
    };  
+    /**
+     * Toon foutmelding aan de hand van meegegeven parameters.
+     * @author Jelle Smeets
+     * @param titel
+     * @param melding 
+     */
+    public static void foutmelding(String titel, String melding){
+        JDialog jd = new JDialog();
+        jd.setSize(400,175);
+        jd.setTitle(titel);
+        jd.add(new JLabel(melding));
+        jd.setVisible(true);
+    }
     
+    /**
+     * Controleer of string numeriek is.
+     * @author Jelle
+     * @param String input
+     */
+    
+    public boolean isInteger( String input ){  
+       try  
+       {  
+          Integer.parseInt( input );  
+          return true;  
+       }  
+       catch( Exception e)  
+       {  
+          return false;  
+       }  
+   } 
    
 }
 

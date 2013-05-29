@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -86,23 +87,34 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
     public void actionPerformed(ActionEvent ae) {
         //selectie button geladen.
         if (ae.getSource() == zoek) {
-            //jaar geselecteerd.          
+            if(zoekveld.getText().equals("")){
+                 foutmelding("Foutmelding", "U heeft geen waarde ingevoerd");
+            }else if(!isInteger(zoekveld.getText())){
+                foutmelding("Foutmelding", "Het pakketnummer moet een getal zijn.");
+            }else{
+                //succesvol
+                //jaar geselecteerd.          
                 this.info.setModel(FillTabel(Integer.parseInt(zoekveld.getText())));
                 //repaint de tabel om het opnieuw weer te geven.
                 this.info.repaint();
                 
             }
+
+            }
      }
 
 
     public TableModel FillTabel(final int pakketID){
-            
-        TableModel dataModel = new AbstractTableModel() {
-            //instancieer columnnamen
-            final String[] tabelinhoud = {"Traject ID", "Type", "Vervoerderder ID", "Van", "Naar", "Status"};
+                     final String[] tabelinhoud = {"Traject ID", "Type", "Vervoerderder ID", "Van", "Naar", "Status"};
             DbConnect dbc = new DbConnect();       
             final Object[][] data = dbc.getPakketWijzigen(pakketID);
+            if(data.length == 0 && pakketID != 0){
+                foutmelding("Foutmelding", "Er zijn geen resultaten gevonden.");
+            }
+        TableModel dataModel = new AbstractTableModel() {
+            //instancieer columnnamen
 
+            
             public int getColumnCount() { return tabelinhoud.length; }
 
             public int getRowCount() { return data.length;}
@@ -128,4 +140,35 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
     public void getSelecteerdeWaarde(Object string) {
         this.geselecteerdeWaarde = string;
     }
+        /**
+     * Toon foutmelding aan de hand van meegegeven parameters.
+     * @author Jelle Smeets
+     * @param titel
+     * @param melding 
+     */
+    public static void foutmelding(String titel, String melding){
+        JDialog jd = new JDialog();
+        jd.setSize(400,175);
+        jd.setTitle(titel);
+        jd.add(new JLabel(melding));
+        jd.setVisible(true);
+    }
+    
+    /**
+     * Controleer of string numeriek is.
+     * @author Jelle
+     * @param String input
+     */
+    
+    public boolean isInteger( String input ){  
+       try  
+       {  
+          Integer.parseInt( input );  
+          return true;  
+       }  
+       catch( Exception e)  
+       {  
+          return false;  
+       }  
+   }
 }

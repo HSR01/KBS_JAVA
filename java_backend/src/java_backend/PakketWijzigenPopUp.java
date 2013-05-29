@@ -9,8 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -79,7 +81,12 @@ public class PakketWijzigenPopUp extends JFrame implements ActionListener{
             dbc.updateStatus(trajectID, status);
             //repaint de tabel om het opnieuw weer te geven.
             PakketWijzigen.info.repaint();
-                
+            JDialog jd = new JDialog();
+            jd.setSize(400,175);
+            jd.setTitle("Status wijzigen");
+            jd.add(new JLabel("De status is succesvol gewijzigd."));
+            jd.setVisible(true);
+            this.dispose();    
             }
      }
     
