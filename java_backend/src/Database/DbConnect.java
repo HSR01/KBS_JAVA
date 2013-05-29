@@ -1630,6 +1630,9 @@ public class DbConnect {
                 aantal = rs.getInt("COUNT(*)");
             }
             //haal alles op.
+            if(aantal == 0){
+             JOptionPane.showMessageDialog(null, "Er zijn geen records gevonden. Probeer het opnieuw.", "", JOptionPane.ERROR_MESSAGE);   
+            }
             
 
             Object[][] returnval = new Object[aantal][8];
