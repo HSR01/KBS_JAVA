@@ -1,6 +1,7 @@
 package java_backend;
 
 import Database.DbConnect;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -9,6 +10,7 @@ import javax.swing.table.*;
 public class AccountsBeherenTabel extends JPanel implements ListSelectionListener {
     // naamgeven JTable
     static JTable aTable;
+    private JLabel informatie;
     // Dit word gevuld als je iets selecteerd in de tabel
     private Object geselecteerdeWaarde;
     
@@ -61,7 +63,11 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         
         // Voegt de tabel toe aan het panel in een scrollpane
         this.add(new JScrollPane(aTable));
-      
+        JPanel bot = new JPanel();
+        this.informatie = new JLabel("Overzicht van alle accounts. \n Dubbelklik om te wijzigen.");
+        bot.add(informatie);
+        this.add(bot, BorderLayout.NORTH);
+        
         // Dit is de list selecetioner, die kijkt of je iets selecteert
         ListSelectionModel listMod = aTable.getSelectionModel();
         // Hierdoor kan je maar 1 regel selecteren

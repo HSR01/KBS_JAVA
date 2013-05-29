@@ -55,10 +55,14 @@ class NieuweVerzending extends JPanel implements ActionListener {
         gewicht = new JLabel("Gewicht");
         omschrijving = new JLabel("Omschrijving");
         
+        
+        
         tgewicht = new JTextField();
         tomschrijving = new JTextField();
         
         //voeg de velden toe aan het panel.
+        
+        
         midpanel.add(gewicht);
         midpanel.add(tgewicht);
         midpanel.add(omschrijving);
