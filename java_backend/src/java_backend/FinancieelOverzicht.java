@@ -20,7 +20,7 @@ import javax.swing.table.TableModel;
  */
 class FinancieelOverzicht extends JPanel implements ActionListener{
     private JComboBox selectie;
-    private JLabel jaar;
+    private JLabel jaar, informatie;
     private Calendar now;
     private JTable info;
     private int year;
@@ -61,13 +61,18 @@ class FinancieelOverzicht extends JPanel implements ActionListener{
         //voeg layout to aan jpanel top
         JPanel top =new JPanel();
         top.add(new JLabel("Kies een jaar"));
+        
         top.add(this.selectie);
         //voeg layout toe aan Jpanel mid
         JPanel mid = new JPanel();
         mid.add(new JScrollPane(this.info));
+        
+        JPanel bot = new JPanel();
+        bot.add(new JLabel("Dit is een financieel overzicht."));
         //voeg uiteindelijk alles toe aan het centrale geheel.
         this.add(top, BorderLayout.NORTH);
         this.add(mid, BorderLayout.CENTER);
+        this.add(bot, BorderLayout.SOUTH);
         
         //add actionlisteners
         this.selectie.addActionListener(this);

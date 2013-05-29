@@ -27,7 +27,7 @@ class GebruikStatistieken extends JPanel implements ActionListener {
     static JTable aTable;
     protected JComboBox Begin, Eind;
     private JPanel North, South;
-    private JLabel van, naar, zoeken;
+    private JLabel van, naar, zoeken, info;
     private JButton Start;
     private String begin, eind;
     private TableModel dataModel;
@@ -100,7 +100,7 @@ class GebruikStatistieken extends JPanel implements ActionListener {
         this.zoek = new JButton("Zoek");
         this.zoeken = new JLabel("Zoek:");
         this.zoekveld = new JTextField(4);
-
+        this.info = new JLabel("Dit is een overzicht van alle gebruikers + trajecten.");
 
         South.setLayout(new GridLayout(3, 3));                                  //Grid Lay-out zetten voor "SOUTH" (onder tabel) zetten.
 
@@ -118,8 +118,8 @@ class GebruikStatistieken extends JPanel implements ActionListener {
 
         this.add(new JScrollPane(aTable));                                      //
 
-
-
+        North.add(info);
+        
         this.add(North, BorderLayout.NORTH);                                    //Koppelen van north/south aan Borderlayout
         this.add(South, BorderLayout.SOUTH);
 

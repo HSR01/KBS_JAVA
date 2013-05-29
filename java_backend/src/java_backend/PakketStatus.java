@@ -6,7 +6,6 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,7 +22,7 @@ import javax.swing.table.TableModel;
  * @author Jelle
  */
 class PakketStatus extends JPanel implements ActionListener{
-    private JLabel zoeklabel;
+    private JLabel zoeklabel, informatie;
     private JTextField zoekveld;
     private JButton zoek;  
     private JTable info; 
@@ -32,7 +31,7 @@ class PakketStatus extends JPanel implements ActionListener{
         zoeklabel = new JLabel("Pakket ID :");
         zoekveld = new JTextField(4);
         zoek = new JButton("Zoek");
-
+        informatie = new JLabel("Achterhaal de pakketstatus door te zoeken op PakketID.");
         //instancieer JTable met datamodel van hierboven.
         this.info = new JTable(FillTabel(0));
                 // Dit is de list selecetioner, die kijkt of je iets selecteert
@@ -51,9 +50,15 @@ class PakketStatus extends JPanel implements ActionListener{
         //voeg layout toe aan Jpanel mid
         JPanel mid = new JPanel();
         mid.add(new JScrollPane(this.info));
+        
+        
+        JPanel bot = new JPanel();
+        bot.add(informatie);
+        
         //voeg uiteindelijk alles toe aan het centrale geheel.
         this.add(top, BorderLayout.NORTH);
         this.add(mid, BorderLayout.CENTER);
+        this.add(bot, BorderLayout.SOUTH);
         
         //add actionlisteners
         this.zoek.addActionListener(this);
@@ -68,23 +73,13 @@ class PakketStatus extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         //selectie button geladen.
         if (ae.getSource() == zoek) {
-            if(zoekveld.getText().equals("")){
-                //foutmelding niks ingevuld
-                foutmelding("Foutmelding", "U heeft geen waarde ingevoerd");
-            }else if(!isInteger(zoekveld.getText())){
-            //waarde is niet numeriek.
-                foutmelding("Foutmelding", "Het pakketnummer moet een getal zijn.");
-            }else{
-                //vul table met info
-                            //jaar geselecteerd.          
+            //jaar geselecteerd.          
                 this.info.setModel(FillTabel(Integer.parseInt(zoekveld.getText())));
                 //repaint de tabel om het opnieuw weer te geven.
                 this.info.repaint();
-            }
-
                 
+            }
         }
-    }
 
 
     public TableModel FillTabel(final int pakketID){
@@ -106,37 +101,7 @@ class PakketStatus extends JPanel implements ActionListener{
         return dataModel;
         
    };  
-    /**
-     * Toon foutmelding aan de hand van meegegeven parameters.
-     * @author Jelle Smeets
-     * @param titel
-     * @param melding 
-     */
-    public static void foutmelding(String titel, String melding){
-        JDialog jd = new JDialog();
-        jd.setSize(400,175);
-        jd.setTitle(titel);
-        jd.add(new JLabel(melding));
-        jd.setVisible(true);
-    }
     
-    /**
-     * Controleer of string numeriek is.
-     * @author Jelle
-     * @param String input
-     */
-    
-    public boolean isInteger( String input ){  
-       try  
-       {  
-          Integer.parseInt( input );  
-          return true;  
-       }  
-       catch( Exception e)  
-       {  
-          return false;  
-       }  
-   } 
    
 }
 
