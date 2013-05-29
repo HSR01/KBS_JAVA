@@ -87,6 +87,7 @@ class PakketStatus extends JPanel implements ActionListener {
                 //vul table met info
                  //jaar geselecteerd.          
                         this.info.setModel(FillTabel(Integer.parseInt(zoekveld.getText())));
+                        this.info.repaint();
                 //repaint de tabel om het opnieuw weer te geven.
                 this.info.repaint();
 

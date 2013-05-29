@@ -465,7 +465,7 @@ public class DbConnect {
             }
             
             int kostprijs = financien.getKostprijs(verzendingId);
-            query = "UPDATE Verzending set KostPrijs = '"+kostprijs+"' where VerzendingID = '"+verzendingId+"'";
+            query = "UPDATE Verzending set KostPrijs = '" + kostprijs + "' where VerzendingID = '" + verzendingId + "'";
             st.executeUpdate(query);
             return true;
         } catch (Exception e) {
