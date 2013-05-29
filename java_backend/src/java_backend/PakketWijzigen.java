@@ -28,7 +28,7 @@ import javax.swing.table.TableModel;
  */
 class PakketWijzigen extends JPanel implements ActionListener, ListSelectionListener{
     private Object geselecteerdeWaarde; 
-    private JLabel zoeklabel;
+    private JLabel zoeklabel, informatie;
     private JTextField zoekveld;
     private JButton zoek, opslaan;  
     public static JTable info; 
@@ -37,7 +37,7 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
         zoeklabel = new JLabel("Pakket ID :");
         zoekveld = new JTextField(4);
         zoek = new JButton("Zoek");
-
+        informatie = new JLabel("Zoek en wijzig het pakket.");
         //instancieer JTable met datamodel van hierboven.
         this.info = new JTable(FillTabel(0));
         
@@ -48,12 +48,16 @@ class PakketWijzigen extends JPanel implements ActionListener, ListSelectionList
         top.add(zoeklabel);
         top.add(this.zoekveld);
         top.add(this.zoek);
+        
+        JPanel bot = new JPanel();
+        bot.add(informatie);
         //voeg layout toe aan Jpanel mid
         JPanel mid = new JPanel();
         mid.add(new JScrollPane(this.info));
         //voeg uiteindelijk alles toe aan het centrale geheel.
         this.add(top, BorderLayout.NORTH);
         this.add(mid, BorderLayout.CENTER);
+        this.add(bot, BorderLayout.SOUTH);
         
         //add actionlisteners
         this.zoek.addActionListener(this);

@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 public class PersoonNieuw extends JPanel implements ActionListener{
     private JTextField tfId, tfVoornaam, tfTussenvoegsel, tfAchternaam, tfEmailadres, tfMobielnummer, tfIBANnummer;
     private JPasswordField pfWachtwoord;
-    private JLabel lVoornaam, lTussenvoegsel, lAchternaam, lEmailadres, lWachtwoord, lGeboortedatum, lMobielnummer, lIBANnummer, lRechten, lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam, lTztpoint;
+    private JLabel lVoornaam, lTussenvoegsel, informatie, lAchternaam, lEmailadres, lWachtwoord, lGeboortedatum, lMobielnummer, lIBANnummer, lRechten, lPostcode, lStraatnaam, lHuisnummer, lToevoeging, lPlaatsnaam, lTztpoint;
     private JPanel jInputfields, jFieldPanel, jButtons, jDatums;        
     private JTextField tfPostcode, tfStraatnaam, tfHuisnummer, tfToevoeging, tfPlaatsnaam;
     private JButton btOpslaan;
@@ -184,9 +184,15 @@ public class PersoonNieuw extends JPanel implements ActionListener{
         this.jInputfields.add(jFieldPanel);
 
         this.jButtons.add(btOpslaan);
+        
+        this.informatie =  new JLabel("Vul alle gegevens in om een account aan te maken.");
+        
+        JPanel top = new JPanel();
+        top.add(informatie);
 
         this.add(jInputfields, BorderLayout.WEST);
         this.add(jButtons, BorderLayout.SOUTH);
+        this.add(top, BorderLayout.NORTH);
         
         this.tfId.setEditable(false);
         

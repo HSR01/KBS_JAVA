@@ -26,7 +26,7 @@ import javax.swing.table.TableModel;
  */
 class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListener{
     private JPanel top, mid;
-    private JLabel toplabel, zoeklabel;
+    private JLabel toplabel, zoeklabel, informatie;
     private JTextField zoekveld;
     private JButton zoek;
     private JTable info;
@@ -47,7 +47,10 @@ class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListe
         this.zoeklabel = new JLabel("PakketID");
         this.zoekveld = new JTextField(10);
         this.zoek = new JButton("Zoek");
+        this.informatie = new JLabel("Zoek op PakketID en vind de feedback.");
         
+        JPanel bot = new JPanel();
+        bot.add(informatie);
         //voeg onderdelen toe aan de JPanels
         //top
         this.top.add(this.toplabel);
@@ -60,6 +63,7 @@ class FeedbackPanel extends JPanel implements ActionListener, ListSelectionListe
         //voeg onderdelen toe aan layout
         this.add(top, BorderLayout.NORTH);
         this.add(mid, BorderLayout.CENTER);
+        this.add(bot, BorderLayout.SOUTH);
 
         //voeg action listeners toe
         this.zoek.addActionListener(this);

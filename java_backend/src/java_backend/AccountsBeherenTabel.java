@@ -41,6 +41,8 @@ public class AccountsBeherenTabel extends JPanel implements ListSelectionListene
         };
         
         
+        
+        
         // Maakt de tabel aan
         aTable = new JTable(dataModel);
         // Komende stuk bepaalt de wijdte van de kolommen
