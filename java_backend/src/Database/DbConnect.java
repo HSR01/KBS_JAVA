@@ -466,7 +466,7 @@ public class DbConnect {
             
             int kostprijs = financien.getKostprijs(verzendingId);
             query = "UPDATE Verzending set KostPrijs = '"+kostprijs+"' where VerzendingID = '"+verzendingId+"'";
-            rs = st.executeQuery(query);
+            st.executeUpdate(query);
             return true;
         } catch (Exception e) {
             System.out.println("(DbConnect.java) @ newVerzending - Error : " + e.getMessage());
