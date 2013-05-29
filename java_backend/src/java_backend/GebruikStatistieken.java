@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -138,7 +139,9 @@ class GebruikStatistieken extends JPanel implements ActionListener {
             eind = (String) Eind.getSelectedItem();                             //Aangegeven waarde pakken voor Eindplaats
 
             final Object[][] data = dbc.getSpecifiekGebruikStatistiek(begin, eind); //Data wordt hier uit DbConnect (dmv SQL query) gehaald.
-
+            if(data.length == 0){
+                foutmelding("Geen zoekresultaten gevonden", "Voor uw zoekopdracht zijn geen resultaten gevonden.");
+            }
             TableModel dataModel = new AbstractTableModel() {                   //Tabel model wordt hier gemaakt.
                 @Override
                 public int getColumnCount() {
@@ -177,7 +180,11 @@ class GebruikStatistieken extends JPanel implements ActionListener {
     }
 
     public TableModel Vernieuwtabel(Object[][] datas) {                         //Zoek functie
-        final Object[][] data = datas;                                          //Data oproepen voor tabel (uit DbConnect / SQL query)
+        final Object[][] data = datas;            
+        if(data.length == 0){
+            foutmelding("Geen zoekresultaten gevonden", "Voor uw zoekopdracht zijn geen resultaten gevonden.");
+        }
+        //Data oproepen voor tabel (uit DbConnect / SQL query)
         try {
             DbConnect dbc = new DbConnect();
             final String[] tabelinhoud = {"PersoonID", "Voornaam", "Tussenvoegsel", "Achternaam", "TrajectID", "Beginplaats", "Eindplaats"};
@@ -190,7 +197,7 @@ class GebruikStatistieken extends JPanel implements ActionListener {
                 }
 
                 @Override
-                public int getRowCount() {
+                public int getRowCount() {                  
                     return data.length;
                 }
 
@@ -233,11 +240,17 @@ class GebruikStatistieken extends JPanel implements ActionListener {
             GebruikStatistieken.aTable.repaint();                               //Gaat tabel opnieuw invullen. 
 
         } else if (ae.getSource() == zoek) {                                    //Gaat kijken als knop 'zoek' is ingedrukt (zoekfunctie)
+            if(zoekveld.getText().equals("")){
+                //foutmelding tonene
+                foutmelding("Foutmelding","U heeft geen zoekterm ingevuld.");
+            }else{
+                
             dbc.getZoekSpecifiekGebruikStatistiek(zoekveld.getText());          //Gaat in DbConnect naar de methode zoeken en ingevulde waarde meenenem.
-
             GebruikStatistieken.aTable.setModel(Vernieuwtabel(dbc.getZoekSpecifiekGebruikStatistiek(zoekveld.getText()))); //Maakt tabel leeg
             tabel(aTable);                                                      //Kolomgrootte van tabel
-            GebruikStatistieken.aTable.repaint();                               //Gaat tabel opnieuw invullen.
+            GebruikStatistieken.aTable.repaint();   
+            }
+                               //Gaat tabel opnieuw invullen.
         }
     }
 
@@ -252,5 +265,12 @@ class GebruikStatistieken extends JPanel implements ActionListener {
         aTable.getColumnModel().getColumn(5).setPreferredWidth(140);
         aTable.getColumnModel().getColumn(6).setPreferredWidth(140);
 
+    }
+    public static void foutmelding(String titel, String melding){
+    JDialog jd = new JDialog();
+    jd.setSize(400,175);
+    jd.setTitle(titel);
+    jd.add(new JLabel(melding));
+    jd.setVisible(true);
     }
 }
