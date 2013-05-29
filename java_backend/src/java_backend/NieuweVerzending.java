@@ -94,6 +94,7 @@ class NieuweVerzending extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == submit) {
+            boolean succes = false;
             String errors = "<html>";
             if (tgewicht.getText().equals(""))
                 errors += "<br />Geen gewicht opgegeven.";
@@ -110,10 +111,17 @@ class NieuweVerzending extends JPanel implements ActionListener {
                 String[] pakket = new String[2];
                 pakket[0] = tgewicht.getText().toString();
                 pakket[1] = tomschrijving.getText().toString();
+                
                 try {
                     dbc.newVerzending(afzender.getPersoon(), ontvanger.getPersoon(), afzender.getLocatie(), ontvanger.getLocatie(), pakket);
+                    succes = true;
                 } catch (MultipleAdressesFoundException ex) {
                     Logger.getLogger(NieuweVerzending.class.getName()).log(Level.SEVERE, null, ex);
+                JDialog jd = new JDialog();
+                jd.setSize(400,175);
+                jd.setTitle("Foutmelding - Verplichte velden niet ingevuld.");
+                jd.add(new JLabel("Het opgegeven adres kan niet worden verwerkt. Controleer of dit adres wel bestaand is."));
+                jd.setVisible(true);
                 }
             } else {
                 errors += "</html>";
@@ -121,6 +129,13 @@ class NieuweVerzending extends JPanel implements ActionListener {
                 jd.setSize(400,175);
                 jd.setTitle("Foutmelding - Verplichte velden niet ingevuld.");
                 jd.add(new JLabel(errors));
+                jd.setVisible(true);
+            }
+            if(succes == true){
+                JDialog jd = new JDialog();
+                jd.setSize(400,175);
+                jd.setTitle("Succesvol");
+                jd.add(new JLabel("Nieuwe verzending succesvol toegevoegd."));
                 jd.setVisible(true);
             }
         }
