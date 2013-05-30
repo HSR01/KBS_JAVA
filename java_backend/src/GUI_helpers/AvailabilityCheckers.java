@@ -52,7 +52,9 @@ public class AvailabilityCheckers implements WindowListener, Runnable {
 
                 // Is er een connectie met de database
                 if (!Database()) {
-                    errors += "<p>Database is niet bereikbaar.</p>";
+                    errors += "<p>Database is niet bereikbaar."
+                            + "<br>Mogelijk staat uw IP adres niet in de white-list"
+                            + "<br>Neem contact op met daniel.vander.berg@windesheim.nl</p>";
                 }
                 // Is er een connectie met Cloudmade?
                 if (!CloudMade()) {
